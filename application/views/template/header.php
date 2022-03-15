@@ -69,7 +69,7 @@
 </style>
 
 </head>
-<body class="page-body skin-facebook" data-url="http://neon.dev">
+<body class="page-body page-fade skin-facebook" data-url="http://neon.dev">
 
 <div class="page-container"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
 	

@@ -20,13 +20,20 @@ function create_inputDate($name, $jsscript = array(), $attr = array())
 	if (strpos($name, "=")) {
 		list($name, $label) = explode("=", $name);
 	}
+	$txt = '<div class="input-group">
+	<input type="text" class="form-control datepicker" data-format="D, dd MM yyyy">
+	
+	<div class="input-group-addon">
+		<a href="#"><i class="entypo-calendar"></i></a>
+	</div>
+</div>';
 	$txt = '<div class="form-group">' . form_label(ucwords(str_replace('_', ' ', $label)), $name) . '
               <div class="input-group date">
                   <div class="input-group-addon show_date_' . $name . '">
-                    <i class="fa fa-calendar"></i>
+				  	<a href="#"><i class="entypo-calendar"></i></a>
                   </div>
                   <div class="input-group-addon">
-                    <i class="fa fa-close" onclick="$(\'#' . $name . '\').val(null)"></i>
+				  	<a href="#" onclick="$(\'#' . $name . '\').val(null)"><i class="fa fa-close"></i></a>
                   </div>
                   <input type="text" class="form-control" name="' . $name . '" id="' . $name . '" ' . _attributes_to_string($attr) . '>
                 </div>

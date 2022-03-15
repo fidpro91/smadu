@@ -11,7 +11,11 @@
 		</footer>
 	</div>
 </div>
-	
-
+<script>
+	$('.breadcrumb').breadcrumbsGenerator({
+		sitemaps  : '.main-menu',
+		index_type: 'index.html'
+	});
+</script>
 </body>
 </html>

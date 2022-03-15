@@ -18,10 +18,10 @@ class CI_Datascript
 	public function default_library()
 	{
 		
-		$this->css .= '<link rel="stylesheet" href="'.$this->folder_css.'assets/js/datatables/datatables.css">'."\n";
-		$this->js .= '<script src="'.$this->folder_js.'assets/js/datatables/datatables.js"></script>'."\n";
-		$this->js .= '<script src="'.$this->folder_js.'assets/breadcumb/breadcumb.js"></script>'."\n";
-		$this->js .= '<script src="'.$this->folder_js.'assets/js/jquery.validate.min.js"></script>'."\n";
+		$this->css .= '<link rel="stylesheet" href="'.$this->folder_css.'js/datatables/datatables.css">'."\n";
+		$this->js .= '<script src="'.$this->folder_js.'js/datatables/datatables.js"></script>'."\n";
+		$this->js .= '<script src="'.$this->folder_js.'js/breadcumb/breadcumb.js"></script>'."\n";
+		$this->js .= '<script src="'.$this->folder_js.'js/jquery.validate.min.js"></script>'."\n";
 		$this->combine = $this->css."\n\n\n".$this->js;
 		$this->CI->config->set_item('my_library',$this->combine);
 		return $this;
