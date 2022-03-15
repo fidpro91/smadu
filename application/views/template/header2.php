@@ -341,7 +341,7 @@
                             <li class="sep"></li>
                 
                             <li>
-                                <a href="extra-login.html">
+                                <a href="<?=site_url("login/logout")?>">
                                     Log Out <i class="entypo-logout right"></i>
                                 </a>
                             </li>
