@@ -1,5 +1,5 @@
     <div class="col-md-12">
-      			<?=form_open("employee/save",["method"=>"post","id"=>"fm_employee"],$model)?>
+      			<?=form_open("employee/save",["method"=>"post","id"=>"fm_employee","enctype"=>"multipart/form-data"],$model)?>
 		<?=form_hidden("emp_id")?>
 		<div class="row">
     		<?= form_fieldset('BIODATA'); ?>
@@ -132,6 +132,7 @@
 		});
 		return setData;
 	}
+
 
   <?=$this->config->item('footerJS')?>
 </script>
