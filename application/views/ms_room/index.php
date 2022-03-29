@@ -1,19 +1,16 @@
 <!-- Default panel -->
 <div class="panel panel-info">
   <div class="panel-heading">
-    <h3 class="panel-title">Form Ms Unit</h3>
+    <h3 class="panel-title">Form Ms Room</h3>
     <div class="panel-options">
       <button type="button" id="btn-add" class="btn btn-black">
         <i class="entypo-plus"></i> Add</button>
     </div>
-    <div class="box-tools pull-right" style="width: 100px;">            
-            <?=form_dropdown("filter_class",$kat,'','class="form-control select2" id="filter_class"')?>
-          </div>
   </div>
-  <div class="panel-body" id="form_ms_unit" style="display: none;">
+  <div class="panel-body" id="form_ms_room" style="display: none;">
   </div>
-  <div class="panel-body" id="data_ms_unit">
-    <?=create_table("tb_ms_unit","M_ms_unit",["class"=>"table table-bordered datatable" ,"style" => "width:100% !important;"])?>
+  <div class="panel-body" id="data_ms_room">
+    <?=create_table("tb_ms_room","M_ms_room",["class"=>"table table-bordered datatable" ,"style" => "width:100% !important;"])?>
   </div>
   <div class="panel-footer">
     <button class="btn btn-danger" id="btn-deleteChecked"><i class="fa fa-trash"></i> Delete</button>
@@ -33,17 +30,14 @@
         toastr.error(notifikasi.message, "Message : ");
       }
     }
-    table = $('#tb_ms_unit').DataTable({
+    table = $('#tb_ms_room').DataTable({
       "processing": true,
       "serverSide": true,
       "order": [],
       "scrollX": true,
       "ajax": {
-        "url": "<?php echo site_url('ms_unit/get_data')?>",
-        "type": "POST",
-        "data":function(f){
-                  f.catunit_id=$("#filter_class").val();
-                }
+        "url": "<?php echo site_url('ms_room/get_data')?>",
+        "type": "POST"
       },
       'columnDefs': [
         {
@@ -60,22 +54,18 @@
         }],
     });
     // Initalize Select Dropdown after DataTables is created
-    $('#tb_ms_unit').closest('.dataTables_wrapper').find('select').select2({
+    $('#tb_ms_room').closest('.dataTables_wrapper').find('select').select2({
       minimumResultsForSearch: -1
     });
-
-    $("#filter_class").change(()=>{
-            table.draw();
-            });
   });
   $("#btn-add").click(function () {
-    $("#form_ms_unit").show();
-    $("#form_ms_unit").load("ms_unit/show_form");
+    $("#form_ms_room").show();
+    $("#form_ms_room").load("ms_room/show_form");
   });
   function set_val(id) {
-    $("#form_ms_unit").show();
-    $.get('ms_unit/find_one/' + id, (data) => {
-      $("#form_ms_unit").load("ms_unit/show_form", () => {
+    $("#form_ms_room").show();
+    $.get('ms_room/find_one/' + id, (data) => {
+      $("#form_ms_room").load("ms_room/show_form", () => {
         $.each(data, (ind, obj) => {
           $("#" + ind).val(obj);
         });
@@ -85,7 +75,7 @@
 
   function deleteRow(id) {
     if (confirm("Anda yakin akan menghapus data ini?")) {
-      $.get('ms_unit/delete_row/' + id, (data) => {
+      $.get('ms_room/delete_row/' + id, (data) => {
         if (data.code == '200') {
           toastr.success(data.message, "Message : ");
         } else {
@@ -100,15 +90,15 @@
 
   $("#checkAll").click(() => {
     if ($("#checkAll").is(':checked')) {
-      $("#tb_ms_unit input[type='checkbox']").attr("checked", true);
+      $("#tb_ms_room input[type='checkbox']").attr("checked", true);
     } else {
-      $("#tb_ms_unit input[type='checkbox']").attr("checked", false);
+      $("#tb_ms_room input[type='checkbox']").attr("checked", false);
     }
   });
 
   $("#btn-deleteChecked").click(function (event) {
     event.preventDefault();
-    var searchIDs = $("#tb_ms_unit input:checkbox:checked").map(function () {
+    var searchIDs = $("#tb_ms_room input:checkbox:checked").map(function () {
       return $(this).val();
     }).toArray();
     if (searchIDs.length == 0) {
@@ -116,7 +106,7 @@
       return false;
     }
     if (confirm("Anda yakin akan menghapus data ini?")) {
-      $.post('ms_unit/delete_multi', { data: searchIDs }, (resp) => {
+      $.post('ms_room/delete_multi', { data: searchIDs }, (resp) => {
         if (resp.code == '200') {
           toastr.success(resp.message, "Message : ");
         } else {

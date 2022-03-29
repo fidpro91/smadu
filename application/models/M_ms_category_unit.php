@@ -72,6 +72,11 @@ class M_ms_category_unit extends CI_Model {
 		return $this->db->get_where("ms_category_unit",$where)->result();
 	}
 
+	public function get_filter()
+	{
+		return $this->db->get_where("ms_category_unit")->result();
+	}
+
 	public function find_one($where)
 	{
 		return $this->db->get_where("ms_category_unit",$where)->row();

@@ -1,8 +1,10 @@
     <div class="col-md-12">
-      			<?=form_open("ms_unit/save",["method"=>"post","class"=>"form-horizontal","id"=>"fm_ms_unit"],$model)?>
+      			<?=form_open("ms_unit/save",["method"=>"post","enctype"=>"multipart/form-data","class"=>"form-horizontal","id"=>"fm_ms_unit"],$model)?>
 		<?=form_hidden("unit_id")?>
+		<?= form_hidden("emp_id") ?>		
 			<?=create_input("unit_code=Kode")?>
 			<?=create_input("unit_name=Nama Unit")?>
+			<?=create_input("pj_unit=Penanggung Jawab")?>
 			
 			<?= create_select([
 					"attr" => ["name" => "unit_active=Status", "id" => "unit_active", "class" => "form-control", 'required' => true],
@@ -20,7 +22,10 @@
 		$("#form_ms_unit").html('');
 	});
 
+
+
 	
+
 
   <?=$this->config->item('footerJS')?>
 </script>
