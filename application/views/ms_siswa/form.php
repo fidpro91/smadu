@@ -1,10 +1,9 @@
-    <div class="col-md-12">
+<div class="col-md-12">
       			<?=form_open("ms_siswa/save",["method"=>"post","id"=>"fm_ms_siswa","enctype"=>"multipart/form-data"],$model)?>
 				  <div class="row">
- <?=form_hidden("st_noktp")?>
- <?=form_hidden("user_id")?>
+
  <?=form_hidden("st_id")?>
- <?=form_hidden("st_regby")?>
+
  <?= form_fieldset('BIODATA'); ?>	
  <div class="col-md-6">		
 			<?=create_input("st_nim=NIS (Nomor Induk Siswa)")?>			
