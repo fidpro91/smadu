@@ -37,7 +37,7 @@ class CI_Datascript
 
 	public function lib_inputmulti()
 	{
-		$this->combine .= '<script src="'.$this->folder_js.'plugins/input-multi-row.js"></script>'."\n";
+		$this->combine .= '<script src="'.$this->folder_js.'js/input-multi-row.js"></script>'."\n";
 		$this->CI->config->set_item('my_library',$this->combine);
 		return $this;
 	}
@@ -62,8 +62,8 @@ class CI_Datascript
 	public function lib_inputMask()
 	{
 		// $this->combine .= '<script src="'.$this->folder_js.'plugins/input-mask/dist/inputmask.js"></script>'."\n";
-		$this->combine .= '<script src="'.$this->folder_js.'plugins/input-mask/dist/jquery.inputmask.js"></script>'."\n";
-		$this->combine .= '<script src="'.$this->folder_js.'plugins/input-mask/dist/bindings/inputmask.binding.js"></script>'."\n";
+		$this->combine .= '<script src="'.$this->folder_js.'js/input-mask/dist/jquery.inputmask.js"></script>'."\n";
+		$this->combine .= '<script src="'.$this->folder_js.'js/input-mask/dist/bindings/inputmask.binding.js"></script>'."\n";
 		$this->combine .= '<script>
 		Inputmask.extendAliases({
 			  "IDR": {

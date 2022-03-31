@@ -46,13 +46,8 @@ function show_hari($id){
 function get_semester($id=null)
 {
 	$data = [
-		["id"=>"1","text"=>"SEMESTER 1"],
-		["id"=>"2","text"=>"SEMESTER 2"],
-		["id"=>"3","text"=>"SEMESTER 3"],
-		["id"=>"4","text"=>"SEMESTER 4"],
-		["id"=>"5","text"=>"SEMESTER 5"],
-		["id"=>"6","text"=>"SEMESTER 6"],
-		["id"=>"7","text"=>"SEMESTER 7"],
+		["id"=>"1","text"=>"Ganjil"],
+		["id"=>"2","text"=>"Genap"],
 	];
 	if ($id) {
 		$key = array_search($id, array_column($data, 'id'));
