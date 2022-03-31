@@ -6,6 +6,7 @@ class Ms_mata_pelajaran extends MY_Generator {
 	public function __construct()
 	{
 		parent::__construct();
+		$this->datascript->lib_select2();
 		$this->load->model('m_ms_mata_pelajaran');
 	}
 

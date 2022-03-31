@@ -1,35 +1,31 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Ms_siswa extends MY_Generator {
+class Ms_klasifikasi_mp extends MY_Generator {
 
 	public function __construct()
 	{
 		parent::__construct();
-		$this->datascript->lib_datepicker();
-		$this->load->model('m_ms_siswa');
+		$this->load->model('m_ms_klasifikasi_mp');
 	}
 
 	public function index()
 	{
-		$this->theme('ms_siswa/index','',get_class($this));
+		$this->theme('ms_klasifikasi_mp/index','',get_class($this));
 	}
 
 	public function save()
 	{
 		$data = $this->input->post();
-		if ($this->m_ms_siswa->validation()) {
+		if ($this->m_ms_klasifikasi_mp->validation()) {
 			$input = [];
-			foreach ($this->m_ms_siswa->rules() as $key => $value) {
+			foreach ($this->m_ms_klasifikasi_mp->rules() as $key => $value) {
 				$input[$key] = $data[$key];
 			}
-			if ($_FILES['photo']['name']) {
-				$input['photo'] = $this->upload_data('photo', 'photo_' . $data['st_name']);
-			}
-			if ($data['st_id']) {
-				$this->db->where('st_id',$data['st_id'])->update('ms_siswa',$input);
+			if ($data['klas_mk_id']) {
+				$this->db->where('klas_mk_id',$data['klas_mk_id'])->update('ms_klasifikasi_mp',$input);
 			}else{
-				$this->db->insert('ms_siswa',$input);
+				$this->db->insert('ms_klasifikasi_mp',$input);
 			}
 			$err = $this->db->error();
 			if ($err['message']) {
@@ -51,35 +47,16 @@ class Ms_siswa extends MY_Generator {
 		}
 		$resp=json_encode($resp);
 		$this->session->set_flashdata("message",$resp);
-		redirect('ms_siswa');
+		redirect('ms_klasifikasi_mp');
 
-	}
-
-	public function upload_data($file, $nama)
-	{
-		$config['upload_path'] = './assets/uploads/foto_siswa/';
-		$config['allowed_types'] = 'jpg|jpeg|png';
-		$config['file_name'] = $nama;
-		$config['overwrite'] = true;
-		$config['max_size'] = 1024; // 1MB
-		// $config['max_width']            = 1024;
-		// $config['max_height']           = 768;
-
-		$this->load->library('upload', $config);
-		$this->upload->initialize($config);
-		if ($this->upload->do_upload($file)) {
-			return ltrim($config["upload_path"].$this->upload->data("file_name"),'./');
-		} else {
-			return $this->upload->display_errors();
-		}
 	}
 
 	public function get_data()
 	{
 		$this->load->library('datatable');
 		$attr 	= $this->input->post();
-		$fields = $this->m_ms_siswa->get_column();
-		$data 	= $this->datatable->get_data($fields,$filter = array(),'m_ms_siswa',$attr);
+		$fields = $this->m_ms_klasifikasi_mp->get_column();
+		$data 	= $this->datatable->get_data($fields,$filter = array(),'m_ms_klasifikasi_mp',$attr);
 		$records["aaData"] = array();
 		$no   	= 1 + $attr['start']; 
         foreach ($data['dataku'] as $index=>$row) { 
@@ -106,14 +83,14 @@ class Ms_siswa extends MY_Generator {
 
 	public function find_one($id)
 	{
-		$data = $this->db->where('st_id',$id)->get("ms_siswa")->row();
+		$data = $this->db->where('klas_mk_id',$id)->get("ms_klasifikasi_mp")->row();
 
 		echo json_encode($data);
 	}
 
 	public function delete_row($id)
 	{
-		$this->db->where('st_id',$id)->delete("ms_siswa");
+		$this->db->where('klas_mk_id',$id)->delete("ms_klasifikasi_mp");
 		$resp = array();
 		if ($this->db->affected_rows()) {
 			$resp['code'] = '200';
@@ -130,7 +107,7 @@ class Ms_siswa extends MY_Generator {
 	{
 		$resp = array();
 		foreach ($this->input->post('data') as $key => $value) {
-			$this->db->where('st_id',$value)->delete("ms_siswa");
+			$this->db->where('klas_mk_id',$value)->delete("ms_klasifikasi_mp");
 			$err = $this->db->error();
 			if ($err['message']) {
 				$resp['message'] .= $err['message']."\n";
@@ -147,7 +124,7 @@ class Ms_siswa extends MY_Generator {
 
 	public function show_form()
 	{
-		$data['model'] = $this->m_ms_siswa->rules();
-		$this->load->view("ms_siswa/form",$data);
+		$data['model'] = $this->m_ms_klasifikasi_mp->rules();
+		$this->load->view("ms_klasifikasi_mp/form",$data);
 	}
 }
