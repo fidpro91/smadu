@@ -63,7 +63,7 @@ class M_ms_unit extends CI_Model {
 		return $this->form_validation->run();
 	}
 
-	public function get_ms_unit($where)
+	public function get_ms_unit($where=null)
 	{
 		return $this->db->get_where("ms_unit",$where)->result();
 	}
