@@ -21,10 +21,21 @@ class M_ms_group extends CI_Model {
 	public function get_column()
 	{
 		$col = [
-				"group_id",
+				//"group_id",
 				"group_code",
 				"group_name",
-				"group_active"];
+				"group_active" => [
+					"label" => "Status",
+					"custom" => function ($a) {
+						if ($a == 't') {
+							$condition = ["class" => "label-primary", "text" => "Aktif"];
+						} else {
+							$condition = ["class" => "label-danger", "text" => "Non Aktif"];
+						}
+						return label_status($condition);
+					}
+				]
+			];
 		return $col;
 	}
 

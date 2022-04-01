@@ -1,3 +1,6 @@
+<link href="<?php echo base_url(); ?>assets/js/jstree_ver1/themes/classic/style.css" rel="stylesheet" />
+<script src="<?= base_url() ?>assets/js/jstree_ver1/jquery.jstree.js" type="text/javascript"></script>
+
 <div class="col-md-12">
   	<?=form_open("group_access/save",["method"=>"post","id"=>"form-menu"])?>
   	<?=form_hidden("group_id",$group_id)?>

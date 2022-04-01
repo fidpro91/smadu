@@ -84,7 +84,7 @@ class M_group_access extends CI_Model {
 	public function get_menu_access($id,$group_id = 0)
 	{
 		return $this->db->where('menu_parent_id',$id)
-						->join("ms_group_access ga","ga.menu_id = m.menu_id and ga.group_id = $group_id","left")
+						->join("group_access ga","ga.menu_id = m.menu_id and ga.group_id = $group_id","left")
 						->select("distinct m.*,ga.menu_id as menu_accesed",false)
 						->order_by('menu_code')
 						->get("ms_menu m")

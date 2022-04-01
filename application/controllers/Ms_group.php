@@ -150,13 +150,13 @@ class Ms_group extends MY_Generator {
 	{
 		$data = $this->input->post();
 		$this->db->trans_begin();
-		$this->db->where("group_id",$data['group_id'])->delete("ms_group_access");
+		$this->db->where("group_id",$data['group_id'])->delete("group_access");
 		foreach (explode(',', $data['menu_id']) as $key => $value) {
 			if (empty($value)) {
 				continue;
 			}
 			$ar_val = explode('_', $value);
-			$this->db->insert("ms_group_access",["group_id"=>$data['group_id'],"menu_id"=>$ar_val[1]]);
+			$this->db->insert("group_access",["group_id"=>$data['group_id'],"menu_id"=>$ar_val[1]]);
 		}
 		$err = $this->db->error();
 		if ($err['message']) {

@@ -88,16 +88,16 @@ class Ms_user extends MY_Generator {
 		$term = $this->input->get('term');
 		$limit = 25;
 		if ($type == 'person_name') {
-			$where = " lower(employee_name) like lower('%$term%')";
-			$select = "*,concat(employee_name) as label";
+			$where = " lower(emp_name) like lower('%$term%')";
+			$select = "*,concat(emp_name) as label";
 		} else {
-			$where = " lower(employee_nip) like lower('%$term%')";
-			$select = "*,concat(employee_name) as label";
+			$where = " lower(emp_noktp) like lower('%$term%')";
+			$select = "*,concat(emp_name) as label";
 		}
 		$data = $this->db->where($where)
 			->limit($limit)
 			->select($select, false)
-			->get("public.employee")->result();
+			->get("employee")->result();
 		echo json_encode($data);
 //		return $this->db->get_where("public.employee")->result();
 	}
