@@ -1,27 +1,16 @@
 <!-- Default panel -->
 <div class="panel panel-info">
   <div class="panel-heading">
-    <h3 class="panel-title">Form Employee</h3>
+    <h3 class="panel-title">Form Group Access</h3>
     <div class="panel-options">
       <button type="button" id="btn-add" class="btn btn-black">
         <i class="entypo-plus"></i> Add</button>
-    </div>   
+    </div>
   </div>
-  
-  <div class="panel-body" id="form_employee" style="display: none;">
-  </div> 
-  <div class="panel-body" id="data_employee">
-  <div class="col-md-4">         
-            <?= create_select2(["attr" => ["name" => "filter_class=Kategori", "id" => "filter_class", "class" => "form-control"],
-                "model" => ["m_employee_categories" => ["get_employee_categories", ["0" => '0']], "column" => ["empcat_id", "empcat_name"]]
-            ]) ?>
+  <div class="panel-body" id="form_group_access" style="display: none;">
   </div>
-  <div class="col-md-4">
-            <?= create_select2(["attr" => ["name" => "filter_jabatan=jabatan", "id" => "filter_jabatan", "class" => "form-control"],
-                "model" => ["m_ms_reff" => ["get_ms_reff", ["refcat_id" => '5']], "column" => ["reff_id", "reff_name"]]
-            ]) ?>
-          </div>
-    <?=create_table("tb_employee","M_employee",["class"=>"table table-bordered datatable" ,"style" => "width:100% !important;"])?>
+  <div class="panel-body" id="data_group_access">
+    <?=create_table("tb_group_access","M_group_access",["class"=>"table table-bordered datatable" ,"style" => "width:100% !important;"])?>
   </div>
   <div class="panel-footer">
     <button class="btn btn-danger" id="btn-deleteChecked"><i class="fa fa-trash"></i> Delete</button>
@@ -41,18 +30,14 @@
         toastr.error(notifikasi.message, "Message : ");
       }
     }
-    table = $('#tb_employee').DataTable({
+    table = $('#tb_group_access').DataTable({
       "processing": true,
       "serverSide": true,
       "order": [],
       "scrollX": true,
       "ajax": {
-        "url": "<?php echo site_url('employee/get_data')?>",
-        "type": "POST",
-        "data":function(f){
-                  f.empcat_id=$("#filter_class").val();
-                  f.jb=$("#filter_jabatan").val();
-                }
+        "url": "<?php echo site_url('group_access/get_data')?>",
+        "type": "POST"
       },
       'columnDefs': [
         {
@@ -69,21 +54,18 @@
         }],
     });
     // Initalize Select Dropdown after DataTables is created
-    $('#tb_employee').closest('.dataTables_wrapper').find('select').select2({
+    $('#tb_group_access').closest('.dataTables_wrapper').find('select').select2({
       minimumResultsForSearch: -1
     });
-    $("#filter_class,#filter_jabatan").change(()=>{
-            table.draw();
-            });
   });
   $("#btn-add").click(function () {
-    $("#form_employee").show();
-    $("#form_employee").load("employee/show_form");
+    $("#form_group_access").show();
+    $("#form_group_access").load("group_access/show_form");
   });
   function set_val(id) {
-    $("#form_employee").show();
-    $.get('employee/find_one/' + id, (data) => {
-      $("#form_employee").load("employee/show_form", () => {
+    $("#form_group_access").show();
+    $.get('group_access/find_one/' + id, (data) => {
+      $("#form_group_access").load("group_access/show_form", () => {
         $.each(data, (ind, obj) => {
           $("#" + ind).val(obj);
         });
@@ -93,7 +75,7 @@
 
   function deleteRow(id) {
     if (confirm("Anda yakin akan menghapus data ini?")) {
-      $.get('employee/delete_row/' + id, (data) => {
+      $.get('group_access/delete_row/' + id, (data) => {
         if (data.code == '200') {
           toastr.success(data.message, "Message : ");
         } else {
@@ -108,15 +90,15 @@
 
   $("#checkAll").click(() => {
     if ($("#checkAll").is(':checked')) {
-      $("#tb_employee input[type='checkbox']").attr("checked", true);
+      $("#tb_group_access input[type='checkbox']").attr("checked", true);
     } else {
-      $("#tb_employee input[type='checkbox']").attr("checked", false);
+      $("#tb_group_access input[type='checkbox']").attr("checked", false);
     }
   });
 
   $("#btn-deleteChecked").click(function (event) {
     event.preventDefault();
-    var searchIDs = $("#tb_employee input:checkbox:checked").map(function () {
+    var searchIDs = $("#tb_group_access input:checkbox:checked").map(function () {
       return $(this).val();
     }).toArray();
     if (searchIDs.length == 0) {
@@ -124,7 +106,7 @@
       return false;
     }
     if (confirm("Anda yakin akan menghapus data ini?")) {
-      $.post('employee/delete_multi', { data: searchIDs }, (resp) => {
+      $.post('group_access/delete_multi', { data: searchIDs }, (resp) => {
         if (resp.code == '200') {
           toastr.success(resp.message, "Message : ");
         } else {

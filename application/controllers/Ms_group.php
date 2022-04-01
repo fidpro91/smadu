@@ -1,39 +1,31 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Employee extends MY_Generator {
+class Ms_group extends MY_Generator {
 
 	public function __construct()
 	{
-		
 		parent::__construct();
-		$this->datascript->lib_datepicker();
-		$this->datascript->lib_select2();
-		$this->load->model('m_employee');
-		
+		$this->load->model('m_ms_group');
 	}
 
 	public function index()
 	{
-		
-		$this->theme('employee/index');
+		$this->theme('ms_group/index','',get_class($this));
 	}
 
 	public function save()
 	{
 		$data = $this->input->post();
-		if ($this->m_employee->validation()) {
+		if ($this->m_ms_group->validation()) {
 			$input = [];
-			foreach ($this->m_employee->rules() as $key => $value) {
+			foreach ($this->m_ms_group->rules() as $key => $value) {
 				$input[$key] = $data[$key];
 			}
-			if ($_FILES['emp_photo']['name']) {
-				$input['emp_photo'] = $this->upload_data('emp_photo', 'photo_' . $data['emp_name']);
-			}
-			if ($data['emp_id']) {
-				$this->db->where('emp_id',$data['emp_id'])->update('employee',$input);
+			if ($data['group_id']) {
+				$this->db->where('group_id',$data['group_id'])->update('ms_group',$input);
 			}else{
-				$this->db->insert('employee',$input);
+				$this->db->insert('ms_group',$input);
 			}
 			$err = $this->db->error();
 			if ($err['message']) {
@@ -55,42 +47,16 @@ class Employee extends MY_Generator {
 		}
 		$resp=json_encode($resp);
 		$this->session->set_flashdata("message",$resp);
-		redirect('employee');
+		redirect('ms_group');
 
-	}
-
-	public function upload_data($file, $nama)
-	{
-		$config['upload_path'] = './assets/uploads/foto_pegawai/';
-		$config['allowed_types'] = 'jpg|jpeg|png';
-		$config['file_name'] = $nama;
-		$config['overwrite'] = true;
-		$config['max_size'] = 1024; // 1MB
-		// $config['max_width']            = 1024;
-		// $config['max_height']           = 768;
-
-		$this->load->library('upload', $config);
-		$this->upload->initialize($config);
-		if ($this->upload->do_upload($file)) {
-			return ltrim($config["upload_path"].$this->upload->data("file_name"),'./');
-		} else {
-			return $this->upload->display_errors();
-		}
 	}
 
 	public function get_data()
 	{
 		$this->load->library('datatable');
 		$attr 	= $this->input->post();
-		$fields = $this->m_employee->get_column();
-		$filter=[];
-		if($attr['empcat_id']>0){
-			$filter = ["empcat_id" => $attr['empcat_id']];
-		}	
-		if ($attr['jb'] ) {
-			$filter = array_merge($filter, ["x.position_id" => $attr['jb']]);
-		}
-		$data 	= $this->datatable->get_data($fields,$filter,'m_employee',$attr);
+		$fields = $this->m_ms_group->get_column();
+		$data 	= $this->datatable->get_data($fields,$filter = array(),'m_ms_group',$attr);
 		$records["aaData"] = array();
 		$no   	= 1 + $attr['start']; 
         foreach ($data['dataku'] as $index=>$row) { 
@@ -106,7 +72,12 @@ class Employee extends MY_Generator {
             		$obj[] = $row[$value];
             	}
             }
-            $obj[] = create_btnAction(["update","delete"],$row['id_key']);
+            $obj[] = create_btnAction(["update","delete",
+						"setting"=>[
+								"btn-act" 	=> "show_modal('".$row['id_key']."')",
+								"btn-class"	=> "btn-warning",
+								"btn-icon"	=> "fa fa-gear"
+						]],$row['id_key']);
             $records["aaData"][] = $obj;
             $no++;
         }
@@ -117,14 +88,14 @@ class Employee extends MY_Generator {
 
 	public function find_one($id)
 	{
-		$data = $this->db->where('emp_id',$id)->get("employee")->row();
+		$data = $this->db->where('group_id',$id)->get("ms_group")->row();
 
 		echo json_encode($data);
 	}
 
 	public function delete_row($id)
 	{
-		$this->db->where('emp_id',$id)->delete("employee");
+		$this->db->where('group_id',$id)->delete("ms_group");
 		$resp = array();
 		if ($this->db->affected_rows()) {
 			$resp['code'] = '200';
@@ -141,7 +112,7 @@ class Employee extends MY_Generator {
 	{
 		$resp = array();
 		foreach ($this->input->post('data') as $key => $value) {
-			$this->db->where('emp_id',$value)->delete("employee");
+			$this->db->where('group_id',$value)->delete("ms_group");
 			$err = $this->db->error();
 			if ($err['message']) {
 				$resp['message'] .= $err['message']."\n";
@@ -156,19 +127,44 @@ class Employee extends MY_Generator {
 		echo json_encode($resp);
 	}
 
-	public function get_region($id)
-	{
-		$this->load->model("m_ms_region");
-		$resp = "";
-		foreach ($this->m_ms_region->get_ms_region(["reg_parent" => $id]) as $key => $value) {
-			$resp .= "<option value=\"$value->reg_code\">$value->reg_name</option>\n";
-		}
-		echo $resp;
-	}
-
 	public function show_form()
 	{
-		$data['model'] = $this->m_employee->rules();
-		$this->load->view("employee/form",$data);
+		$data['model'] = $this->m_ms_group->rules();
+		$this->load->view("ms_group/form",$data);
+	}
+
+	public function form_tree($id)
+	{
+		$this->load->view("Group_access/form_tree_access",["group_id"=>$id]);
+	}
+
+	public function get_menu_access()
+	{
+		$id = $this->input->get('id');
+		$group_id = $this->input->get('group_id');
+		$this->load->model('M_group_access');
+		echo json_encode($this->M_group_access->get_menu($id,$group_id));
+	}
+
+	public function set_access()
+	{
+		$data = $this->input->post();
+		$this->db->trans_begin();
+		$this->db->where("group_id",$data['group_id'])->delete("group_access");
+		foreach (explode(',', $data['menu_id']) as $key => $value) {
+			if (empty($value)) {
+				continue;
+			}
+			$ar_val = explode('_', $value);
+			$this->db->insert("group_access",["group_id"=>$data['group_id'],"menu_id"=>$ar_val[1]]);
+		}
+		$err = $this->db->error();
+		if ($err['message']) {
+			$resp = $err['message'];
+			$this->db->trans_rollback();
+		}else{
+			$resp['message'] = "Data berhasil disimpan";
+		}	$this->db->trans_commit();
+		echo json_encode($resp);
 	}
 }
