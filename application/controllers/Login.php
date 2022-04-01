@@ -15,6 +15,10 @@ class Login extends CI_Controller {
 		$dataLogin = $this->db->where($data)->get("ms_user")->row_array();
 		$resp["is_error"] = "false";
 		if (isset($dataLogin)) {
+			$this->load->driver('cache');
+			$cache_user = array();
+			$cache_user["session_data"] = $this->db->get_where("setting",["active"=>"t"])->result();
+			$this->cache->file->save('cu-login', $cache_user, 200000000);
 			$this->session->set_userdata($dataLogin);
 			$resp["message"] = "Sukses";
 			$resp["redirect"] = site_url("dashboard");

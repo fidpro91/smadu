@@ -56,14 +56,18 @@ function get_semester($id=null)
 	return $data;
 }
 
-function get_absen(){
-	return [
-			["id"=>"1", "text" => "CUTI/IJIN"],
-			["id"=>"2", "text" => "MASUK"],
-			["id"=>"3", "text"=> "LEMBUR"],
-			["id"=>"4", "text"=> "LIBUR"],
-			["id"=>"5", "text"=> "ALPA"],
+function get_absen($id=null){
+	$data =  [
+			["id"=>"1", "text" => "MASUK"],
+			["id"=>"2", "text" => "IJIN"],
+			["id"=>"3", "text"=> "ALPA"],
+			["id"=>"4", "text"=> "PIKET"],
 		];
+	if ($id) {
+		$key = array_search($id, array_column($data, 'id'));
+		$data=($data[$key]['text']);
+	}
+	return $data;
 }
 
 function convert_currency($angka)

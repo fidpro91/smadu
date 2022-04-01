@@ -9,6 +9,14 @@ class MY_Generator extends CI_Controller
 		$this->load->model('builder/m_builder');
 		$this->load->model("get_db");
 		$this->load->library('datascript');
+		$this->load->driver('cache');
+		$cache_id = 'cu-login';
+		$cache_user = $this->cache->file->get($cache_id);
+		$this->userData = $this->session->userdata('login');
+		$this->setting=new stdClass();
+		foreach($cache_user["session_data"] as $val){
+			$this->setting->{$val->nama} = $val->isi;
+		}
 		/* if (empty($this->session->person_name)) {
 			redirect('login');
 		} *//* else{

@@ -1,8 +1,12 @@
 <?= form_open("schedule_mp/save", ["method" => "post", "class" => "form-horizontal", "id" => "fm_schedule_mp"], $model) ?>
 <div class="col-md-3">
-    <?=create_select2(["attr"=>["name"=>"class_id=Kelas ","id"=>"class_id","class"=>"form-control"],
-										"model"=>["m_ms_unit" => "get_ms_unit","column"=>["unit_id","unit_name"]]
-									])?>
+    <?= create_select2([
+            "attr" => ["name" => "class_id=Kelas", "id" => "class_id", "class" => "form-control", 'required' => true],
+            "model" => [
+                    "m_ms_unit" => ["get_ms_unit", ["unit_type" => $this->setting->kategori_kelas]],
+                    "column" => ["unit_id", "unit_name"]
+            ],
+    ]) ?>
     <?= create_select([
         "attr" => ["name" => "semester_id", "id" => "semester_id", "class" => "form-control"],
         "option" => get_semester()

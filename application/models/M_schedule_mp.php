@@ -46,7 +46,16 @@ class M_schedule_mp extends CI_Model {
 				"finish_time",
 				"tahun_pelajaran",
 				"is_active"=>[
-					"initial" => "sm"
+					"initial" => "sm",
+					"label"	  => "status",
+					"custom" => function($a){
+						if ($a=='t') {
+							$label="<span class=\"label label-success\">Aktif</span>";
+						}else{
+							$label="<span class=\"label label-danger\">Aktif</span>";
+						}
+						return $label;
+					}
 				]
 			];
 		return $col;
