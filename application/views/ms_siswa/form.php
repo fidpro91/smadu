@@ -45,11 +45,12 @@
 		<div class="col-md-3">		
 			<?=create_input("last_kelas=Kelas Terakhir")?>
 		</div>
-		<div class="col-md-12">
+		<div class="col-md-12" >
 			
 			<label>Foto Siswa</label>
 					<input type="file" name="photo" id="photo">	
-			<label>Max 1 mb</label>			
+			<label>Max 1 mb</label>
+				
 		</div>
 <?= form_fieldset_close(); ?>
 

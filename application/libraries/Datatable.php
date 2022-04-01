@@ -34,7 +34,7 @@ class Datatable
         if ( isset($search) && $search != "" ) {
             $sWhere = "AND (";
             for ( $i = 0 ; $i < count($aColumns) ; $i++ ) {
-                    $sWhere .= " LOWER(".$aColumns[$i]."::TEXT) LIKE LOWER('%".pg_escape_string($search)."%') OR ";
+                    $sWhere .= " LOWER(".$aColumns[$i].") LIKE LOWER('%".pg_escape_string($search)."%') OR ";
             }
             $sWhere = substr_replace( $sWhere, "", - 3 );
             $sWhere .= ')';

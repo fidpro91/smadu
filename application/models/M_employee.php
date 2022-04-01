@@ -10,7 +10,7 @@ class M_employee extends CI_Model {
 				emp_npwp,tahun_masuk,
 				r1.reff_name as agama,
 				r2.reff_name as pendidikan,
-				r3.reff_name as jabatan,empcat_name,e.empcat_id,
+				r3.reff_name as jabatan,empcat_name,e.empcat_id,position_id,
 				emp_active,emp_mail,absen_code,alamat_domisili,unit_name,emp_id AS id_key 
 			FROM
 				employee e
@@ -32,7 +32,7 @@ class M_employee extends CI_Model {
 		emp_npwp,tahun_masuk,
 		r1.reff_name as agama,
 		r2.reff_name as pendidikan,
-		r3.reff_name as jabatan,empcat_name,e.empcat_id,
+		r3.reff_name as jabatan,empcat_name,e.empcat_id,position_id,
 		emp_active,emp_mail,absen_code,alamat_domisili,unit_name,emp_id AS id_key 
 	FROM
 		employee e
