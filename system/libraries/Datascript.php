@@ -17,9 +17,9 @@ class CI_Datascript
 
 	public function default_library()
 	{
-		
 		$this->css .= '<link rel="stylesheet" href="'.$this->folder_css.'js/datatables/datatables.css">'."\n";
-		$this->js .= '<script src="'.$this->folder_js.'js/datatables/datatables.js"></script>'."\n";
+		/* $this->js .= '<script src="'.$this->folder_js.'js/datatables/datatables.js"></script>'."\n"; */
+		$this->js .= '<script src="'.$this->folder_js.'js/datatables/DataTables-1.10.9/js/jquery.dataTables.min.js"></script>'."\n";
 		$this->js .= '<script src="'.$this->folder_js.'js/breadcumb/breadcumb.js"></script>'."\n";
 		$this->js .= '<script src="'.$this->folder_js.'js/jquery.validate.min.js"></script>'."\n";
 		$this->combine = $this->css."\n\n\n".$this->js;

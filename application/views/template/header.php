@@ -46,6 +46,8 @@
 	<script src="<?=base_url()?>/assets/js/rickshaw/vendor/d3.v3.js"></script>
 	<script src="<?=base_url()?>/assets/js/rickshaw/rickshaw.min.js"></script>
 	<script src="<?=base_url()?>/assets/js/toastr.js"></script>
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 	<?=$this->config->item('my_library')?>
 
 	<!-- JavaScripts initializations and stuff -->

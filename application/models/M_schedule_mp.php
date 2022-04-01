@@ -73,7 +73,6 @@ class M_schedule_mp extends CI_Model {
 					"start_time" => "trim",
 					"class_id" => "trim|integer|required",
 					"set_by" => "trim|integer",
-					"set_on" => "trim",
 					"finish_time" => "trim",
 					"tahun_pelajaran" => "trim|required",
 					"semester_id" => "trim|required",
