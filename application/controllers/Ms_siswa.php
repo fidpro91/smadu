@@ -7,6 +7,7 @@ class Ms_siswa extends MY_Generator {
 	{
 		parent::__construct();
 		$this->datascript->lib_datepicker();
+		$this->datascript->lib_select2();
 		$this->load->model('m_ms_siswa');
 	}
 
@@ -79,7 +80,14 @@ class Ms_siswa extends MY_Generator {
 		$this->load->library('datatable');
 		$attr 	= $this->input->post();
 		$fields = $this->m_ms_siswa->get_column();
-		$data 	= $this->datatable->get_data($fields,$filter = array(),'m_ms_siswa',$attr);
+		$filter = [];
+		if ($attr['tahun'] != '') {
+			$filter = array_merge($filter, ["st_th_masuk" => $attr['tahun']]);
+		} 
+		if ($attr['jk'] != ' ' ) {
+			$filter = array_merge($filter, ["st_sex" => $attr['jk']]);
+		} 
+		$data 	= $this->datatable->get_data($fields,$filter,'m_ms_siswa',$attr);
 		$records["aaData"] = array();
 		$no   	= 1 + $attr['start']; 
         foreach ($data['dataku'] as $index=>$row) { 

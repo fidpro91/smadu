@@ -29,8 +29,7 @@
 			source: "<?php echo site_url('ms_user/get_employee/person_name');?>",
 			select: function (event, ui) {
 				$('#person_name').val(ui.item.employee_name);
-				//$('#employee_id').val(ui.item.employee_id);
-				// $('#nama_mahasiswa').val(ui.item.st_name);
+				
 			}
 		});
 

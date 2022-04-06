@@ -5,7 +5,9 @@ class M_ms_mata_pelajaran extends CI_Model {
 	public function get_data($sLimit,$sWhere,$sOrder,$aColumns)
 	{
 		$data = $this->db->query("
-				select ".implode(',', $aColumns).",id_mp as id_key  from ms_mata_pelajaran where 0=0 $sWhere $sOrder $sLimit
+				select ".implode(',', $aColumns).",id_mp as id_key  from ms_mata_pelajaran mp
+				join ms_klasifikasi_mp ks on mp.klasifikasi_mp = ks.klas_mk_id
+				where 0=0 $sWhere $sOrder $sLimit
 			")->result_array();
 		return $data;
 	}
@@ -13,7 +15,8 @@ class M_ms_mata_pelajaran extends CI_Model {
 	public function get_total($sWhere,$aColumns)
 	{
 		$data = $this->db->query("
-				select ".implode(',', $aColumns).",id_mp as id_key  from ms_mata_pelajaran where 0=0 $sWhere
+				select ".implode(',', $aColumns).",id_mp as id_key  from ms_mata_pelajaran mp
+				join ms_klasifikasi_mp ks on mp.klasifikasi_mp = ks.klas_mk_id where 0=0 $sWhere
 			")->num_rows();
 		return $data;
 	}
@@ -21,11 +24,22 @@ class M_ms_mata_pelajaran extends CI_Model {
 	public function get_column()
 	{
 		$col = [
-				"mata_pelajaran",
-				"is_active",
 				"kode_mp",
-				"klasifikasi_mp",
-				"id_mp"];
+				"mata_pelajaran",			
+				"klas_mk_nama",
+				"is_active" => [
+					"label" => "Status",
+					"custom" => function ($a) {
+						if ($a == 't') {
+							$condition = ["class" => "label-primary", "text" => "Aktif"];
+						} else {
+							$condition = ["class" => "label-danger", "text" => "Non Aktif"];
+						}
+						return label_status($condition);
+					}
+				],
+				//"id_mp"
+			];
 		return $col;
 	}
 
@@ -36,7 +50,7 @@ class M_ms_mata_pelajaran extends CI_Model {
 					"is_active" => "trim",
 					"kode_mp" => "trim|required",
 					"klasifikasi_mp" => "trim|integer|required",
-"id_mp" => "trim|integer|required",
+					"id_mp" => "trim|integer",
 
 				];
 		return $data;

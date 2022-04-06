@@ -9,7 +9,15 @@
   </div>
   <div class="panel-body" id="form_ms_siswa" style="display: none;">
   </div>
-  <div class="panel-body" id="data_ms_siswa">
+    <div class="col-md-2">
+			<?=create_input("filter_tahun=Tahun Masuk")?>
+		</div>
+  <div class="col-md-2" class="panel-footer">
+    <?= create_select([
+					"attr" => ["name" => "filter_jk=Jenis Kelamin", "id" => "filter_jk", "class" => "form-control"],
+					"option" =>[["id"=>' ',"text"=>'Pilih'],["id" => 'L', "text" => "Laki-Laki"], ["id" => 'P', "text" => "Perempuan"]],
+			]) ?>
+  </div>
     <?=create_table("tb_ms_siswa","M_ms_siswa",["class"=>"table table-bordered datatable" ,"style" => "width:100% !important;"])?>
   </div>
   <div class="panel-footer">
@@ -37,7 +45,11 @@
       "scrollX": true,
       "ajax": {
         "url": "<?php echo site_url('ms_siswa/get_data')?>",
-        "type": "POST"
+        "type": "POST",
+        "data":function(f){
+                  f.tahun=$("#filter_tahun").val();
+                  f.jk=$("#filter_jk").val();
+                }
       },
       'columnDefs': [
         {
@@ -57,6 +69,9 @@
     $('#tb_ms_siswa').closest('.dataTables_wrapper').find('select').select2({
       minimumResultsForSearch: -1
     });
+    $("#filter_tahun,#filter_jk").change(()=>{
+            table.draw();
+            });
   });
   $("#btn-add").click(function () {
     $("#form_ms_siswa").show();
