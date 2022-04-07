@@ -166,11 +166,11 @@ class Employee extends MY_Generator {
 		echo json_encode($resp);
 	}
 
-	public function get_region($id)
+	public function get_region()
 	{
 		$this->load->model("m_ms_region");
 		$resp = "";
-		foreach ($this->m_ms_region->get_ms_region(["reg_parent" => $id]) as $key => $value) {
+		foreach ($this->m_ms_region->get_ms_region(["reg_parent"]) as $key => $value) {
 			$resp .= "<option value=\"$value->reg_code\">$value->reg_name</option>\n";
 		}
 		echo $resp;
