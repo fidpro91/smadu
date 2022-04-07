@@ -17,9 +17,9 @@ class MY_Generator extends CI_Controller
 		foreach($cache_user["session_data"] as $val){
 			$this->setting->{$val->nama} = $val->isi;
 		}
-		/* if (empty($this->session->person_name)) {
+		if (empty($this->session->user_id)) {
 			redirect('login');
-		} *//* else{
+		}/* else{
 			$uriku = $this->uri->segment(1);
 			if ($this->get_db->validation_access($this->session->group_user,$uriku)==0) {
 				$this->output->set_status_header('404'); 

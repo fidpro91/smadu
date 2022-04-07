@@ -149,9 +149,27 @@ class M_employee extends CI_Model {
 		return $this->form_validation->run();
 	}
 
-	public function get_employee($where)
+	public function get_employee($where = null)
 	{
 		return $this->db->get_where("employee",$where)->result();
+	}
+
+	public function get_employee2($where="",$select = "",$limit = "")
+	{
+		if ($limit) {
+			$this->db->limit($limit);
+		}
+		if ($select) {
+			$this->db->select($select);
+		}
+		if (is_array($where)) {
+			$data =$this->db->get_where("employee",$where)->result();
+		}else{
+			$data = $this->db->where($where,null)
+							 ->get("employee")
+							 ->result();
+		}
+		return $data;
 	}
 
 	public function find_one($where)

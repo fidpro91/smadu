@@ -6,7 +6,8 @@ class Absensi_pegawai extends MY_Generator {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->datascript->lib_datepicker();
+		$this->datascript->lib_datepicker()
+						 ->lib_inputmask();
 		$this->load->model('m_absensi_pegawai');
 	}
 
@@ -21,8 +22,10 @@ class Absensi_pegawai extends MY_Generator {
 		if ($this->m_absensi_pegawai->validation()) {
 			$input = [];
 			foreach ($this->m_absensi_pegawai->rules() as $key => $value) {
-				$input[$key] = $data[$key];
+				$input[$key] =  (isset($data[$key])?$data[$key]:null);
 			}
+			$input["user_created"] = $this->session->user_id;
+			$input["verified_by"]  = $this->session->user_id;
 			if ($data['absen_id']) {
 				$this->db->where('absen_id',$data['absen_id'])->update('absensi_pegawai',$input);
 			}else{
@@ -41,9 +44,10 @@ class Absensi_pegawai extends MY_Generator {
 				];
 			}
 		}else{
+			$err = implode('<br>',$this->form_validation->error_array());
 			$resp = [
 				"code" 		=> "201",
-				"message"	=> "error validasi"
+				"message"	=> $err
 			];
 		}
 		$resp=json_encode($resp);
@@ -57,7 +61,21 @@ class Absensi_pegawai extends MY_Generator {
 		$this->load->library('datatable');
 		$attr 	= $this->input->post();
 		$fields = $this->m_absensi_pegawai->get_column();
-		$data 	= $this->datatable->get_data($fields,$filter = array(),'m_absensi_pegawai',$attr);
+		$filter=[];
+		if ($attr["verifikasi"]=='t') {
+			$filter["is_verified"] = $attr["verifikasi"]; 
+		}else{
+			$filter["custom"] = "(is_verified is null or is_verified = '".$attr["verifikasi"]."')"; 
+		}
+
+		if (!empty($attr["tanggal"])) {
+			$filter["absen_date"] = $attr["tanggal"]; 
+		}
+
+		if (!empty($attr["unit"])) {
+			$filter["unit_id"] = $attr["unit"]; 
+		}
+		$data 	= $this->datatable->get_data($fields,$filter,'m_absensi_pegawai',$attr);
 		$records["aaData"] = array();
 		$no   	= 1 + $attr['start']; 
         foreach ($data['dataku'] as $index=>$row) { 
@@ -84,8 +102,9 @@ class Absensi_pegawai extends MY_Generator {
 
 	public function find_one($id)
 	{
-		$data = $this->db->where('absen_id',$id)->get("absensi_pegawai")->row();
-
+		$data = $this->db->where('absen_id',$id)
+						 ->join("employee e","e.emp_id=a.emp_id")
+						 ->get("absensi_pegawai a")->row();
 		echo json_encode($data);
 	}
 
@@ -117,6 +136,28 @@ class Absensi_pegawai extends MY_Generator {
 		if (empty($resp['message'])) {
 			$resp['code'] = '200';
 			$resp['message'] = 'Data berhasil dihapus';
+		}else{
+			$resp['code'] = '201';
+		}
+		echo json_encode($resp);
+	}
+
+	public function verifikasi_multi()
+	{
+		$resp = array();
+		foreach ($this->input->post('data') as $key => $value) {
+			$this->db->where('absen_id',$value)->update("absensi_pegawai",[
+				"is_verified" 	=> "t",
+				"verified_by"	=> $this->session->user_id
+			]);
+			$err = $this->db->error();
+			if ($err['message']) {
+				$resp['message'] .= $err['message']."\n";
+			}
+		}
+		if (empty($resp['message'])) {
+			$resp['code'] = '200';
+			$resp['message'] = 'Data berhasil diverifikasi';
 		}else{
 			$resp['code'] = '201';
 		}

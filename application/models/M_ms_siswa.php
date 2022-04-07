@@ -100,7 +100,7 @@ class M_ms_siswa extends CI_Model {
 					"st_th_masuk" => "trim",
 					"last_kelas" => "trim",
 					"photo" => "trim",
-
+					"finger_id" => "trim|integer",
 				];
 		return $data;
 	}

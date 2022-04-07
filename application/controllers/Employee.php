@@ -122,6 +122,16 @@ class Employee extends MY_Generator {
 		echo json_encode($data);
 	}
 
+	public function get_employee()
+	{
+		$term = $this->input->get('term');
+		$limit = 25;
+		$where = " lower(emp_name) like lower('%$term%')";
+		$select = "*,concat(emp_no,'-',emp_name) as label";
+		// $where .= " AND class_id = '$class_id'";
+		echo json_encode($this->m_employee->get_employee2($where,$select,$limit));
+	}
+
 	public function delete_row($id)
 	{
 		$this->db->where('emp_id',$id)->delete("employee");

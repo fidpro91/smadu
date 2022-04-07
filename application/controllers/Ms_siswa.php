@@ -8,6 +8,7 @@ class Ms_siswa extends MY_Generator {
 		parent::__construct();
 		$this->datascript->lib_datepicker();
 		$this->load->model('m_ms_siswa');
+		$this->finger = $this->load->database('finger', TRUE);
 	}
 
 	public function index()
@@ -21,14 +22,44 @@ class Ms_siswa extends MY_Generator {
 		if ($this->m_ms_siswa->validation()) {
 			$input = [];
 			foreach ($this->m_ms_siswa->rules() as $key => $value) {
-				$input[$key] = $data[$key];
+				$input[$key] = (isset($data[$key])?$data[$key]:null);
 			}
 			if ($_FILES['photo']['name']) {
 				$input['photo'] = $this->upload_data('photo', 'photo_' . $data['st_name']);
 			}
+			$input['user_act'] = $this->session->user_id;
+
 			if ($data['st_id']) {
 				$this->db->where('st_id',$data['st_id'])->update('ms_siswa',$input);
+				$insertFinger = [
+					"pegawai_nama" 	  => $input['st_name'],
+					"pegawai_alias"   => $input['st_name'],
+					"tempat_lahir"    => $input['st_born'],
+					"tgl_lahir"		  => $input['st_phone'],
+					"tgl_mulai_kerja" => date('Y-m-d'),
+					"tgl_masuk_pertama"	=> date('Y-m-d'),
+					"gender"		  => ($input['st_sex']=='L'?1:2)
+				];
+				if (!empty($input["finger_id"])) {
+					$this->finger->where("pegawai_id",$input["finger_id"])
+								 ->update("pegawai",$insertFinger);
+				}
 			}else{
+				$pin=$this->finger->select_max('pegawai_pin')
+							 ->get('pegawai')->row('pegawai_pin');
+				$pin = $pin+1;
+				$insertFinger = [
+					"pegawai_nama" 	  => $input['st_name'],
+					"pegawai_alias"   => $input['st_name'],
+					"tempat_lahir"    => $input['st_born'],
+					"tgl_lahir"		  => $input['st_phone'],
+					"tgl_mulai_kerja" => date('Y-m-d'),
+					"tgl_masuk_pertama"	=> date('Y-m-d'),
+					"pegawai_pin"			 => $pin,
+					"gender"		  => ($input['st_sex']=='L'?1:2)
+				];
+				$this->finger->insert('pegawai',$insertFinger);
+				$input['finger_id'] = $this->finger->insert_id();
 				$this->db->insert('ms_siswa',$input);
 			}
 			$err = $this->db->error();
@@ -44,9 +75,10 @@ class Ms_siswa extends MY_Generator {
 				];
 			}
 		}else{
+			$err = implode('<br>',$this->form_validation->error_array());
 			$resp = [
 				"code" 		=> "201",
-				"message"	=> "error validasi"
+				"message"	=> $err
 			];
 		}
 		$resp=json_encode($resp);

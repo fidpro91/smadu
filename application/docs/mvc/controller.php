@@ -20,7 +20,7 @@ class $classNameHeader extends $coreSistem {
 		if ($this->m_$className->validation()) {
 			$input = [];
 			foreach ($this->m_$className->rules() as $key => $value) {
-				$input[$key] = $data[$key];
+				$input[$key] =  (isset($data[$key])?$data[$key]:null);
 			}
 			if ($data['$pkey']) {
 				$this->db->where('$pkey',$data['$pkey'])->update('$tableName',$input);
@@ -40,9 +40,10 @@ class $classNameHeader extends $coreSistem {
 				];
 			}
 		}else{
+			$err = implode('<br>',$this->form_validation->error_array());
 			$resp = [
 				"code" 		=> "201",
-				"message"	=> "error validasi"
+				"message"	=> $err
 			];
 		}
 		$resp=json_encode($resp);

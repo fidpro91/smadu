@@ -28,6 +28,7 @@
     $("#btn-cancel").click(() => {
         $("#form_schedule_mp").hide();
         $("#form_schedule_mp").html('');
+        $("#data_schedule_mp").show();
     });
 
     $(document).ready(() => {

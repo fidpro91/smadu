@@ -35,7 +35,7 @@
 						<img src="assets/images/thumb-1@2x.png" width="55" alt="" class="img-circle" />
 
 						<span>Welcome,</span>
-						<strong>Art Ramadani</strong>
+						<strong><?=$this->session->person_name?></strong>
 					</a>
 				</div>
 

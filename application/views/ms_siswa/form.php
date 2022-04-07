@@ -3,6 +3,7 @@
 				  <div class="row">
 
  <?=form_hidden("st_id")?>
+ <?=form_hidden("finger_id")?>
 
  <?= form_fieldset('BIODATA'); ?>	
  <div class="col-md-6">		
