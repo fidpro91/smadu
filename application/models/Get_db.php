@@ -23,7 +23,7 @@ class Get_db extends CI_Model {
             $menux .= "</ul></li>";
           }else{
             // $menux[]['menu_name'] = $value->menu_name;
-            $menux .= "<li><a href=\"".base_url($value->menu_url)."\">
+            $menux .= "<li><a href=\"".base_url(($value->menu_url??"#"))."\">
                       <i class=\"".(!empty($value->menu_icon)?$value->menu_icon:'fa fa-circle-o')."\"></i> <span>$value->menu_name</span>
                     </a></li>";
           }

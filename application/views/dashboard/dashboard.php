@@ -1,3 +1,10 @@
+<script src="<?=base_url()?>assets/js/jquery.sparkline.min.js"></script>
+<script src="<?=base_url()?>assets/js/rickshaw/vendor/d3.v3.js"></script>
+<script src="<?=base_url()?>assets/js/rickshaw/rickshaw.min.js"></script>
+<script src="<?=base_url()?>assets/js/raphael-min.js"></script>
+<script src="<?=base_url()?>assets/js/morris.min.js"></script>
+<script src="<?=base_url()?>assets/js/toastr.js"></script>
+<script src="<?=base_url()?>assets/js/neon-chat.js"></script>
 <script type="text/javascript">
     jQuery(document).ready(function($)
     {
@@ -8,7 +15,7 @@
                 "closeButton": true,
                 "debug": false,
                 "positionClass": rtl() || public_vars.$pageContainer.hasClass('right-sidebar') ? "toast-top-left" : "toast-top-right",
-                "toastClass": "black",
+                "toastClass": "blue",
                 "onclick": null,
                 "showDuration": "300",
                 "hideDuration": "1000",
@@ -42,19 +49,6 @@
             barWidth: 10,
             barSpacing: 2
         });
-    
-    
-        // JVector Maps
-        var map = $("#map");
-    
-        map.vectorMap({
-            map: 'europe_merc_en',
-            zoomMin: '3',
-            backgroundColor: '#383f47',
-            focusOn: { x: 0.5, y: 0.8, scale: 3 }
-        });
-    
-    
     
         // Line Charts
         var line_chart_demo = $("#line-chart-demo");
@@ -121,62 +115,6 @@
     
         area_chart_demo.parent().attr('style', '');
     
-    
-    
-    
-        // Rickshaw
-        var seriesData = [ [], [] ];
-    
-        var random = new Rickshaw.Fixtures.RandomData(50);
-    
-        for (var i = 0; i < 50; i++)
-        {
-            random.addData(seriesData);
-        }
-    
-        var graph = new Rickshaw.Graph( {
-            element: document.getElementById("rickshaw-chart-demo"),
-            height: 193,
-            renderer: 'area',
-            stroke: false,
-            preserve: true,
-            series: [{
-                    color: '#73c8ff',
-                    data: seriesData[0],
-                    name: 'Upload'
-                }, {
-                    color: '#e0f2ff',
-                    data: seriesData[1],
-                    name: 'Download'
-                }
-            ]
-        } );
-    
-        graph.render();
-    
-        var hoverDetail = new Rickshaw.Graph.HoverDetail( {
-            graph: graph,
-            xFormatter: function(x) {
-                return new Date(x * 1000).toString();
-            }
-        } );
-    
-        var legend = new Rickshaw.Graph.Legend( {
-            graph: graph,
-            element: document.getElementById('rickshaw-legend')
-        } );
-    
-        var highlighter = new Rickshaw.Graph.Behavior.Series.Highlight( {
-            graph: graph,
-            legend: legend
-        } );
-    
-        setInterval( function() {
-            random.removeData(seriesData);
-            random.addData(seriesData);
-            graph.update();
-    
-        }, 500 );
     });
     
     
@@ -185,17 +123,30 @@
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
     </script>
-    
+    <div id="mdb-preloader" class="flex-center">
+  <div class="preloader-wrapper active">
+    <div class="spinner-layer spinner-blue-only">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div>
+      <div class="gap-patch">
+        <div class="circle"></div>
+      </div>
+      <div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
+    </div>
+  </div>
+</div>
     
     <div class="row">
         <div class="col-sm-3 col-xs-6">
     
             <div class="tile-stats tile-red">
                 <div class="icon"><i class="entypo-users"></i></div>
-                <div class="num" data-start="0" data-end="83" data-postfix="" data-duration="1500" data-delay="0">0</div>
+                <div class="num" data-start="0" data-end="<?=$siswa?>" data-postfix="" data-duration="1500" data-delay="0">0</div>
     
-                <h3>Registered users</h3>
-                <p>so far in our blog, and our website.</p>
+                <h3>Siswa Aktif</h3>
             </div>
     
         </div>
@@ -206,8 +157,7 @@
                 <div class="icon"><i class="entypo-chart-bar"></i></div>
                 <div class="num" data-start="0" data-end="135" data-postfix="" data-duration="1500" data-delay="600">0</div>
     
-                <h3>Daily Visitors</h3>
-                <p>this is the average value.</p>
+                <h3>Absensi Siswa Masuk</h3>
             </div>
     
         </div>
@@ -218,10 +168,8 @@
     
             <div class="tile-stats tile-aqua">
                 <div class="icon"><i class="entypo-mail"></i></div>
-                <div class="num" data-start="0" data-end="23" data-postfix="" data-duration="1500" data-delay="1200">0</div>
-    
-                <h3>New Messages</h3>
-                <p>messages per day.</p>
+                <div class="num" data-start="0" data-end="<?=$pegawai?>" data-postfix="" data-duration="1500" data-delay="1200">0</div>
+                <h3>Karyawan Aktif</h3>
             </div>
     
         </div>
@@ -232,8 +180,7 @@
                 <div class="icon"><i class="entypo-rss"></i></div>
                 <div class="num" data-start="0" data-end="52" data-postfix="" data-duration="1500" data-delay="1800">0</div>
     
-                <h3>Subscribers</h3>
-                <p>on our site right now.</p>
+                <h3>Absensi Karyawan Masuk</h3>
             </div>
     
         </div>

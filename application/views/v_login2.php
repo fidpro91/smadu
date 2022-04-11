@@ -38,7 +38,7 @@
 
 <!-- This is needed when you send requests via Ajax -->
 <script type="text/javascript">
-var baseurl = '';
+var baseurl = '<?=base_url()?>';
 </script>
 
 <div class="login-container">
@@ -132,25 +132,9 @@ var baseurl = '';
 	<script src="<?=base_url()?>assets/js/neon-api.js"></script>
 	<script src="<?=base_url()?>assets/js/jquery.validate.min.js"></script>
 	<script src="<?=base_url()?>assets/js/neon-login.js"></script>
-
-
 	<!-- JavaScripts initializations and stuff -->
 	<script src="<?=base_url()?>assets/js/neon-custom.js"></script>
-
-
 	<!-- Demo Settings -->
 	<script src="<?=base_url()?>assets/js/neon-demo.js"></script>
-<script>
-	$('form').submit(function(){
-      $.post("login/cek_login",$(this).serialize(),function(resp){
-          if (resp.is_error === "true") {
-              alert(resp.message);
-          }else{
-              window.location.assign(resp.redirect);
-          }
-      },'json');
-      return false;
-  });
-</script>
 </body>
 </html>

@@ -61,28 +61,31 @@ var neonLogin = neonLogin || {};
 											
 					// Send data to the server
 					$.ajax({
-						url: baseurl + 'data/sample-login-form.php',
+						url: baseurl + 'login/cek_login',
 						method: 'POST',
 						dataType: 'json',
-						data: {
-							username: $("input#username").val(),
-							password: $("input#password").val(),
-						},
+						data: $("form").serialize(),
 						error: function()
 						{
 							alert("An error occoured!");
 						},
-						success: function(response)
+						success: function(resp)
 						{
 							// Login status [success|invalid]
-							var login_status = response.login_status;
+							// var login_status = response.login_status;
 															
 							// Form is fully completed, we update the percentage
 							neonLogin.setPercentage(100);
-							
+							if (resp.is_error === "true") {
+								alert(resp.message);
+								$(".login-page").removeClass('logging-in');
+								neonLogin.resetProgressBar(true);
+							}else{
+								window.location.assign(resp.redirect);
+							}
 							
 							// We will give some time for the animation to finish, then execute the following procedures	
-							setTimeout(function()
+							/* setTimeout(function()
 							{
 								// If login is invalid, we store the 
 								if(login_status == 'invalid')
@@ -107,7 +110,7 @@ var neonLogin = neonLogin || {};
 									}, 400);
 								}
 								
-							}, 1000);
+							}, 1000); */
 						}
 					});
 						

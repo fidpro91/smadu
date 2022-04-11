@@ -10,6 +10,12 @@ class Dashboard extends MY_Generator {
 
 	public function index()
 	{
-		$this->theme('dashboard/dashboard','',get_class($this));
+		$data["siswa"] = $this->db->get_where("ms_siswa",[
+			"st_active" => "t"
+		])->num_rows();
+		$data["pegawai"] = $this->db->get_where("employee",[
+			"emp_active" => "t"
+		])->num_rows();
+		$this->theme('dashboard/dashboard',$data,get_class($this));
 	}
 }

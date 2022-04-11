@@ -58,8 +58,9 @@ function get_semester($id=null)
 
 function get_absen($id=null){
 	$data =  [
+			["id"=>"0", "text" => "SEMUA"],
 			["id"=>"1", "text" => "MASUK"],
-			["id"=>"2", "text" => "IJIN"],
+			["id"=>"2", "text" => "IJIN/SAKIT"],
 			["id"=>"3", "text"=> "ALPA"],
 			["id"=>"4", "text"=> "PIKET"],
 		];
@@ -83,5 +84,19 @@ function remove_currency($angka)
 {
 	$rupiah= str_replace(",","", $angka);
 	return $rupiah;
+}
+
+function selisih_waktu($date1,$date2)
+{
+	$date1=date_create($date1);
+	$date2=date_create($date2);
+	$diff=date_diff($date1,$date2);
+	$resp = [
+		"jam" 		=> $diff->format('%r%h'),
+		"menit"		=> $diff->format('%r%i'),
+		"detik"		=> $diff->format('%r%s'),
+		"total"		=> ($diff->format('%r%h')*60 + $diff->format('%r%i') + ($diff->format('%r%s')/60))
+	];
+	return $resp;
 }
 ?>

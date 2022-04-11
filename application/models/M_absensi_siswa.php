@@ -1,12 +1,13 @@
 <?php
 
-class M_absensi_pegawai extends CI_Model {
+class M_absensi_siswa extends CI_Model {
 
 	public function get_data($sLimit,$sWhere,$sOrder,$aColumns)
 	{
 		$data = $this->db->query("
-				select ".implode(',', $aColumns).",absen_id as id_key from absensi_pegawai ap
-				join employee e on ap.emp_id = e.emp_id
+				select ".implode(',', $aColumns).",absen_id as id_key from absensi_siswa abs
+				join ms_siswa ms on abs.siswa_id = ms.st_id
+				join ms_unit mu on mu.unit_id = ms.last_kelas
 				where 0=0 $sWhere $sOrder $sLimit
 			")->result_array();
 		return $data;
@@ -15,8 +16,9 @@ class M_absensi_pegawai extends CI_Model {
 	public function get_total($sWhere,$aColumns)
 	{
 		$data = $this->db->query("
-				select ".implode(',', $aColumns).",absen_id as id_key from absensi_pegawai ap
-				join employee e on ap.emp_id = e.emp_id 
+				select ".implode(',', $aColumns).",absen_id as id_key  from absensi_siswa abs
+				join ms_siswa ms on abs.siswa_id = ms.st_id
+				join ms_unit mu on mu.unit_id = ms.last_kelas 
 				where 0=0 $sWhere
 			")->num_rows();
 		return $data;
@@ -26,8 +28,9 @@ class M_absensi_pegawai extends CI_Model {
 	{
 		$col = [
 				"absen_date",
-				"emp_no",
-				"emp_name",
+				"st_nim",
+				"st_name",
+				"unit_name",
 				"check_in"=>[
 					"custom" => function($a){
 						$jam = explode(" ",$a);
@@ -72,16 +75,17 @@ class M_absensi_pegawai extends CI_Model {
 	public function rules()
 	{
 		$data = [
-					"emp_absen_code" => "trim",
+					"absen_code" => "trim",
 					"absen_date" => "trim|required",
 					"check_in" => "trim",
 					"check_out" => "trim",
 					"late_duration_in" => "trim",
 					"late_duration_ot" => "trim",
-					"is_verified" => "trim",
 					"absen_type" => "trim|required",
 					"user_created" => "trim|integer",
-					"emp_id" => "trim|integer|required",
+					"siswa_id" => "trim|integer|required",
+					"is_verified" => "trim",
+					"verified_by" => "trim|integer",
 				];
 		return $data;
 	}
@@ -95,13 +99,21 @@ class M_absensi_pegawai extends CI_Model {
 		return $this->form_validation->run();
 	}
 
-	public function get_absensi_pegawai($where)
+	public function get_absensi_siswa($where)
 	{
-		return $this->db->get_where("absensi_pegawai",$where)->result();
+		return $this->db->get_where("absensi_siswa",$where)->result();
 	}
 
 	public function find_one($where)
 	{
-		return $this->db->get_where("absensi_pegawai",$where)->row();
+		return $this->db->get_where("absensi_siswa",$where)->row();
 	}
+
+	public function getData($rowno,$rowperpage) {
+		$query	=	$this->db->join('ms_siswa ms',"ab.siswa_id=ms.st_id")
+							 ->join("ms_unit mu","mu.unit_id=ms.last_kelas")
+							 ->limit($rowperpage, $rowno)
+							 ->get("absensi_siswa ab")->result_array();
+		return $query;
+	  }
 }
