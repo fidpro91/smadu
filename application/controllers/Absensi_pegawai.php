@@ -26,6 +26,20 @@ class Absensi_pegawai extends MY_Generator {
 			}
 			$input["user_created"] = $this->session->user_id;
 			$input["verified_by"]  = $this->session->user_id;
+			$input["check_in"]	   = $input["absen_date"]." ".$input["check_in"];
+			$input["check_out"]	   = $input["absen_date"]." ".$input["check_out"];
+			if ($input["absen_type"] == 1) {
+				$jadwal = $this->db->get_where("jam_kerja_harian",[
+					"hari"				=> date("w",strtotime($input["absen_date"])),
+					"jadwal_untuk"		=> $this->setting->kode_jadwal_pegawai
+				])->row("jam_masuk");
+				$jadwal = $input["absen_date"]." ".$jadwal;
+				$selisih = selisih_waktu($input["check_in"],$jadwal);
+				$input["late_duration_in"] = $selisih["total"];
+			}
+			if ($_FILES['berkas']['name']) {
+				$input['berkas'] = $this->upload_data('berkas', 'ijin_' . $input['emp_id']."_".$data['absen_date']);
+			}
 			if ($data['absen_id']) {
 				$this->db->where('absen_id',$data['absen_id'])->update('absensi_pegawai',$input);
 			}else{
@@ -54,6 +68,25 @@ class Absensi_pegawai extends MY_Generator {
 		$this->session->set_flashdata("message",$resp);
 		redirect('absensi_pegawai');
 
+	}
+
+	public function upload_data($file, $nama)
+	{
+		$config['upload_path'] = './assets/uploads/berkas_absen_pegawai/';
+		$config['allowed_types'] = 'jpg|jpeg|png|pdf';
+		$config['file_name'] = $nama;
+		$config['overwrite'] = true;
+		$config['max_size'] = 1024; // 1MB
+		// $config['max_width']            = 1024;
+		// $config['max_height']           = 768;
+
+		$this->load->library('upload', $config);
+		$this->upload->initialize($config);
+		if ($this->upload->do_upload($file)) {
+			return ltrim($config["upload_path"].$this->upload->data("file_name"),'./');
+		} else {
+			return $this->upload->display_errors();
+		}
 	}
 
 	public function get_data()

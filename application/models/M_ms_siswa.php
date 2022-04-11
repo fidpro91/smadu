@@ -119,6 +119,26 @@ class M_ms_siswa extends CI_Model {
 		return $this->db->get_where("ms_siswa",$where)->result();
 	}
 
+	public function get_ms_siswa2($where="",$select = "",$limit = "")
+	{
+		if ($limit) {
+			$this->db->limit($limit);
+		}
+		if ($select) {
+			$this->db->select($select);
+		}
+		if (is_array($where)) {
+			$data =$this->db->get_where("ms_siswa",$where)->result();
+		}else{
+			$data = $this->db->where($where,null)
+							 ->get_where("ms_siswa",[
+								 "st_active" => "t"
+							 ])
+							 ->result();
+		}
+		return $data;
+	}
+
 	public function find_one($where)
 	{
 		return $this->db->get_where("ms_siswa",$where)->row();
