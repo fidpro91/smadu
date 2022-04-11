@@ -21,12 +21,9 @@ class M_ms_category_unit extends CI_Model {
 	public function get_column()
 	{
 		$col = [
+				"kode",
 				"nama"=>["label"=>"KATEGORI"],				
 				"no_sk"=>["label"=>"No SK"],
-				//"tanggal_sk",
-				"status_akreditasi"=>["label"=>"Akreditasi"],
-				//"tanggal_akreditasi",
-				//"no_akreditasi",
 				"status"=>["label"=>"Status",
 									"custom" => function ($a) {
 						if ($a == 't') {
@@ -35,9 +32,7 @@ class M_ms_category_unit extends CI_Model {
 						$condition = ["class" => "label-danger", "text" => "Non Aktif"];
 					}
 					return label_status($condition);
-				}],
-				//"catunit_id",
-				//"dekan"
+				}]
 			];
 		return $col;
 	}
@@ -46,14 +41,10 @@ class M_ms_category_unit extends CI_Model {
 	{
 		$data = [
 					"nama" => "trim|required",
+					"kode" => "trim|required",
 					"status" => "trim",
 					"no_sk" => "trim",
 					"tanggal_sk" => "trim",
-					"status_akreditasi" => "trim",
-					"tanggal_akreditasi" => "trim",
-					"no_akreditasi" => "trim",
-					"dekan" => "trim|integer",
-
 				];
 		return $data;
 	}

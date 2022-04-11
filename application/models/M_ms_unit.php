@@ -67,10 +67,14 @@ class M_ms_unit extends CI_Model {
 	{
 		return $this->db->get_where("ms_unit",$where)->result();
 	}
-	public function get_unit()
+
+	public function get_unit_kelas($where=null)
 	{
-		return $this->db->get_where("ms_unit")->result();
+		return $this->db->join("ms_category_unit mc","mc.catunit_id=mu.unit_type")
+						->like("mc.kode",$this->setting->kategori_kelas,"after")
+						->get_where("ms_unit mu",$where)->result();
 	}
+
 	public function find_one($where)
 	{
 		return $this->db->get_where("ms_unit",$where)->row();
