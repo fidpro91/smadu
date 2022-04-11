@@ -44,7 +44,12 @@
 			<?=create_input("st_th_masuk=Tahun Masuk")?>
 		</div>
 		<div class="col-md-3">		
-			<?=create_input("last_kelas=Kelas Terakhir")?>
+		<?= create_select(["attr" => ["name" => "last_kelas=Kelas Terakhir", "id" => "last_kelas", "class" => "form-control"],
+			"model" =>[
+				"m_ms_unit" => ["get_ms_unit", ["unit_type" => $this->setting->last_class]],
+				"column"  => ["unit_id", "unit_name"]
+			],
+			]) ?>	
 		</div>
 		<div class="col-md-12" >
 			

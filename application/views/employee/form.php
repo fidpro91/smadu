@@ -108,7 +108,7 @@
 					"attr" => ["name" => "emp_resident=desa", "id" => "emp_resident", "class" => "form-control", 'required' => true],
 			]) ?>	
 		</div>
-		<div class="col-md-6">
+		<div class="col-md-12">
 		<?=create_textarea("emp_address=Alamat Lengkap")?>		
 		</div>
 		<?= form_fieldset_close(); ?>

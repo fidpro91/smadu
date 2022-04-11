@@ -134,7 +134,24 @@ class Ms_unit extends MY_Generator {
 		echo json_encode($resp);
 	}
 
-
+	public function get_employee($type)
+	{
+		$term = $this->input->get('term');
+		$limit = 25;
+		if ($type == 'pj_unit') {
+			$where = " lower(emp_name) like lower('%$term%')";
+			$select = "*,concat(emp_name) as label";
+		} else {
+			$where = " lower(emp_noktp) like lower('%$term%')";
+			$select = "*,concat(emp_name) as label";
+		}
+		$data = $this->db->where($where)
+			->limit($limit)
+			->select($select, false)
+			->get("employee")->result();
+		echo json_encode($data);
+//		return $this->db->get_where("public.employee")->result();
+	}
 
 	public function show_form()
 	{
