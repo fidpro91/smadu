@@ -43,6 +43,11 @@
 </div>
 <!-- /.panel-footer-->
 </div>
+<?= modal_open("modal_content", "Import Data Siswa")?>
+<div class="row">
+    
+</div>
+<?= modal_close() ?>
 <!-- /.panel -->
 <script type="text/javascript">
   var table;
