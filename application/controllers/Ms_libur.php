@@ -59,7 +59,11 @@ class Ms_libur extends MY_Generator {
 		$this->load->library('datatable');
 		$attr 	= $this->input->post();
 		$fields = $this->m_ms_libur->get_column();
-		$data 	= $this->datatable->get_data($fields,$filter = array(),'m_ms_libur',$attr);
+		$filter["libur_type"] = $attr["libur_type"];
+		if (!empty($attr["tahun"])) {
+			$filter["libur_tahun"] = $attr["tahun"];
+		}
+		$data 	= $this->datatable->get_data($fields,$filter,'m_ms_libur',$attr);
 		$records["aaData"] = array();
 		$no   	= 1 + $attr['start']; 
         foreach ($data['dataku'] as $index=>$row) { 

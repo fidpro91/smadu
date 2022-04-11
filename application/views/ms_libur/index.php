@@ -10,7 +10,23 @@
   <div class="panel-body" id="form_ms_libur" style="display: none;">
   </div>
   <div class="panel-body" id="data_ms_libur">
-    <?=create_table("tb_ms_libur","M_ms_libur",["class"=>"table table-bordered datatable" ,"style" => "width:100% !important;"])?>
+    <div class="row">
+        <div class="col-md-3">
+        <?= create_select([
+            "attr" => ["name" => "filter_libur_type=diperuntukkan", "id" => "filter_libur_type", "class" => "form-control", 'required' => true],
+            "option" => [
+                ["id" => '1', "text" => "Siswa"],
+                ["id" => '2', "text" => "Pegawai"]
+            ]
+        ]) ?>
+        </div>
+        <div class="col-md-3">
+          <?= create_input("filter_tahun=tahun") ?>
+        </div>
+        <div class="col-md-12">
+            <?=create_table("tb_ms_libur","M_ms_libur",["class"=>"table table-bordered datatable" ,"style" => "width:100% !important;"])?>
+        </div>
+    </div>
   </div>
   <div class="panel-footer">
     <button class="btn btn-danger" id="btn-deleteChecked"><i class="fa fa-trash"></i> Delete</button>
@@ -33,11 +49,15 @@
     table = $('#tb_ms_libur').DataTable({
       "processing": true,
       "serverSide": true,
-      "order": [],
+      "order": [[6, 'desc'],[5, 'asc']],
       "scrollX": true,
       "ajax": {
         "url": "<?php echo site_url('ms_libur/get_data')?>",
-        "type": "POST"
+        "type": "POST",
+        "data":function(f){
+            f.libur_type=$("#filter_libur_type").val();
+            f.tahun=$("#filter_tahun").val();
+          }
       },
       'columnDefs': [
         {
@@ -57,6 +77,9 @@
     $('#tb_ms_libur').closest('.dataTables_wrapper').find('select').select2({
       minimumResultsForSearch: -1
     });
+    $("#filter_libur_type, #filter_tahun").change(()=>{
+      table.draw();
+    });
   });
   $("#btn-add").click(function () {
     $("#form_ms_libur").show();
@@ -68,6 +91,9 @@
       $("#form_ms_libur").load("ms_libur/show_form", () => {
         $.each(data, (ind, obj) => {
           $("#" + ind).val(obj);
+          if (ind == "perulangan_libur") {
+            $("#" + ind).val(obj).trigger("change");
+          }
         });
       });
     }, 'json');
