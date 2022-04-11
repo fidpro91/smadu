@@ -34,7 +34,7 @@ class M_ms_siswa extends CI_Model {
 						if ($a == 'L') {
 							$condition = ["class" => "label-info", "text" => "Laki-Laki"];
 						} else {
-							$condition = ["class" => "label-succses", "text" => "Perempuan"];
+							$condition = ["class" => "label-success", "text" => "Perempuan"];
 						}
 						return label_status($condition);
 					}

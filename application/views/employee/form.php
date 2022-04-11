@@ -45,7 +45,7 @@
 			
 			<?= create_select(["attr" => ["name" => "position_id=Jabatan", "id" => "position_id", "class" => "form-control"],
 			"model" =>[
-				"m_ms_reff" => ["get_ms_reff", ["refcat_id" => '5']],
+				"m_ms_reff" => ["get_ms_reff", ["refcat_id" => $this->setting->kategori_jabatan]],
 				"column"  => ["reff_id", "reff_name"]
 			],
 			]) ?>
@@ -53,13 +53,13 @@
 		<div class="col-md-4">
 			<?= create_select(["attr" => ["name" => "agama=Agama", "id" => "agama", "class" => "form-control"],
 			"model" =>[
-				"m_ms_reff" => ["get_ms_reff", ["refcat_id" => '1']],
+				"m_ms_reff" => ["get_ms_reff", ["refcat_id" => $this->setting->agama]],
 				"column"  => ["reff_id", "reff_name"]
 			],
 			]) ?>
 			<?= create_select(["attr" => ["name" => "pendidikan=Pendidikan", "id" => "pendidikan", "class" => "form-control"],
 			"model" =>[
-				"m_ms_reff" => ["get_ms_reff", ["refcat_id" => '2']],
+				"m_ms_reff" => ["get_ms_reff", ["refcat_id" => $this->setting->pendidikan]],
 				"column"  => ["reff_id", "reff_name"]
 			],
 			]) ?>		
@@ -71,14 +71,14 @@
 		<div class="col-md-4">	
 			<?= create_select(["attr" => ["name" => "emp_status=Status Perkawinan", "id" => "emp_status", "class" => "form-control"],
 			"model" =>[
-				"m_ms_reff" => ["get_ms_reff", ["refcat_id" => '4']],
+				"m_ms_reff" => ["get_ms_reff", ["refcat_id" => $this->setting->status_kawin]],
 				"column"  => ["reff_id", "reff_name"]
 			],
 			]) ?>	
 			<?=create_input("emp_mail=Email")?>
 			<?= create_select([
 					"attr" => ["name" => "emp_type=Tipe", "id" => "emp_type", "class" => "form-control", 'required' => true],
-					"option" => [["id" => '1', "text" => "Shift"], ["id" => '2', "text" => "Non Shift"]],
+					"option" => [["id" => $this->setting->shift, "text" => "Shift"], ["id" => $this->setting->non_shift, "text" => "Non Shift"]],
 			]) ?>
 		</div>
 		
@@ -88,7 +88,7 @@
 			<?= create_select2([
 					"attr" => ["name" => "emp_prov=provinsi", "id" => "emp_prov", 'required' => true, "class" => "form-control", "onchange" => "get_reg('emp_city',this.value)"],
 					"model" => [
-							"m_ms_region" => ["get_ms_region", ["reg_level" => '1']],
+							"m_ms_region" => ["get_ms_region", ["reg_level" => $this->setting->reg_level]],
 							"column" => ["reg_code", "reg_name"]
 					],
 			]) ?>

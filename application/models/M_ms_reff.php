@@ -5,7 +5,8 @@ class M_ms_reff extends CI_Model {
 	public function get_data($sLimit,$sWhere,$sOrder,$aColumns)
 	{
 		$data = $this->db->query("
-				select ".implode(',', $aColumns).",reff_id as id_key  from ms_reff where 0=0 $sWhere $sOrder $sLimit
+				select ".implode(',', $aColumns).",reff_id as id_key  from ms_reff rf
+				join  ms_reff_cat rc on rf.refcat_id = rc.refcat_id where 0=0 $sWhere $sOrder $sLimit
 			")->result_array();
 		return $data;
 	}
@@ -13,7 +14,8 @@ class M_ms_reff extends CI_Model {
 	public function get_total($sWhere,$aColumns)
 	{
 		$data = $this->db->query("
-				select ".implode(',', $aColumns).",reff_id as id_key  from ms_reff where 0=0 $sWhere
+				select ".implode(',', $aColumns).",reff_id as id_key  from ms_reff rf
+				join  ms_reff_cat rc on rf.refcat_id = rc.refcat_id where 0=0 $sWhere
 			")->num_rows();
 		return $data;
 	}
@@ -21,11 +23,23 @@ class M_ms_reff extends CI_Model {
 	public function get_column()
 	{
 		$col = [
-				"reff_id",
+				//"reff_id",
 				"reff_code",
 				"reff_name",
-				"reff_active",
-				"refcat_id"];
+				"reff_active"=> [
+					"label" => "Status",
+					"custom" => function ($a) {
+						if ($a == 't') {
+							$condition = ["class" => "label-primary", "text" => "Aktif"];
+						} else {
+							$condition = ["class" => "label-danger", "text" => "Non Aktif"];
+						}
+						return label_status($condition);
+					}
+				],
+			
+				"refcat_name"
+			];
 		return $col;
 	}
 
