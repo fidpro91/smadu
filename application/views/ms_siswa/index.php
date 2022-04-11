@@ -3,33 +3,56 @@
   <div class="panel-heading">
     <h3 class="panel-title">Form Ms Siswa</h3>
     <div class="panel-options">
+      <button type="button" id="btn-import" class="btn btn-success">
+        <i class="entypo-plus"></i> Import</button>
+      </button>
       <button type="button" id="btn-add" class="btn btn-black">
         <i class="entypo-plus"></i> Add</button>
     </div>
   </div>
   <div class="panel-body" id="form_ms_siswa" style="display: none;">
   </div>
-    <div class="col-md-2">
-			<?=create_input("filter_tahun=Tahun Masuk")?>
-		</div>
-  <div class="col-md-2" class="panel-footer">
-    <?= create_select([
-					"attr" => ["name" => "filter_jk=Jenis Kelamin", "id" => "filter_jk", "class" => "form-control"],
-					"option" =>[["id"=>' ',"text"=>'Pilih'],["id" => 'L', "text" => "Laki-Laki"], ["id" => 'P', "text" => "Perempuan"]],
-			]) ?>
+  <div class="panel-body" id="data_ms_siswa">
+      <div class="row">
+          <div class="col-md-2">
+            <?= create_input("filter_tahun=Tahun Masuk") ?>
+          </div>
+          <div class="col-md-2">
+            <?= create_select([
+              "attr" => ["name" => "filter_jk=Jenis Kelamin", "id" => "filter_jk", "class" => "form-control"],
+              "option" => [["id" => ' ', "text" => 'Pilih'], ["id" => 'L', "text" => "Laki-Laki"], ["id" => 'P', "text" => "Perempuan"]],
+            ]) ?>
+          </div>
+          <div class="col-md-2">
+          <?= create_select2([
+                  "attr" => ["name" => "filter_kelas=Kelas", "id" => "filter_kelas", "class" => "form-control", 'required' => true],
+                  "model" => [
+                          "m_ms_unit" => ["get_ms_unit", ["unit_type" => $this->setting->kategori_kelas]],
+                          "column" => ["unit_id", "unit_name"]
+                  ],
+          ]) ?>
+          </div>
+          <div class="col-md-12">
+          <?= create_table("tb_ms_siswa", "M_ms_siswa", ["class" => "table table-bordered datatable", "style" => "width:100% !important;"]) ?>
+          </div>
+      </div>
   </div>
-    <?=create_table("tb_ms_siswa","M_ms_siswa",["class"=>"table table-bordered datatable" ,"style" => "width:100% !important;"])?>
-  </div>
-  <div class="panel-footer">
-    <button class="btn btn-danger" id="btn-deleteChecked"><i class="fa fa-trash"></i> Delete</button>
-  </div>
-  <!-- /.panel-footer-->
 </div>
+<div class="panel-footer">
+  <button class="btn btn-danger" id="btn-deleteChecked"><i class="fa fa-trash"></i> Delete</button>
+</div>
+<!-- /.panel-footer-->
+</div>
+<?= modal_open("modal_content", "Import Data Siswa")?>
+<div class="row">
+    
+</div>
+<?= modal_close() ?>
 <!-- /.panel -->
 <script type="text/javascript">
   var table;
-  var notifikasi = '<?=$this->session->flashdata("message")?>';
-  $(document).ready(function () {
+  var notifikasi = '<?= $this->session->flashdata("message") ?>';
+  $(document).ready(function() {
     if (notifikasi) {
       notifikasi = JSON.parse(notifikasi)
       if (notifikasi.code == '200') {
@@ -44,15 +67,15 @@
       "order": [],
       "scrollX": true,
       "ajax": {
-        "url": "<?php echo site_url('ms_siswa/get_data')?>",
+        "url": "<?php echo site_url('ms_siswa/get_data') ?>",
         "type": "POST",
-        "data":function(f){
-                  f.tahun=$("#filter_tahun").val();
-                  f.jk=$("#filter_jk").val();
-                }
+        "data": function(f) {
+          f.tahun = $("#filter_tahun").val();
+          f.jk = $("#filter_jk").val();
+          f.kelas = $("#filter_kelas").val();
+        }
       },
-      'columnDefs': [
-        {
+      'columnDefs': [{
           'targets': [0, 1, -1],
           'searchable': false,
           'orderable': false,
@@ -60,23 +83,25 @@
         {
           'targets': 0,
           'className': 'dt-body-center',
-          'render': function (data, type, full, meta) {
+          'render': function(data, type, full, meta) {
             return '<input type="checkbox" name="id[]" value="' + $('<div/>').text(data).html() + '">';
           }
-        }],
+        }
+      ],
     });
     // Initalize Select Dropdown after DataTables is created
     $('#tb_ms_siswa').closest('.dataTables_wrapper').find('select').select2({
       minimumResultsForSearch: -1
     });
-    $("#filter_tahun,#filter_jk").change(()=>{
-            table.draw();
-            });
+    $("#filter_tahun,#filter_jk,#filter_kelas").change(() => {
+      table.draw();
+    });
   });
-  $("#btn-add").click(function () {
+  $("#btn-add").click(function() {
     $("#form_ms_siswa").show();
     $("#form_ms_siswa").load("ms_siswa/show_form");
   });
+
   function set_val(id) {
     $("#form_ms_siswa").show();
     $.get('ms_siswa/find_one/' + id, (data) => {
@@ -96,7 +121,7 @@
         } else {
           toastr.error(data.message, "Message : ");
         }
-        toastr.options.onHidden=setTimeout(() => {
+        toastr.options.onHidden = setTimeout(() => {
           location.reload()
         }, 2000);
       }, 'json');
@@ -111,9 +136,9 @@
     }
   });
 
-  $("#btn-deleteChecked").click(function (event) {
+  $("#btn-deleteChecked").click(function(event) {
     event.preventDefault();
-    var searchIDs = $("#tb_ms_siswa input:checkbox:checked").map(function () {
+    var searchIDs = $("#tb_ms_siswa input:checkbox:checked").map(function() {
       return $(this).val();
     }).toArray();
     if (searchIDs.length == 0) {
@@ -121,16 +146,19 @@
       return false;
     }
     if (confirm("Anda yakin akan menghapus data ini?")) {
-      $.post('ms_siswa/delete_multi', { data: searchIDs }, (resp) => {
+      $.post('ms_siswa/delete_multi', {
+        data: searchIDs
+      }, (resp) => {
         if (resp.code == '200') {
           toastr.success(resp.message, "Message : ");
         } else {
           toastr.error(resp.message, "Message : ");
         }
-        toastr.options.onHidden=setTimeout(() => {
+        toastr.options.onHidden = setTimeout(() => {
           location.reload()
         }, 2000);
       }, 'json');
     }
   });
+  <?= $this->config->item('footerJS') ?>
 </script>

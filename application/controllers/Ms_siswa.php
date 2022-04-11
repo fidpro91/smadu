@@ -119,6 +119,9 @@ class Ms_siswa extends MY_Generator {
 		if ($attr['jk'] != ' ' ) {
 			$filter = array_merge($filter, ["st_sex" => $attr['jk']]);
 		} 
+		if (!empty($attr['kelas'])) {
+			$filter = array_merge($filter, ["last_kelas" => $attr['kelas']]);
+		} 
 		$data 	= $this->datatable->get_data($fields,$filter,'m_ms_siswa',$attr);
 		$records["aaData"] = array();
 		$no   	= 1 + $attr['start']; 

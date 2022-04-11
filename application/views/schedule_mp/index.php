@@ -43,6 +43,7 @@
 </div>
 <!-- /.panel -->
 <?= modal_open("modal_content", "Jadwal Mata Pelajaran","modal-lg") ?>
+    <?= form_open("absensi_siswa/save", ["method" => "post", "class" => "form-horizontal", "id" => "fm_absensi_siswa","enctype"=>"multipart/form-data"]) ?>
 <?= modal_close() ?>
 <script type="text/javascript">
   var table;
