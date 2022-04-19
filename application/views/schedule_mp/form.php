@@ -23,7 +23,7 @@
 	<?= create_select2([
             "attr" => ["name" => "class_id=Kelas", "id" => "class_id", "class" => "form-control", 'required' => true],
             "model" => [
-                    "m_ms_unit" => ["get_ms_unit", ["unit_type" => $this->setting->kategori_kelas]],
+                    "m_ms_unit" => "get_unit_kelas",
                     "column" => ["unit_id", "unit_name"]
             ],
     ]) ?>

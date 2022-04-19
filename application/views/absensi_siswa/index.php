@@ -18,7 +18,7 @@
         </div>
         <div class="col-md-3">
             <?= create_select2(["attr" => ["name" => "filter_unit=kelas", "id" => "filter_unit", "class" => "form-control"],
-            "model" => ["m_ms_unit" => ["get_unit", ["unit_type" => $this->setting->kategori_kelas]], "column" => ["unit_id", "unit_name"]]
+            "model" => ["m_ms_unit" => "get_unit_kelas", "column" => ["unit_id", "unit_name"]]
             ]) ?>
         </div>
         <div class="col-md-3">

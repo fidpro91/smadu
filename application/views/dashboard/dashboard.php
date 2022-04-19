@@ -3,8 +3,6 @@
 <script src="<?=base_url()?>assets/js/rickshaw/rickshaw.min.js"></script>
 <script src="<?=base_url()?>assets/js/raphael-min.js"></script>
 <script src="<?=base_url()?>assets/js/morris.min.js"></script>
-<script src="<?=base_url()?>assets/js/toastr.js"></script>
-<script src="<?=base_url()?>assets/js/neon-chat.js"></script>
 <script type="text/javascript">
     jQuery(document).ready(function($)
     {
@@ -49,96 +47,13 @@
             barWidth: 10,
             barSpacing: 2
         });
-    
-        // Line Charts
-        var line_chart_demo = $("#line-chart-demo");
-    
-        var line_chart = Morris.Line({
-            element: 'line-chart-demo',
-            data: [
-                { y: '2006', a: 100, b: 90 },
-                { y: '2007', a: 75,  b: 65 },
-                { y: '2008', a: 50,  b: 40 },
-                { y: '2009', a: 75,  b: 65 },
-                { y: '2010', a: 50,  b: 40 },
-                { y: '2011', a: 75,  b: 65 },
-                { y: '2012', a: 100, b: 90 }
-            ],
-            xkey: 'y',
-            ykeys: ['a', 'b'],
-            labels: ['October 2013', 'November 2013'],
-            redraw: true
-        });
-    
-        line_chart_demo.parent().attr('style', '');
-    
-    
-        // Donut Chart
-        var donut_chart_demo = $("#donut-chart-demo");
-    
-        donut_chart_demo.parent().show();
-    
-        var donut_chart = Morris.Donut({
-            element: 'donut-chart-demo',
-            data: [
-                {label: "Download Sales", value: getRandomInt(10,50)},
-                {label: "In-Store Sales", value: getRandomInt(10,50)},
-                {label: "Mail-Order Sales", value: getRandomInt(10,50)}
-            ],
-            colors: ['#707f9b', '#455064', '#242d3c']
-        });
-    
-        donut_chart_demo.parent().attr('style', '');
-    
-    
-        // Area Chart
-        var area_chart_demo = $("#area-chart-demo");
-    
-        area_chart_demo.parent().show();
-    
-        var area_chart = Morris.Area({
-            element: 'area-chart-demo',
-            data: [
-                { y: '2006', a: 100, b: 90 },
-                { y: '2007', a: 75,  b: 65 },
-                { y: '2008', a: 50,  b: 40 },
-                { y: '2009', a: 75,  b: 65 },
-                { y: '2010', a: 50,  b: 40 },
-                { y: '2011', a: 75,  b: 65 },
-                { y: '2012', a: 100, b: 90 }
-            ],
-            xkey: 'y',
-            ykeys: ['a', 'b'],
-            labels: ['Series A', 'Series B'],
-            lineColors: ['#303641', '#576277']
-        });
-    
-        area_chart_demo.parent().attr('style', '');
-    
     });
-    
-    
+
     function getRandomInt(min, max)
     {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
     </script>
-    <div id="mdb-preloader" class="flex-center">
-  <div class="preloader-wrapper active">
-    <div class="spinner-layer spinner-blue-only">
-      <div class="circle-clipper left">
-        <div class="circle"></div>
-      </div>
-      <div class="gap-patch">
-        <div class="circle"></div>
-      </div>
-      <div class="circle-clipper right">
-        <div class="circle"></div>
-      </div>
-    </div>
-  </div>
-</div>
-    
     <div class="row">
         <div class="col-sm-3 col-xs-6">
     
@@ -195,38 +110,19 @@
     
                 <div class="panel-heading">
                     <div class="panel-title">Site Stats</div>
-    
                     <div class="panel-options">
                         <ul class="nav nav-tabs">
+                            <li class=""><a href="#bar-chart" data-toggle="tab">Area Chart</a></li>
                             <li class=""><a href="#area-chart" data-toggle="tab">Area Chart</a></li>
                             <li class="active"><a href="#line-chart" data-toggle="tab">Line Charts</a></li>
                             <li class=""><a href="#pie-chart" data-toggle="tab">Pie Chart</a></li>
                         </ul>
                     </div>
                 </div>
-    
                 <div class="panel-body">
-    
-                    <div class="tab-content">
-    
-                        <div class="tab-pane" id="area-chart">
-                            <div id="area-chart-demo" class="morrischart" style="height: 300px"></div>
-                        </div>
-    
-                        <div class="tab-pane active" id="line-chart">
-                            <div id="line-chart-demo" class="morrischart" style="height: 300px"></div>
-                        </div>
-    
-                        <div class="tab-pane" id="pie-chart">
-                            <div id="donut-chart-demo" class="morrischart" style="height: 300px;"></div>
-                        </div>
-    
-                    </div>
-    
+                    <div id="chart3" class="morrischart"  style="height: 300px;"></div>
                 </div>
-    
                 <table class="table table-bordered table-responsive">
-    
                     <thead>
                         <tr>
                             <th width="50%" class="col-padding-1">
@@ -361,5 +257,21 @@
                     }
                 }
             });
+
+            // Bar Charts
+			Morris.Bar({
+				element: 'chart3',
+				axes: true,
+				data: [
+					{x: '2013 Q1', y: getRandomInt(1,10), z: getRandomInt(1,10), a: getRandomInt(1,10)},
+					{x: '2013 Q2', y: getRandomInt(1,10), z: getRandomInt(1,10), a: getRandomInt(1,10)},
+					{x: '2013 Q3', y: getRandomInt(1,10), z: getRandomInt(1,10), a: getRandomInt(1,10)},
+					{x: '2013 Q4', y: getRandomInt(1,10), z: getRandomInt(1,10), a: getRandomInt(1,10)}
+				],
+				xkey: 'x',
+				ykeys: ['y', 'z', 'a'],
+				labels: ['Facebook', 'LinkedIn', 'Google+'],
+				barColors: ['#707f9b', '#455064', '#242d3c']
+			});
         });
     </script>

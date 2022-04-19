@@ -8,7 +8,7 @@
             <div class="panel-body">
                 <?= create_select2([
                     "attr" => ["name" => "unit_asal=Kelas Asal", "id" => "unit_asal", "class" => "form-control"],
-                    "model" => ["m_ms_unit" => "get_ms_unit", "column" => ["unit_id", "unit_name"]]
+                    "model" => ["m_ms_unit" => "get_unit_kelas", "column" => ["unit_id", "unit_name"]]
                 ]) ?>
                 <?= create_select([
                     "attr" => ["name" => "semester_asal", "id" => "semester_asal", "class" => "form-control"],
@@ -30,7 +30,7 @@
             <div class="panel-body">
                 <?= create_select2([
                     "attr" => ["name" => "unit_tujuan=Kelas Tujuan ", "id" => "unit_tujuan", "class" => "form-control"],
-                    "model" => ["m_ms_unit" => "get_ms_unit", "column" => ["unit_id", "unit_name"]]
+                    "model" => ["m_ms_unit" => "get_unit_kelas", "column" => ["unit_id", "unit_name"]]
                 ]) ?>
                 <?= create_select([
                     "attr" => ["name" => "semester_tujuan", "id" => "semester_tujuan", "class" => "form-control"],

@@ -15,7 +15,7 @@
           <?= create_select2([
                 "attr" => ["name" => "filter_kelas=Kelas", "id" => "filter_kelas", "class" => "form-control", 'required' => true],
                 "model" => [
-                        "m_ms_unit" => ["get_ms_unit", ["unit_type" => $this->setting->kategori_kelas]],
+                        "m_ms_unit" => "get_unit_kelas",
                         "column" => ["unit_id", "unit_name"]
                 ],
         ]) ?>
