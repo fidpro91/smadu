@@ -44,9 +44,21 @@
 <!-- /.panel-footer-->
 </div>
 <?= modal_open("modal_content", "Import Data Siswa")?>
-<div class="row">
-    
+<form action="http://localhost/smadu/ms_siswa/import_excel" method="post" id="fm_ms_siswa" enctype="multipart/form-data" accept-charset="utf-8">
+  <div class="row">
+    <div class="col-md-3">
+<div class="form-group">
+					<label>File Siswa</label>
+					<input type="file" name="siswa_import" id="siswa_import">
+				</div>       
 </div>
+</div>	
+
+</form>
+<div class="panel-footer">
+      		<button class="btn btn-primary" type="button" onclick="$('#fm_ms_siswa').submit()">Save</button>
+      		<button class="btn btn-warning" type="button" id="btn-cancel">Cancel</button>
+      </div> 
 <?= modal_close() ?>
 <!-- /.panel -->
 <script type="text/javascript">
@@ -160,5 +172,11 @@
       }, 'json');
     }
   });
+
+  $("#btn-import").click(()=>{
+    $("#modal_content").modal('show');
+    // $("#modal_content").find(".modal-body").load("ms_siswa/import_excel");
+    
+  })
   <?= $this->config->item('footerJS') ?>
 </script>

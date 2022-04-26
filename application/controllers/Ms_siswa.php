@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+require FCPATH . 'vendor/autoload.php';
 class Ms_siswa extends MY_Generator {
 
 	public function __construct()
@@ -8,6 +8,7 @@ class Ms_siswa extends MY_Generator {
 		parent::__construct();
 		$this->datascript->lib_datepicker();
 		$this->datascript->lib_select2();
+		
 		$this->load->model('m_ms_siswa');
 		$this->finger = $this->load->database('finger', TRUE);
 	}
@@ -196,6 +197,58 @@ class Ms_siswa extends MY_Generator {
 			$resp['code'] = '201';
 		}
 		echo json_encode($resp);
+	}
+
+	public function import_excel($value='')
+	{
+		$arr_file = explode('.', $_FILES['siswa_import']['name']);
+	    $extension = end($arr_file);
+	 
+	    if('csv' == $extension) {
+	        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+	    } else {
+	        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+	    }
+
+		
+	 
+	    $spreadsheet = $reader->load($_FILES['siswa_import']['tmp_name']);
+	     
+	    $sheetData = $spreadsheet->getActiveSheet()->toArray();
+	    $sukses=$gagal=0;
+	    $data=[];
+	    $dataGagal="";
+	    $this->load->model("m_ms_siswa");
+		$resp = array();
+	    foreach ($sheetData as $key => $value) {
+	    	if ($key>0) {
+	    		$row = [
+	    					"st_nim" 		=> $value[1],
+							"st_name" 	=> $value[2],
+							"st_sex" 		=> $value[3],							
+							"st_active" 	=> "t",
+							"st_birthdate" 	=> date('Y-m-d',strtotime($value[4])),
+	    				];
+
+	    			$data[$key] = $row;
+	    			$sukses++;	
+	    	}
+	    }
+	    
+	    if ($sukses>0) {
+	    	$this->db->insert_batch('ms_siswa',$data); 
+	    }
+		if (empty($resp)) {
+			$resp['code'] = '200';
+			$resp['message'] = 'Data berhasil di upload';
+		}else{
+			$resp['code'] = '201';
+		}
+	  
+	   //	
+	   $resp= json_encode($resp);
+	   $this->session->set_flashdata("message",$resp);
+	   redirect('ms_siswa');
 	}
 
 	public function show_form()

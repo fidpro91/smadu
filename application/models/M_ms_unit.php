@@ -46,9 +46,9 @@ class M_ms_unit extends CI_Model {
 		$data = [
 										"unit_code" => "trim",
 					"unit_name" => "trim|required",
-					//"pj_unit" => "trim|integer",
+					"pj_unit" => "trim|integer",
 					"unit_active" => "trim",
-				//	"unit_type" => "trim|integer",
+					"unit_type" => "trim|integer",
 
 				];
 		return $data;

@@ -22,7 +22,7 @@
 			<?=create_input("st_mother=Ibu")?>			
 			<?= create_select(["attr" => ["name" => "religion_id=Agama", "id" => "religion_id", "class" => "form-control"],
 			"model" =>[
-				"m_ms_reff" => ["get_ms_reff", ["refcat_id" => '1']],
+				"m_ms_reff" => ["get_ms_reff", ["refcat_id" => $this->setting->agama]],
 				"column"  => ["reff_id", "reff_name"]
 			],
 			]) ?>				
@@ -44,7 +44,12 @@
 			<?=create_input("st_th_masuk=Tahun Masuk")?>
 		</div>
 		<div class="col-md-3">		
-			<?=create_input("last_kelas=Kelas Terakhir")?>
+		<?= create_select(["attr" => ["name" => "last_kelas=Kelas Terakhir", "id" => "last_kelas", "class" => "form-control"],
+			"model" =>[
+				"m_ms_unit" => ["get_ms_unit", ["unit_type" => $this->setting->last_class]],
+				"column"  => ["unit_id", "unit_name"]
+			],
+			]) ?>	
 		</div>
 		<div class="col-md-12" >
 			
@@ -60,7 +65,7 @@
 		<?= create_select2([
 					"attr" => ["name" => "st_prov=provinsi", "id" => "st_prov", 'required' => true, "class" => "form-control", "onchange" => "get_reg('st_city',this.value)"],
 					"model" => [
-							"m_ms_region" => ["get_ms_region", ["reg_level" => '1']],
+							"m_ms_region" => ["get_ms_region", ["reg_level" => $this->setting->reg_level]],
 							"column" => ["reg_code", "reg_name"]
 					],
 			]) ?>
@@ -101,10 +106,12 @@
 		$("#form_ms_siswa").html('');
 	});
 
+
+
 	function get_reg(dest, id) {
 		$("#" + dest + " > option").remove();
 		const setData = $.get("employee/get_region/" + id, (resp) => {
-			$("#" + dest + "").append(resp);
+			$("#" + dest + "").append(resp);// alert(resp);
 		});
 		return setData;
 	}

@@ -6,7 +6,7 @@ class M_ms_siswa extends CI_Model {
 	{
 		$data = $this->db->query("
 				select ".implode(',', $aColumns).",st_id as id_key  from ms_siswa m
-				join ms_reff r on m.religion_id = r.reff_id
+				left join ms_reff r on m.religion_id = r.reff_id
 				where 0=0 $sWhere $sOrder $sLimit
 			")->result_array();
 		return $data;
@@ -16,7 +16,7 @@ class M_ms_siswa extends CI_Model {
 	{
 		$data = $this->db->query("
 				select ".implode(',', $aColumns).",st_id as id_key  from ms_siswa m
-				join ms_reff r on m.religion_id = r.reff_id where 0=0 $sWhere
+				left join ms_reff r on m.religion_id = r.reff_id where 0=0 $sWhere
 			")->num_rows();
 		return $data;
 	}
@@ -34,7 +34,7 @@ class M_ms_siswa extends CI_Model {
 						if ($a == 'L') {
 							$condition = ["class" => "label-info", "text" => "Laki-Laki"];
 						} else {
-							$condition = ["class" => "label-succses", "text" => "Perempuan"];
+							$condition = ["class" => "label-success", "text" => "Perempuan"];
 						}
 						return label_status($condition);
 					}
