@@ -141,7 +141,7 @@
                                             
                                         </form>
                                         
-                                        <ul class="dropdown-menu-list scroller">
+                                        <!-- <ul class="dropdown-menu-list scroller">
                                             <li class="active">
                                                 <a href="#">
                                                     <span class="image pull-right">
@@ -209,7 +209,7 @@
                                                     </span>
                                                 </a>
                                             </li>
-                                        </ul>
+                                        </ul> -->
                                     </li>
                                     
                                     <li class="external">

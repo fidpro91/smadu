@@ -278,12 +278,26 @@ class Absensi_siswa extends MY_Generator {
 		 if($rowno != 0){
 		   $rowno = ($rowno-1) * $rowperpage;
 		 }
-	  
+		 $post = $this->input->post();
+		 $filter=[];
+		 if ($post['filter_unit']) {
+			 $filter["last_kelas"] = $post['filter_unit'];
+		 }
+
+		 if ($post['filter_tanggal']) {
+			$filter["absen_date"] = $post['filter_tanggal'];
+		}
+		$filterNama = "";
+		if ($post['filter_name']) {
+			$filterNama = "st_name like '%".$post['filter_name']."%'";
+		}
 		 // All records count
-		 $allcount = $this->db->count_all('absensi_siswa');
+		 $allcount = $this->db->where($filterNama,null)
+		 					  ->where($filter)
+							  ->count_all('absensi_siswa');
 	 
 		 // Get records
-		 $users_record = $this->m_absensi_siswa->getData($rowno,$rowperpage);
+		 $users_record = $this->m_absensi_siswa->getData($rowno,$rowperpage,$filter,$filterNama);
 	  
 		 // Pagination Configuration
 		 $config['base_url'] = base_url().'absensi_siswa/load_record';
