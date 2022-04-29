@@ -7,7 +7,7 @@
 				<!-- logo -->
 				<div class="logo">
 					<a href="index.html">
-						<img src="assets/images/logo3.png" width="170" alt="" />
+						<img src="<?=site_url()?>assets/images/logo3.png" width="170" alt="" />
 					</a>
 				</div>
 
@@ -32,10 +32,10 @@
 
 				<div class="sui-normal">
 					<a href="#" class="user-link">
-						<img src="assets/images/thumb-1@2x.png" width="55" alt="" class="img-circle" />
+						<img src="<?=site_url()?>assets/images/thumb-1@2x.png" width="55" alt="" class="img-circle" />
 
 						<span>Welcome,</span>
-						<strong><?=$this->session->person_name?></strong>
+						<span><?=$this->session->person_name?></span>
 					</a>
 				</div>
 

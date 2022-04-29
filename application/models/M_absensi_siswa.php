@@ -109,9 +109,13 @@ class M_absensi_siswa extends CI_Model {
 		return $this->db->get_where("absensi_siswa",$where)->row();
 	}
 
-	public function getData($rowno,$rowperpage) {
+	public function getData($rowno,$rowperpage,$filter,$filterName) {
+		if ($filterName) {
+			$this->db->where($filterName,null);
+		}
 		$query	=	$this->db->join('ms_siswa ms',"ab.siswa_id=ms.st_id")
 							 ->join("ms_unit mu","mu.unit_id=ms.last_kelas")
+							 ->where($filter)
 							 ->limit($rowperpage, $rowno)
 							 ->get("absensi_siswa ab")->result_array();
 		return $query;
