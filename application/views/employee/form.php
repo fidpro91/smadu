@@ -40,7 +40,7 @@
 		<div class="col-md-4">
 			<?=create_input("emp_npwp=NPWP")?>			
 			<?= create_select(["attr" => ["name" => "unit_id=Tempat Ruangan", "id" => "unit_id", "class" => "form-control"],
-			"model" => ["m_ms_unit" => "get_unit", "column" => ["unit_id", "unit_name"]]
+			"model" => ["m_ms_unit" => "get_ms_unit", "column" => ["unit_id", "unit_name"]]
 			]) ?>
 			
 			<?= create_select(["attr" => ["name" => "position_id=Jabatan", "id" => "position_id", "class" => "form-control"],

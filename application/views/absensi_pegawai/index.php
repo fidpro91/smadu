@@ -16,7 +16,7 @@
         </div>
         <div class="col-md-3">
             <?= create_select2(["attr" => ["name" => "filter_unit=Tempat Ruangan", "id" => "filter_unit", "class" => "form-control"],
-            "model" => ["m_ms_unit" => "get_unit", "column" => ["unit_id", "unit_name"]]
+            "model" => ["m_ms_unit" => "get_ms_unit", "column" => ["unit_id", "unit_name"]]
             ]) ?>
         </div>
         <div class="col-md-3">
