@@ -21,7 +21,7 @@ class M_ms_category_unit extends CI_Model {
 	public function get_column()
 	{
 		$col = [
-				"kode",
+				//"kode",
 				"nama"=>["label"=>"KATEGORI"],				
 				"no_sk"=>["label"=>"No SK"],
 				"status"=>["label"=>"Status",
@@ -41,7 +41,7 @@ class M_ms_category_unit extends CI_Model {
 	{
 		$data = [
 					"nama" => "trim|required",
-					"kode" => "trim|required",
+					//"kode" => "trim|required",
 					"status" => "trim",
 					"no_sk" => "trim",
 					"tanggal_sk" => "trim",
