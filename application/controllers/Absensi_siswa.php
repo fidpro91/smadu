@@ -192,7 +192,8 @@ class Absensi_siswa extends MY_Generator {
 		$data['header']	= $this->db->query("SELECT ab.absen_type,count(*)jml FROM absensi_siswa ab
 		where ab.siswa_id = $id
 		GROUP BY ab.absen_type")->result_array();
-		$this->load->view("presensi/v_detail_absensi",$data);
+		$data['dta'] = $this->db->query("select * from absensi_siswa where siswa_id = $id")->result();
+		$this->load->view("presensi/v_detail_absensi",$data); //print_r($data['dta']);die;
 	}
 
 	public function verifikasi_multi()

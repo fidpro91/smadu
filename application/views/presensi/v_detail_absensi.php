@@ -90,5 +90,71 @@
                 endforeach;
             ?>
         </div>
+       
+        <div class="col-sm-12">
+   
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="panel-title">Data Absen</div>               
+        </div> 
+       
+  
+      
+<table class="table table-bordered" id="tabel_absen" >
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Tanggal Absen</th>
+            <th>Hari</th>
+            <th>Tgl & Jam</th>
+            <th>Jenis Absen</th>
+            <th>Keterangan</th>           
+        </tr>
+    </thead>
+   <tbody>
+        <?php
+       
+            foreach ($dta as $key => $value) {
+                
+                if(date('N', strtotime($value->absen_date))=="7"){
+                    $day =0;
+                }else{
+                    $day = date('N', strtotime($value->absen_date));
+                }
+                $day = show_hari($day);
+
+                if ($value->late_duration_in>0) {
+                    $txt = "Lebih awal $a Menit";
+                }elseif($value->late_duration_in==0){
+                    $txt = "";
+                }else{
+                    $txt = "Lebih lambat ".abs($value->late_duration_in)." Menit";
+                }
+             
+              echo " 
+                    <tr>
+                        <td>".($key+1)."</td>
+                        <td>$value->absen_date</td>
+                        <td>$day</td>
+                        <td>$value->check_in</td>
+                        <td>".get_absen($value->absen_type)."</td>  
+                        <td>$txt</td>                     
+                    </tr>
+                ";
+            }
+            
+        ?>
+        
+    </tbody>
+</table>
+        </div>
+
+    </div>
+
+</div>
     </div>
 </div>
+<script type="text/javascript">
+ $("#tabel_absen").DataTable();
+
+</script>
