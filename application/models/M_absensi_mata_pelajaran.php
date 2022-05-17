@@ -67,7 +67,7 @@ class M_absensi_mata_pelajaran extends CI_Model {
 	public function rules()
 	{
 		$data = [
-										"schedule_id" => "trim|integer|required",
+										"schedule_id" => "trim|integer",
 					"check_in_at" => "trim|required",
 					"check_out_at" => "trim",
 					"absen_type" => "trim|required",
@@ -99,5 +99,24 @@ class M_absensi_mata_pelajaran extends CI_Model {
 	public function find_one($where)
 	{
 		return $this->db->get_where("absensi_mata_pelajaran",$where)->row();
+	}
+
+	public function get_schedule_auto($where="",$select = "",$limit = "")
+	{
+		if ($limit) {
+			$this->db->limit($limit);
+		}
+		if ($select) {
+			$this->db->select($select);
+		}
+		if (is_array($where)) {
+			$data =$this->db->get_where("ms_mata_pelajaran",$where)->result();
+		}else{
+			$data = $this->db->where($where,null)
+							 ->join("ms_mata_pelajaran","schedule_mp.mp_id = ms_mata_pelajaran.id_mp",'left')
+							 ->get("schedule_mp")
+							 ->result();
+		}
+		return $data;
 	}
 }

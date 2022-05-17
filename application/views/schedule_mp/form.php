@@ -60,6 +60,7 @@
             source: "<?php echo site_url('schedule_mp/get_mata_pelajaran'); ?>/" + $("#class_id").val(),
             select: function(event, ui) {
                 $('#mp_id').val(ui.item.id_mp);
+				$('#schedule_id').val(ui.item.schedule_id); 
             }
         });
     });

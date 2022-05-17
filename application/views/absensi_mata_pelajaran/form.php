@@ -3,6 +3,7 @@
 		<?= form_hidden("id") ?>
 		<?= form_hidden("schedule_id") ?>
 		<?= form_hidden("user_id") ?>
+		<?= form_hidden("mp_id") ?>
 		<?= create_inputDate("absen_date=Tanggal", ["format" => "yyyy-mm-dd", "autoclose" => true]) ?>
 		<?= create_input("mata_pelajaran") ?>
 		<?=create_inputmask("check_in_at=masuk",['datetime', ['inputFormat'=>'HH:MM:ss',"placeholder"=>"00:00:00"]])?>
@@ -27,6 +28,13 @@
 		$("#form_absensi_mata_pelajaran").hide();
 		$("#form_absensi_mata_pelajaran").html('');
 	});
-
+	$("body").on("focus", "#mata_pelajaran", function() {
+        $(this).autocomplete({
+            source: "<?php echo site_url('Absensi_mata_pelajaran/get_mata_pelajaran'); ?>/" + $("#class_id").val(),
+            select: function(event, ui) {
+                $('#mp_id').val(ui.item.id_mp);
+            }
+        });
+    });
 	<?= $this->config->item('footerJS') ?>
 </script>
