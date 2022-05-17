@@ -270,10 +270,10 @@ function create_report_table($attr = array())
 
 }
 
-function modal_open($id, $header, $size = "")
+function modal_open($id, $header, $size = "",$attr=array())
 {
 	$txt = '<div class="modal fade" id="' . $id . '">
-	        <div class="modal-dialog ' . $size . '">
+	        <div class="modal-dialog ' . $size . '" '._attributes_to_string($attr).'>
 	          <div class="modal-content">
 	            <div class="modal-header">
 	            	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -297,33 +297,6 @@ function modal_close($footer = null)
 	        </div>
 	        </div>';
 	return $txt;
-}
-
-function create_modal($modal)
-{
-	$txt = '<div class="modal fade" id="' . $modal['id'] . '">
-	        <div class="modal-dialog">
-	          <div class="modal-content">
-	            <div class="modal-header">' . $modal['header'] . '</div>
-	            <div class="modal-body" id="modal-body"></div>
-	            <div class="modal-footer"></div>
-	          </div>
-	        </div>
-	        </div>';
-	$CI =& get_instance();
-	$modalBody = $CI->load->view('biodata_ppat/form', '', true);
-	libxml_use_internal_errors(true);
-	$doc = new DOMDocument();
-	$doc->loadHTML($txt);
-	//get the element you want to append to
-	$descBox = $doc->getElementById('modal-body');
-	//create the element to append to #element1
-	// $appended = $doc->createElement($modalBody);
-	//actually append the element
-	$descBox->appendChild(htmlspecialchars($modalBody));
-	// echo $doc->saveHTML();
-	// $txt .= '<script>$("#'.$modal['id'].'").find(".modal-body").html(\''.$modalBody.'\')</script>';
-	return $doc->saveHTML();
 }
 
 function create_select($data)

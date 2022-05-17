@@ -28,7 +28,7 @@ class M_absensi_siswa extends CI_Model {
 	{
 		$col = [
 				"absen_date",
-				"st_nim",
+				"st_nis",
 				"st_name",
 				"unit_name",
 				"check_in"=>[
@@ -98,10 +98,10 @@ class M_absensi_siswa extends CI_Model {
 
 		return $this->form_validation->run();
 	}
-
+	
 	public function get_absensi_siswa($where)
 	{
-		return $this->db->get_where("absensi_siswa",$where)->result();
+		return $this->db->get_where("absensi_siswa a",$where)->result();
 	}
 
 	public function find_one($where)

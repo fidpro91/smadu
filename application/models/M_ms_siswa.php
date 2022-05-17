@@ -24,7 +24,7 @@ class M_ms_siswa extends CI_Model {
 	public function get_column()
 	{
 		$col = [
-				"st_nim"=> ["label"=>"NIS"],
+				"st_nis"=> ["label"=>"NIS"],
 				//"st_noktp",
 				//"st_nokk",
 				"st_name"=> ["label"=>"Nama Siswa"],
@@ -76,7 +76,7 @@ class M_ms_siswa extends CI_Model {
 	public function rules()
 	{
 		$data = [
-					"st_nim" => "trim|required",
+					"st_nis" => "trim|required",
 					//"st_noktp" => "trim|required",
 					"st_nokk" => "trim",
 					"st_name" => "trim|required",
@@ -141,6 +141,7 @@ class M_ms_siswa extends CI_Model {
 
 	public function find_one($where)
 	{
-		return $this->db->get_where("ms_siswa",$where)->row();
+		return $this->db->join("ms_unit mu","mu.unit_id = s.last_kelas","left")
+						->get_where("ms_siswa s",$where)->row();
 	}
 }

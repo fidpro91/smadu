@@ -34,6 +34,35 @@ function get_absensi(){
 		];
 }
 
+function get_namaBulan($data = null){
+	$bulan = [
+		"",
+		"Januari",
+		"Februari",
+		"Maret",
+		"April",
+		"Mei",
+		"Juni",
+		"Juli",
+		"Agustus",
+		"September",
+		"Oktober",
+		"November",
+		"Desember"
+	];
+	if ($data) {
+		if (strripos($data,'-')>0) {
+			$data=explode("-",$data);
+			$data = $bulan[($data[0]-1)].' '.$data[1];
+		}else{
+			$data = $bulan[(int)$data];
+		}
+		return $data;
+	}else{
+		return $bulan;
+	}
+}
+
 function show_hari($id){
 	foreach (get_hari() as $key => $value) {
 		if ($id == $value['id']) {
@@ -58,11 +87,11 @@ function get_semester($id=null)
 
 function get_absen($id=null){
 	$data =  [
-			["id"=>"0", "text" => "SEMUA"],
-			["id"=>"1", "text" => "MASUK"],
-			["id"=>"2", "text" => "IJIN/SAKIT"],
-			["id"=>"3", "text"=> "ALPA"],
-			["id"=>"4", "text"=> "PIKET"],
+			["id"=>"0", "code" => "s", "text" => "SEMUA"],
+			["id"=>"1", "code" => "m", "text" => "MASUK"],
+			["id"=>"2", "code" => "i", "text" => "IJIN/SAKIT"],
+			["id"=>"3", "code" => "a", "text"=> "ALPA"],
+			["id"=>"4", "text" => "p", "text"=> "PIKET"],
 		];
 	if ($id) {
 		$key = array_search($id, array_column($data, 'id'));

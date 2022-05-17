@@ -7,7 +7,7 @@
 
  <?= form_fieldset('BIODATA'); ?>	
  <div class="col-md-6">		
-			<?=create_input("st_nim=NIS (Nomor Induk Siswa)")?>			
+			<?=create_input("st_nis=NIS (Nomor Induk Siswa)")?>			
 			<?=create_input("st_name=Nama Siswa")?>
 			<?=create_input("st_father=Ayah")?>			
 			<?= create_select([

@@ -20,6 +20,10 @@ class Login extends CI_Controller {
 			$cache_user["session_data"] = $this->db->get_where("setting",["active"=>"t"])->result();
 			$this->cache->file->save('cu-login', $cache_user, 200000000);
 			$this->session->set_userdata($dataLogin);
+			$this->db->insert("user_activity",[
+				"user_id"		=> $dataLogin["user_id"],
+				"keterangan"	=> "Login sistem ".date("H:i:s"),
+			]);
 			$resp["message"] = "Sukses";
 			$resp["redirect"] = site_url("dashboard");
 		}else{
@@ -31,6 +35,10 @@ class Login extends CI_Controller {
 
 	public function logout()
 	{
+		$this->db->insert("user_activity",[
+			"user_id"		=> $this->session->user_id,
+			"keterangan"	=> "Logout sistem ".date("H:i:s"),
+		]);
 		session_destroy();
 		redirect('login');
 	}

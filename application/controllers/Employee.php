@@ -27,6 +27,7 @@ class Employee extends MY_Generator {
 			foreach ($this->m_employee->rules() as $key => $value) {
 				$input[$key] = $data[$key];
 			}
+			$input["user_created"] = $this->session->user_id;
 			if ($_FILES['emp_photo']['name']) {
 				$input['emp_photo'] = $this->upload_data('emp_photo', 'photo_' . $data['emp_name']);
 			}

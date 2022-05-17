@@ -2,7 +2,7 @@
     <?php
     foreach($data as $x=>$row):
     ?>
-    <div class="col-md-4">
+    <div class="col-md-4" onclick="info_absen(<?=$row['st_id']?>,'<?=$row['st_name']?>')">
         <div class="member-entry">
             <a href="extra-timeline.html" class="member-img">
                 <img src="<?=base_url()?>assets/images/icon/siswa.png" class="img-rounded" style="width: 2000px !important;"/>
@@ -10,7 +10,7 @@
             </a>
             <div class="member-details">
                 <h4>
-                    <a href="extra-timeline.html"><?=$row['st_name']?></a>
+                    <a href="extra-timeline.html" class="nama_siswa"><?=$row['st_name']?></a>
                 </h4>
                 <!-- Details with Icons -->
                 <div class="row info-list">
@@ -44,3 +44,14 @@
     endforeach;
     ?>
 </div>
+<?=modal_open("modal_detail_absen","Informasi Absensi","",[
+    "style" => "width:80%"
+])?>
+<?=modal_close()?>
+<script>
+    function info_absen(id,nama="") {
+        $("#modal_detail_absen").modal("show");
+        $("#modal_detail_absen").find(".modal-body").load("<?=base_url("absensi_siswa/show_detail_presensi/")?>/"+id);
+        $("#modal_detail_absen").find(".modal-header > .modal-content > .modal-title").text("Informasi Absensi#"+nama);
+    }
+</script>
