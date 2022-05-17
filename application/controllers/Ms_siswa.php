@@ -29,7 +29,7 @@ class Ms_siswa extends MY_Generator {
 			if ($_FILES['photo']['name']) {
 				$input['photo'] = $this->upload_data('photo', 'photo_' . $data['st_name']);
 			}
-			$input['user_act'] = $this->session->user_id;
+			$input['user_id'] = $this->session->user_id;
 
 			if ($data['st_id']) {
 				$this->db->where('st_id',$data['st_id'])->update('ms_siswa',$input);

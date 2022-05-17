@@ -185,6 +185,16 @@ class Absensi_siswa extends MY_Generator {
 		$this->load->view("absensi_siswa/form",$data);
 	}
 
+	public function show_detail_presensi($id)
+	{
+		$this->load->model("m_ms_siswa");
+		$data['siswa'] 	= $this->m_ms_siswa->find_one(["st_id"=>$id]);
+		$data['header']	= $this->db->query("SELECT ab.absen_type,count(*)jml FROM absensi_siswa ab
+		where ab.siswa_id = $id
+		GROUP BY ab.absen_type")->result_array();
+		$this->load->view("presensi/v_detail_absensi",$data);
+	}
+
 	public function verifikasi_multi()
 	{
 		$resp = array();
