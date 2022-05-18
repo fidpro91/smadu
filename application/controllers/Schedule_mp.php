@@ -279,4 +279,6 @@ class Schedule_mp extends MY_Generator
 		}
 		echo json_encode($resp);
 	}
+
+	
 }

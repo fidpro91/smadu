@@ -129,4 +129,15 @@ class Absensi_mata_pelajaran extends MY_Generator {
 		$data['model'] = $this->m_absensi_mata_pelajaran->rules();
 		$this->load->view("absensi_mata_pelajaran/form",$data);
 	}
+
+	public function get_mata_pelajaran()
+	{
+		$term = $this->input->get('term');
+		$this->load->model('m_ms_mata_pelajaran');
+		$limit = 25;
+		$where = " lower(mata_pelajaran) like lower('%$term%')";
+		$select = "*,concat(kode_mp,'-',mata_pelajaran) as label";
+		// $where .= " AND class_id = '$class_id'";
+		echo json_encode($this->m_absensi_mata_pelajaran->get_schedule_auto($where,$select,$limit));
+	}
 }
