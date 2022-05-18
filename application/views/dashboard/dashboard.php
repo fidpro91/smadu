@@ -206,73 +206,26 @@
     </div>
     <div class="col-sm-12">
         <div class="panel panel-primary" id="charts_env">
-
             <div class="panel-heading">
                 <div class="panel-title">Grafik Absensi Siswa</div>
-                <div class="panel-options">
+                <div class="panel-options" style="width: 30% !important;">
                 <?=form_dropdown("filter_class",$unit,'','class="form-control select2" id="filter_class"')?>
                 </div>
             </div>
             <div class="panel-body">
                 <div id="chart3" class="morrischart" style="height: 300px;"></div>
             </div>
-            <table class="table table-bordered table-responsive">
-                <thead>
-                    <tr>
-                        <th width="50%" class="col-padding-1">
-                            <div class="pull-left">
-                                <div class="h4 no-margin">Pageviews</div>
-                                <small>54,127</small>
-                            </div>
-                            <span class="pull-right pageviews">4,3,5,4,5,6,5</span>
-
-                        </th>
-                        <th width="50%" class="col-padding-1">
-                            <div class="pull-left">
-                                <div class="h4 no-margin">Unique Visitors</div>
-                                <small>25,127</small>
-                            </div>
-                            <span class="pull-right uniquevisitors">2,3,5,4,3,4,5</span>
-                        </th>
-                    </tr>
-                </thead>
-
-            </table>
-
         </div>
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <div class="panel-title">Grafik Absensi Pegawai</div>
-                <div class="panel-options">
-                <?=form_dropdown("filter_class",$unit,'','class="form-control select2" id="filter_class"')?>
+                <div class="panel-options"  style="width: 30% !important;">
+                <?=form_dropdown("filter_unit",$unitKerja,'','class="form-control select2" id="filter_unit"')?>
                 </div>
             </div>
             <div class="panel-body">
-                <div id="chart5" class="morrischart" style="height: 300px;"></div>
+                <div id="chart4" class="morrischart" style="height: 300px;"></div>
             </div>
-            <table class="table table-bordered table-responsive">
-                <thead>
-                    <tr>
-                        <th width="50%" class="col-padding-1">
-                            <div class="pull-left">
-                                <div class="h4 no-margin">Pageviews</div>
-                                <small>54,127</small>
-                            </div>
-                            <span class="pull-right pageviews">4,3,5,4,5,6,5</span>
-
-                        </th>
-                        <th width="50%" class="col-padding-1">
-                            <div class="pull-left">
-                                <div class="h4 no-margin">Unique Visitors</div>
-                                <small>25,127</small>
-                            </div>
-                            <span class="pull-right uniquevisitors">2,3,5,4,3,4,5</span>
-                        </th>
-                    </tr>
-                </thead>
-
-            </table>
-
         </div>
     </div>
 </div>
@@ -365,6 +318,25 @@
                 // Bar Charts
                 Morris.Bar({
                     element: 'chart3',
+                    axes: true,
+                    data: response.data,
+                    xkey: response.xkey,
+                    ykeys: response.ykeys,
+                    labels: response.labels,
+                    barColors: ['#707f9b', '#455064', '#242d3c']
+                });
+            }
+        });
+
+        $.ajax({
+            url: '<?= base_url() ?>dashboard/get_data_chart_absen_pegawai/',
+            type: 'post',
+            data: $("#fm_filter").serialize()+"&filter_name="+$("#filter_name").val(),
+            dataType: 'json',
+            success: function(response) {
+                // Bar Charts
+                Morris.Bar({
+                    element: 'chart4',
                     axes: true,
                     data: response.data,
                     xkey: response.xkey,

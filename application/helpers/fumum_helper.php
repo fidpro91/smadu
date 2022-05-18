@@ -100,6 +100,23 @@ function get_absen($id=null){
 	return $data;
 }
 
+function get_absen_pegawai($id=null){
+	$data =  [
+			["id"=>"0", "code" => "s", "text" => "SEMUA"],
+			["id"=>"1", "code" => "m", "text" => "CUTI"],
+			["id"=>"2", "code" => "m", "text" => "MASUK"],
+			["id"=>"3", "code" => "i", "text" => "IJIN/SAKIT"],
+			["id"=>"4", "code" => "a", "text"=> "LEMBUR"],
+			["id"=>"5", "code" => "a", "text"=> "ALPA"],
+			["id"=>"6", "text" => "p", "text"=> "PIKET"],
+		];
+	if ($id) {
+		$key = array_search($id, array_column($data, 'id'));
+		$data=($data[$key]['text']);
+	}
+	return $data;
+}
+
 function convert_currency($angka)
 {
 	if(!$angka) {

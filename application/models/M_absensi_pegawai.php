@@ -31,13 +31,12 @@ class M_absensi_pegawai extends CI_Model {
 				"check_in"=>[
 					"custom" => function($a){
 						$jam = explode(" ",$a);
-
 						return $jam[1];
 					}
 				],
 				"absen_type"=>[
 					"custom" => function($a){
-						return get_absen($a);
+						return get_absen_pegawai($a);
 					}
 				],
 				"late_duration_in"=>[

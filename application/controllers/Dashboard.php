@@ -33,7 +33,13 @@ class Dashboard extends MY_Generator {
 		foreach ($unit as $key => $value) {
 			$kat[$value->unit_nama] = $value->unit_nama;
 		}
+		
 		$data['unit'] = $kat;
+		foreach ($this->db->get_where("ms_unit",["unit_active"=>'t'])->result() as $key => $value) {
+			$unit_kerja[$value->unit_id] = $value->unit_name;
+		}
+		$data['unitKerja'] = $unit_kerja;
+
 		$this->theme('dashboard/dashboard',$data,get_class($this));
 	}
 
@@ -51,6 +57,52 @@ class Dashboard extends MY_Generator {
 		$response["ykeys"] = ["m","i","a"];
 		$response["xkey"] = "bulan";
 		foreach (get_absen() as $key => $value) {
+			if ($value['id'] != 0 && $value['id'] != 4) {
+				$label[] = $value['text'];
+			}
+		}
+		$response["labels"] = array_values($label);
+		$resp = [];
+		for ($i=1; $i < 13; $i++) { 
+			$datachild = array_values(array_filter($data, function ($var) use($i){
+				return ($var['bulan'] == $i);
+			}));
+			$resp[$i]['bulan'] = get_namaBulan($i);
+			foreach (get_absen() as $key => $value) {
+				if ($value['id'] != 0 && $value['id'] != 4) {
+					if ($datachild) {
+						$absen = json_decode($datachild[0]['detail'],true);
+						$key_abs = array_search($value['id'], array_column($absen, 'f1'));
+						if ($key_abs !== false) {
+							$resp[$i][$value['code']] = $absen[$key_abs]['f2'];
+						}else{
+							$resp[$i][$value['code']] = 0;
+						}
+					}else{
+						$resp[$i][$value['code']] = 0;
+					}
+				}
+			}
+		}
+		$response['data'] = array_values($resp);
+		echo json_encode($response);
+	}
+
+	public function get_data_chart_absen_pegawai()
+	{
+		
+		$data = $this->db->query("
+			SELECT x.bulan,JSON_ARRAYAGG(
+			JSON_OBJECT('f1',x.absen_type,'f2',x.jml))detail FROM (
+			SELECT EXTRACT(month FROM absen_date)bulan,absen_type,count(*)jml FROM absensi_pegawai ap
+			join employee e on e.emp_id = ap.emp_id
+			GROUP BY EXTRACT(month FROM absen_date),absen_type
+			)x
+			GROUP BY x.bulan
+		")->result_array();
+		$response["ykeys"] = ["m","i","a"];
+		$response["xkey"] = "bulan";
+		foreach (get_absen_pegawai() as $key => $value) {
 			if ($value['id'] != 0 && $value['id'] != 4) {
 				$label[] = $value['text'];
 			}

@@ -2,13 +2,17 @@
 <div class="panel panel-info">
   <div class="panel-heading">
     <h3 class="panel-title">Form Ms Unit</h3>
-    <div class="panel-options">
-      <button type="button" id="btn-add" class="btn btn-black">
-        <i class="entypo-plus"></i> Add</button>
+    <div class="panel-options"  style="width: 30% !important;">
+        <div class="row">
+            <div class="col-md-10">
+                <?=form_dropdown("filter_class",$kat,'','class="form-control select2" id="filter_class"')?>
+            </div>
+            <div class="col-md-2">
+                <button type="button" id="btn-add" class="btn btn-black">
+                  <i class="entypo-plus"></i> Add</button>
+            </div>
+        </div>
     </div>
-    <div class="box-tools pull-right" style="width: 100px;">            
-            <?=form_dropdown("filter_class",$kat,'','class="form-control select2" id="filter_class"')?>
-          </div>
   </div>
   <div class="panel-body" id="form_ms_unit" style="display: none;">
   </div>
