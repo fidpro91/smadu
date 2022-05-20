@@ -17,9 +17,11 @@ class rekap_absensi extends MY_Generator
 		$this->theme('rekap_absensi/index');
 	}
 	public function show_laporan()
-	{ 		
+	{
+		$button=$_POST['dtlPas']; 		
 		$post=$this->input->post();
 		$data['post']=$post;  
+		$data['button']=$button;
 		$where = " DATE_FORMAT(absen_date, '%m-%Y') = '".$post["tanggal"]."'"; 
 		if (!empty($post["filter_absen"])) {
 			$where .= " AND absen_type = ".$post["filter_absen"]."";
@@ -28,7 +30,7 @@ class rekap_absensi extends MY_Generator
 			$where .= " AND last_kelas = ".$post["filter_unit"]."";
 		}
 		$data["dataNilai"] = $this->db->query(" SELECT
-		st_nim,
+		st_nis,
 		st_name,
 		is_verified,
 		unit_name,
@@ -40,13 +42,26 @@ class rekap_absensi extends MY_Generator
 		where $where
 		and is_verified = '".$post["filter_verifikasi"]."'		
 	GROUP BY
-		st_name,st_nim,is_verified,unit_name
+		st_name,st_nis,is_verified,unit_name
 	ORDER BY
 		st_name
 			
 	")->result();
-		$this->load->view("rekap_absensi/lap_rekap",$data); 
-	}
+	
+		if($button=="Excel"){
+			$this->load->view("rekap_absensi/lap_rekap",$data);
+		}else{
+			$html=$this->load->view("rekap_absensi/lap_rekap",$data,true);
+		$mpdf = new \Mpdf\Mpdf([
+			'mode' => 'utf-8',
+			'format' => 'A4-L',
+			'orientation' => 'L'
+		]);		
+		$mpdf->WriteHTML($html);	
+		$mpdf->Output();
 
+		}		 
+
+	}
 
 }

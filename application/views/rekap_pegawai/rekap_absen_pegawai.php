@@ -1,4 +1,13 @@
 
+<?php 
+if ($button=="Excel") {
+    $now = date('d-m-Y');
+    header("Content-type: application/vnd-ms-excel");
+    header("Content-Disposition: attachment; filename=Rekab Absen Pegawai-".$now.".xls");
+}
+
+?>
+
 <style type="text/css">    
 .tabel{
 	font-size:13px;
