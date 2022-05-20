@@ -58,10 +58,22 @@ class Absensi_mata_pelajaran extends MY_Generator {
 		$this->load->library('datatable');
 		$attr 	= $this->input->post();
 		$fields = $this->m_absensi_mata_pelajaran->get_column();
-		$data 	= $this->datatable->get_data($fields,$filter = array(),'m_absensi_mata_pelajaran',$attr);
+		$filter=[];
+		if ($attr["verifikasi"]=='t') {
+			$filter["is_verified"] = $attr["verifikasi"];
+		}else{
+			$filter["custom"] = "(is_verified is null or is_verified = '".$attr["verifikasi"]."')";
+		}
+		if (!empty($attr["tanggal"])) {
+			$filter["absen_date"] = $attr["tanggal"];
+		}
+		if (!empty($attr["unit"])) {
+			$filter["class_id"] = $attr["unit"];
+		}
+		$data 	= $this->datatable->get_data($fields,$filter,'m_absensi_mata_pelajaran',$attr);
 		$records["aaData"] = array();
-		$no   	= 1 + $attr['start']; 
-        foreach ($data['dataku'] as $index=>$row) { 
+		$no   	= 1 + $attr['start'];
+        foreach ($data['dataku'] as $index=>$row) {
             $obj = array($row['id_key'],$no);
             foreach ($fields as $key => $value) {
             	if (is_array($value)) {
@@ -139,5 +151,27 @@ class Absensi_mata_pelajaran extends MY_Generator {
 		$select = "*,concat(kode_mp,'-',mata_pelajaran) as label";
 		// $where .= " AND class_id = '$class_id'";
 		echo json_encode($this->m_absensi_mata_pelajaran->get_schedule_auto($where,$select,$limit));
+	}
+
+	public function verifikasi_multi()
+	{
+		$resp = array();
+		foreach ($this->input->post('data') as $key => $value) {
+			$this->db->where('id',$value)->update("absensi_mata_pelajaran",[
+				"is_verified" 	=> "t",
+				"verified_by"	=> $this->session->user_id
+			]);
+			$err = $this->db->error();
+			if ($err['message']) {
+				$resp['message'] .= $err['message']."\n";
+			}
+		}
+		if (empty($resp['message'])) {
+			$resp['code'] = '200';
+			$resp['message'] = 'Data berhasil diverifikasi';
+		}else{
+			$resp['code'] = '201';
+		}
+		echo json_encode($resp);
 	}
 }

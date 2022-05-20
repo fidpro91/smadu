@@ -32,6 +32,7 @@
 
   </div>
   <div class="panel-footer">
+	  <button class="btn btn-success" id="btn-verif"><i class="fa fa-check"></i> Verifikasi</button>
     <button class="btn btn-danger" id="btn-deleteChecked"><i class="fa fa-trash"></i> Delete</button>
   </div>
   <!-- /.panel-footer-->
@@ -56,7 +57,12 @@
       "scrollX": true,
       "ajax": {
         "url": "<?php echo site_url('absensi_mata_pelajaran/get_data')?>",
-        "type": "POST"
+        "type": "POST",
+		  "data":function(f){
+			  f.unit=$("#filter_unit").val();
+			  f.tanggal=$("#filter_tanggal").val();
+			  f.verifikasi=$("#filter_verifikasi").val();
+		  }
       },
       'columnDefs': [
         {
@@ -72,6 +78,9 @@
           }
         }],
     });
+	$("#filter_unit, #filter_tanggal, #filter_verifikasi").change(()=>{
+		  table.draw();
+	  });
     // Initalize Select Dropdown after DataTables is created
     $('#tb_absensi_mata_pelajaran').closest('.dataTables_wrapper').find('select').select2({
       minimumResultsForSearch: -1
@@ -137,4 +146,28 @@
       }, 'json');
     }
   });
+
+  $("#btn-verif").click(function (event) {
+	  event.preventDefault();
+	  var searchIDs = $("#tb_absensi_mata_pelajaran input:checkbox:checked").map(function () {
+		  return $(this).val();
+	  }).toArray();
+	  if (searchIDs.length == 0) {
+		  alert("Mohon cek list data yang akan diverifikasi");
+		  return false;
+	  }
+	  if (confirm("Anda yakin akan menverifikasi data ini?")) {
+		  $.post('absensi_mata_pelajaran/verifikasi_multi', { data: searchIDs }, (resp) => {
+			  if (resp.code == '200') {
+				  toastr.success(resp.message, "Message : ");
+			  } else {
+				  toastr.error(resp.message, "Message : ");
+			  }
+			  toastr.options.onHidden=setTimeout(() => {
+				  location.reload()
+			  }, 2000);
+		  }, 'json');
+	  }
+  });
+  <?= $this->config->item('footerJS') ?>
 </script>

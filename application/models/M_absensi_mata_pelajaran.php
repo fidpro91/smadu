@@ -47,8 +47,33 @@ class M_absensi_mata_pelajaran extends CI_Model {
 						return get_absen($a);
 					}
 				],
-				"late_duration_checkin",
-				"late_duration_checkout",
+				"late_duration_checkin"=>[
+					"label"=>"keterangan masuk",
+					"custom"=>function ($row){
+						if ($row>0){
+							$txt = "lebih awal $row Menit";
+						}elseif ($row==0){
+							$txt = "";
+						}else{
+							$txt = "Lebih lambat ".abs($row)." Menit";
+						}
+						return $txt;
+					}
+				],
+
+				"late_duration_checkout"=>[
+					"label"=>"keterangan keluar",
+					"custom"=>function($row){
+						if ($row>0){
+							$txt = "lebih awal $row Menit";
+						}elseif ($row == 0){
+							$txt = "";
+						}else{
+							$txt = "lebih lambat ".abs($row) ." Menit";
+						}
+						return $txt;
+					}
+				],
 				"is_verified"=>[
 					"label"	=> "status",
 					"custom" => function($a){
