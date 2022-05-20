@@ -1,4 +1,5 @@
-    <div class="col-md-12">
+
+ <div class="col-md-12">
       			<?=form_open("employee/save",["method"=>"post","id"=>"fm_employee","enctype"=>"multipart/form-data"],$model)?>
 		<?=form_hidden("emp_id")?>
 		<div class="row">
@@ -57,7 +58,7 @@
 				"column"  => ["reff_id", "reff_name"]
 			],
 			]) ?>
-			<?= create_select(["attr" => ["name" => "pendidikan=Pendidikan", "id" => "pendidikan", "class" => "form-control"],
+			<?= create_select(["attr" => ["name" => "pendidikan=Pendidikan", "id" => "pendidikan", "required" => true, "class" => "form-control"],
 			"model" =>[
 				"m_ms_reff" => ["get_ms_reff", ["refcat_id" => $this->setting->pendidikan]],
 				"column"  => ["reff_id", "reff_name"]
@@ -86,7 +87,7 @@
 		<?= form_fieldset('ALAMAT KTP'); ?>
 		<div class="col-md-3">			
 			<?= create_select2([
-					"attr" => ["name" => "emp_prov=provinsi", "id" => "emp_prov", 'required' => true, "class" => "form-control", "onchange" => "get_reg('emp_city',this.value)"],
+					"attr" => ["name" => "emp_prov=provinsi", "id" => "emp_prov",'required' => true, "class" => "form-control", "onchange" => "get_reg('emp_city',this.value)"],
 					"model" => [
 							"m_ms_region" => ["get_ms_region", ["reg_level" => $this->setting->reg_level]],
 							"column" => ["reg_code", "reg_name"]
@@ -132,7 +133,11 @@
 		});
 		return setData;
 	}
-
-
+	$("#fm_employee").on("submit",()=>{
+      if ($("#emp_prov,#emp_city,#emp_district,#emp_resident,#emp_address").val() === '' ) {
+        alert("Mohon di isi Alamat Lengkap");
+        return false;       
+      }
+    }); 
   <?=$this->config->item('footerJS')?>
 </script>

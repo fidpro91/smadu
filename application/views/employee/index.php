@@ -81,11 +81,11 @@
     $("#form_employee").load("employee/show_form");
   });
   function set_val(id) {
-    $("#form_employee").show();
+    $("#form_employee").show();    
     $.get('employee/find_one/' + id, (data) => {
       $("#form_employee").load("employee/show_form", () => {
         $.each(data, (ind, obj) => {
-          $("#" + ind).val(obj);
+          $("#" + ind).val(obj);         
         });
       });
     }, 'json');
