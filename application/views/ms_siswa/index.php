@@ -14,16 +14,16 @@
   </div>
   <div class="panel-body" id="data_ms_siswa">
       <div class="row">
-          <div class="col-md-2">
+          <div class="col-md-2" id="tahun">
             <?= create_input("filter_tahun=Tahun Masuk") ?>
           </div>
-          <div class="col-md-2">
+          <div class="col-md-2" id="jk">
             <?= create_select([
               "attr" => ["name" => "filter_jk=Jenis Kelamin", "id" => "filter_jk", "class" => "form-control"],
               "option" => [["id" => ' ', "text" => 'Pilih'], ["id" => 'L', "text" => "Laki-Laki"], ["id" => 'P', "text" => "Perempuan"]],
             ]) ?>
           </div>
-          <div class="col-md-2">
+          <div class="col-md-2" id="kelas">
           <?= create_select2([
                   "attr" => ["name" => "filter_kelas=Kelas", "id" => "filter_kelas", "class" => "form-control", 'required' => true],
                   "model" => [
@@ -111,6 +111,7 @@
   });
   $("#btn-add").click(function() {
     $("#form_ms_siswa").show();
+    $("#tahun,#jk,#kelas").hide();   
     $("#form_ms_siswa").load("ms_siswa/show_form");
   });
 

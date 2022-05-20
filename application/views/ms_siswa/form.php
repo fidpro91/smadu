@@ -92,8 +92,6 @@
 
 			
 <?= form_fieldset_close(); ?>
-
-</div>
 <?=form_close()?>
       <div class="panel-footer">
       		<button class="btn btn-primary" type="button" onclick="$('#fm_ms_siswa').submit()">Save</button>
