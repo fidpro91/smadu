@@ -1,4 +1,5 @@
-    <div class="col-md-12">
+
+ <div class="col-md-12">
       			<?=form_open("employee/save",["method"=>"post","id"=>"fm_employee","enctype"=>"multipart/form-data"],$model)?>
 		<?=form_hidden("emp_id")?>
 		<div class="row">
@@ -132,7 +133,11 @@
 		});
 		return setData;
 	}
-	
-
+	$("#fm_employee").on("submit",()=>{
+      if ($("#emp_prov,#emp_city,#emp_district,#emp_resident,#emp_address").val() === '' ) {
+        alert("Mohon di isi Alamat Lengkap");
+        return false;       
+      }
+    }); 
   <?=$this->config->item('footerJS')?>
 </script>

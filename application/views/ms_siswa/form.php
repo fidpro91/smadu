@@ -111,5 +111,12 @@
 		return setData;
 	}
 
+	$("#fm_ms_siswa").on("submit",()=>{
+      if ($("#st_prov,#st_city,#st_district,#st_resident,#st_address").val() === '' ) {
+        alert("Mohon di isi Alamat Lengkap");
+        return false;       
+      }
+    }); 
+
   <?=$this->config->item('footerJS')?>
 </script>
