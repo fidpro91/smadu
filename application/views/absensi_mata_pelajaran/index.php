@@ -10,7 +10,26 @@
   <div class="panel-body" id="form_absensi_mata_pelajaran" style="display: none;">
   </div>
   <div class="panel-body" id="data_absensi_mata_pelajaran">
-    <?=create_table("tb_absensi_mata_pelajaran","M_absensi_mata_pelajaran",["class"=>"table table-bordered datatable" ,"style" => "width:100% !important;"])?>
+	  <div class="row">
+		  <div class="col-md-3">
+			  <?= create_inputDate("filter_tanggal=Tanggal", ["format" => "yyyy-mm-dd", "autoclose" => true]) ?>
+		  </div>
+		  <div class="col-md-3">
+			  <?= create_select2(["attr" => ["name" => "filter_unit=Tempat Ruangan", "id" => "filter_unit", "class" => "form-control"],
+					  "model" => ["m_ms_unit" => "get_ms_unit", "column" => ["unit_id", "unit_name"]]
+			  ]) ?>
+		  </div>
+		  <div class="col-md-3">
+			  <?= create_select([
+					  "attr" => ["name" => "filter_verifikasi=Verifikasi", "id" => "filter_verifikasi", "class" => "form-control"],
+					  "option" => [["id" => 't', "text" => "Sudah"], ["id" => 'f', "text" => "Belum"]],
+			  ]) ?>
+		  </div>
+		  <div class="col-md-12">
+			  <?=create_table("tb_absensi_mata_pelajaran","M_absensi_mata_pelajaran",["class"=>"table table-bordered datatable" ,"style" => "width:100% !important;"])?>
+		  </div>
+	  </div>
+
   </div>
   <div class="panel-footer">
     <button class="btn btn-danger" id="btn-deleteChecked"><i class="fa fa-trash"></i> Delete</button>
