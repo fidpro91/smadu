@@ -1,70 +1,105 @@
-<!-- Default panel -->
-<div class="panel panel-gradient">
-  <div class="panel-heading">
-    <h3 class="panel-title">Form Company Profil</h3>
-    <div class="panel-options">
-      <button type="button" id="btn-add" class="btn btn-black">
-        <i class="entypo-plus"></i> Add</button>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      <?= ucwords('Profil Instansi') ?>
+    </h1>
+   
+  </section>
+  <!-- Main content -->
+  <section class="content">
+<section class="content">
+  <div class="box">
+    <?= $this->session->flashdata('message') ?>
+      <div class="box-header with-border">
+        <h3 class="box-title">
+        <div class="box-tools pull-right">
+          <div class="btn-group">
+            <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+              <i class="fa fa-wrench" href="#" onclick="set_val()"></i></button>
+            <!-- <ul class="dropdown-menu" role="menu"> -->
+              <!-- <li><a href="#" onclick="set_val()">Edit</a></li> -->
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="box-body" id="form_company_profil" style="display: none;">
+      </div>
+      <div class="box-body" id="data_company_profil">
+        <table class="table">
+          <tr>
+            <td rowspan="5" style="width: 20%; text-align:center;">
+              <img src="<?= base_url($smadu->logo1??'assets/images/icon/logo_du.png') ?>"></img>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 15%;">Kode Instansi</td>
+            <td style="width: 2%;">:</td>
+            <td id="kodeuniv"><?= $smadu->kode_instansi ?></td>
+          </tr>
+          <tr>
+            <td>Nama Instansi</td>
+            <td>:</td>
+            <td><?= $smadu->nama_instansi ?></td>
+          </tr>
+          <tr>
+            <td>Tanggal Berdiri</td>
+            <td>:</td>
+            <td><?= $smadu->tanggal_berdiri ?></td>
+          </tr>
+          <tr>
+            <td>Kepala Sekolah</td>
+            <td>:</td>
+            <td></td>
+          </tr>
+</table>
+<table class="table">
+          <tr>
+            <td style="width: 15%;">Status Akreditasi</td>
+            <td style="width: 2%;">:</td>
+            <td><?= $smadu->status_akreditasi ?></td>
+          </tr>
+          <tr>
+            <td>Tanggal Akreditasi</td>
+            <td>:</td>
+            <td><?= $smadu->tanggal_akreditasi ?></td>
+          </tr>
+          <tr>
+            <td>Alamat</td>
+            <td>:</td>
+            <td><?= $smadu->alamat_instansi ?></td>
+          </tr>
+          <tr>
+            <td>Email</td>
+            <td>:</td>
+            <td><?= $smadu->email ?></td>
+          </tr>
+          <tr>
+            <td>Website</td>
+            <td>:</td>
+            <td><?= $smadu->website ?></td>
+          </tr>
+        </table>
+      </div>
+      <!-- /.box-footer-->
     </div>
-  </div>
-  <div class="panel-body" id="form_company_profil" style="display: none;">
-  </div>
-  <div class="panel-body" id="data_company_profil">
-    <?=create_table("tb_company_profil","M_company_profil",["class"=>"table table-bordered datatable" ,"style" => "width:100% !important;"])?>
-  </div>
-  <div class="panel-footer">
-    <button class="btn btn-danger" id="btn-deleteChecked"><i class="fa fa-trash"></i> Delete</button>
-  </div>
-  <!-- /.panel-footer-->
+    <!-- /.box -->
+
+  </section>
+  <!-- /.content -->
 </div>
 <!-- /.panel -->
 <script type="text/javascript">
-  var table;
-  var notifikasi = '<?=$this->session->flashdata("message")?>';
-  $(document).ready(function () {
-    if (notifikasi) {
-      notifikasi = JSON.parse(notifikasi)
-      if (notifikasi.code == '200') {
-        toastr.success(notifikasi.message, "Message : ");
-      } else {
-        toastr.error(notifikasi.message, "Message : ");
-      }
-    }
-    table = $('#tb_company_profil').DataTable({
-      "processing": true,
-      "serverSide": true,
-      "order": [],
-      "scrollX": true,
-      "ajax": {
-        "url": "<?php echo site_url('company_profil/get_data')?>",
-        "type": "POST"
-      },
-      'columnDefs': [
-        {
-          'targets': [0, 1, -1],
-          'searchable': false,
-          'orderable': false,
-        },
-        {
-          'targets': 0,
-          'className': 'dt-body-center',
-          'render': function (data, type, full, meta) {
-            return '<input type="checkbox" name="id[]" value="' + $('<div/>').text(data).html() + '">';
-          }
-        }],
-    });
-    // Initalize Select Dropdown after DataTables is created
-    $('#tb_company_profil').closest('.dataTables_wrapper').find('select').select2({
-      minimumResultsForSearch: -1
-    });
-  });
+
   $("#btn-add").click(function () {
     $("#form_company_profil").show();
     $("#form_company_profil").load("company_profil/show_form");
   });
-  function set_val(id) {
+  function set_val() {
     $("#form_company_profil").show();
-    $.get('company_profil/find_one/' + id, (data) => {
+    $("#data_company_profil").hide();
+    $.get('company_profil/find_one/' + $("#kodeuniv").text(), (data) => {
       $("#form_company_profil").load("company_profil/show_form", () => {
         $.each(data, (ind, obj) => {
           $("#" + ind).val(obj);
@@ -73,49 +108,5 @@
     }, 'json');
   }
 
-  function deleteRow(id) {
-    if (confirm("Anda yakin akan menghapus data ini?")) {
-      $.get('company_profil/delete_row/' + id, (data) => {
-        if (data.code == '200') {
-          toastr.success(data.message, "Message : ");
-        } else {
-          toastr.error(data.message, "Message : ");
-        }
-        toastr.options.onHidden=setTimeout(() => {
-          location.reload()
-        }, 2000);
-      }, 'json');
-    }
-  }
 
-  $("#checkAll").click(() => {
-    if ($("#checkAll").is(':checked')) {
-      $("#tb_company_profil input[type='checkbox']").attr("checked", true);
-    } else {
-      $("#tb_company_profil input[type='checkbox']").attr("checked", false);
-    }
-  });
-
-  $("#btn-deleteChecked").click(function (event) {
-    event.preventDefault();
-    var searchIDs = $("#tb_company_profil input:checkbox:checked").map(function () {
-      return $(this).val();
-    }).toArray();
-    if (searchIDs.length == 0) {
-      alert("Mohon cek list data yang akan dihapus");
-      return false;
-    }
-    if (confirm("Anda yakin akan menghapus data ini?")) {
-      $.post('company_profil/delete_multi', { data: searchIDs }, (resp) => {
-        if (resp.code == '200') {
-          toastr.success(resp.message, "Message : ");
-        } else {
-          toastr.error(resp.message, "Message : ");
-        }
-        toastr.options.onHidden=setTimeout(() => {
-          location.reload()
-        }, 2000);
-      }, 'json');
-    }
-  });
 </script>
