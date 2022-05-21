@@ -209,22 +209,22 @@
             <div class="panel-heading">
                 <div class="panel-title">Grafik Absensi Siswa</div>
                 <div class="panel-options" style="width: 30% !important;">
-                <?=form_dropdown("filter_class",$unit,'','class="form-control select2" id="filter_class"')?>
+                <?=form_dropdown("filter_class",$unit,'','class="form-control select2" id="filter_class" onchange="loadChartabsensiSiswa()"')?>
                 </div>
             </div>
             <div class="panel-body">
-                <div id="chart3" class="morrischart" style="height: 300px;"></div>
+                <div id="chart3" style="height: 300px;"></div>
             </div>
         </div>
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <div class="panel-title">Grafik Absensi Pegawai</div>
                 <div class="panel-options"  style="width: 30% !important;">
-                <?=form_dropdown("filter_unit",$unitKerja,'','class="form-control select2" id="filter_unit"')?>
+                <?=form_dropdown("filter_unit",$unitKerja,'','class="form-control select2" id="filter_unit" onchange="loadChartabsensiPegawai()"')?>
                 </div>
             </div>
             <div class="panel-body">
-                <div id="chart4" class="morrischart" style="height: 300px;"></div>
+                <div id="chart4" style="height: 300px;"></div>
             </div>
         </div>
     </div>
@@ -254,7 +254,6 @@
                 </tbody>
             </table>
         </div>
-
     </div>
 
     <div class="col-sm-8">
@@ -293,6 +292,8 @@
     // Code used to add Todo Tasks
     jQuery(document).ready(function($) {
         var $todo_tasks = $("#todo_tasks");
+        loadChartabsensiPegawai();
+        loadChartabsensiSiswa();
         $("#tabel_actifity").DataTable();
         $todo_tasks.find('input[type="text"]').on('keydown', function(ev) {
             if (ev.keyCode == 13) {
@@ -310,9 +311,38 @@
         });
 
         $.ajax({
+            url: '<?= base_url() ?>dashboard/get_data_chart_siswa/',
+            type: 'post',
+            data: "filter_name="+$("#filter_name").val(),
+            dataType: 'json',
+            success: function(response) {
+                Morris.Donut({
+                    element: 'chart5',
+                    data: response
+                });
+            }
+        });
+
+        $.ajax({
+            url: '<?= base_url() ?>dashboard/get_data_chart_pegawai/',
+            type: 'post',
+            data: "filter_name="+$("#filter_name").val(),
+            dataType: 'json',
+            success: function(response) {
+                Morris.Donut({
+                    element: 'chart6',
+                    data: response
+                });
+            }
+        });
+    });
+
+    function loadChartabsensiSiswa() {
+        $("#chart3").empty();
+        $.ajax({
             url: '<?= base_url() ?>dashboard/get_data_chart/',
             type: 'post',
-            data: $("#fm_filter").serialize()+"&filter_name="+$("#filter_name").val(),
+            data: "filter_class="+$("#filter_class").val(),
             dataType: 'json',
             success: function(response) {
                 // Bar Charts
@@ -327,11 +357,14 @@
                 });
             }
         });
+    }
 
+    function loadChartabsensiPegawai() {
+        $("#chart4").empty();
         $.ajax({
             url: '<?= base_url() ?>dashboard/get_data_chart_absen_pegawai/',
             type: 'post',
-            data: $("#fm_filter").serialize()+"&filter_name="+$("#filter_name").val(),
+            data: "filter_unit="+$("#filter_unit").val(),
             dataType: 'json',
             success: function(response) {
                 // Bar Charts
@@ -346,31 +379,5 @@
                 });
             }
         });
-
-        $.ajax({
-            url: '<?= base_url() ?>dashboard/get_data_chart_siswa/',
-            type: 'post',
-            data: $("#fm_filter").serialize()+"&filter_name="+$("#filter_name").val(),
-            dataType: 'json',
-            success: function(response) {
-                Morris.Donut({
-                    element: 'chart5',
-                    data: response
-                });
-            }
-        });
-
-        $.ajax({
-            url: '<?= base_url() ?>dashboard/get_data_chart_pegawai/',
-            type: 'post',
-            data: $("#fm_filter").serialize()+"&filter_name="+$("#filter_name").val(),
-            dataType: 'json',
-            success: function(response) {
-                Morris.Donut({
-                    element: 'chart6',
-                    data: response
-                });
-            }
-        });
-    });
+    }
 </script>

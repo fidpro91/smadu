@@ -45,11 +45,16 @@ class Dashboard extends MY_Generator {
 
 	public function get_data_chart()
 	{
-		
+		$post=$this->input->post();
+		list($kelas,$room) = explode('-',$post['filter_class']);
 		$data = $this->db->query("
 			SELECT x.bulan,JSON_ARRAYAGG(
 			JSON_OBJECT('f1',x.absen_type,'f2',x.jml))detail FROM (
 			SELECT EXTRACT(month FROM absen_date)bulan,absen_type,count(*)jml FROM absensi_siswa ab
+			join ms_siswa ms on ms.st_id = ab.siswa_id
+			join ms_unit mu on ms.last_kelas = mu.unit_id
+			join ms_category_unit mc on mu.unit_type = mc.catunit_id
+			where mu.unit_name like '%".trim($kelas)."%' and mc.nama like '%".trim($room)."%'
 			GROUP BY EXTRACT(month FROM absen_date),absen_type
 			)x
 			GROUP BY x.bulan
@@ -90,12 +95,13 @@ class Dashboard extends MY_Generator {
 
 	public function get_data_chart_absen_pegawai()
 	{
-		
+		$post = $this->input->post();
 		$data = $this->db->query("
 			SELECT x.bulan,JSON_ARRAYAGG(
 			JSON_OBJECT('f1',x.absen_type,'f2',x.jml))detail FROM (
 			SELECT EXTRACT(month FROM absen_date)bulan,absen_type,count(*)jml FROM absensi_pegawai ap
 			join employee e on e.emp_id = ap.emp_id
+			where e.unit_id = '".$post['filter_unit']."'
 			GROUP BY EXTRACT(month FROM absen_date),absen_type
 			)x
 			GROUP BY x.bulan

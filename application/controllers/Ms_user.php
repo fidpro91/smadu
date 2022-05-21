@@ -23,6 +23,9 @@ class Ms_user extends MY_Generator {
 			foreach ($this->m_ms_user->rules() as $key => $value) {
 				$input[$key] = $data[$key];
 			}
+			if (!empty($data['siswa_id'])) {
+				$input['siswa_id'] = json_encode($data['siswa_id']);
+			}
 			if ($data['user_id']) {
 				$this->db->where('user_id',$data['user_id'])->update('ms_user',$input);
 			}else{

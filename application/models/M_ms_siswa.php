@@ -114,9 +114,14 @@ class M_ms_siswa extends CI_Model {
 		return $this->form_validation->run();
 	}
 
-	public function get_ms_siswa($where)
+	public function get_ms_siswa($where = null)
 	{
 		return $this->db->get_where("ms_siswa",$where)->result();
+	}
+
+	public function get_ms_siswa3($where = null)
+	{
+		return $this->db->select("*,concat(st_nis,'|',st_name)nama_siswa")->get_where("ms_siswa",$where)->result();
 	}
 
 	public function get_ms_siswa2($where="",$select = "",$limit = "")

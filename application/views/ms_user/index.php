@@ -68,6 +68,9 @@
       $("#form_ms_user").load("ms_user/show_form", () => {
         $.each(data, (ind, obj) => {
           $("#" + ind).val(obj);
+          if (ind == 'siswa_id') {
+            $("#" + ind).val(JSON.parse(obj)).change();
+          }
         });
       });
     }, 'json');
