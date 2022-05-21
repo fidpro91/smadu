@@ -1,4 +1,13 @@
 
+<?php 
+if ($button=="Excel") {
+    $now = date('d-m-Y');
+    header("Content-type: application/vnd-ms-excel");
+    header("Content-Disposition: attachment; filename=Rekap Absen Siswa-".$now.".xls");
+}
+
+?>
+
 <style type="text/css">    
 .tabel{
 	font-size:13px;
@@ -27,6 +36,7 @@ td{
 			</td>
     	</tr>
     </table>
+   
 <table border="1" align="center" width="100%" style="font-size: 12px; border-collapse: collapse;" >
     <tr>
         <td rowspan="2" align="center">No</td>
@@ -47,7 +57,7 @@ td{
             foreach ($dataNilai as $ind => $value) {
                 echo "<tr>
                 <td>".($ind+1)."</td>
-                <td>$value->st_nim</td>
+                <td>$value->st_nis</td>
                 <td>$value->st_name</td>
                 <td>$value->unit_name</td>";
                 $detailNilai = json_decode($value->detail);

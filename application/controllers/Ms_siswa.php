@@ -223,11 +223,12 @@ class Ms_siswa extends MY_Generator {
 	    foreach ($sheetData as $key => $value) {
 	    	if ($key>0) {
 	    		$row = [
-	    					"st_nim" 		=> $value[1],
+	    					"st_nis" 		=> $value[1],
 							"st_name" 	=> $value[2],
 							"st_sex" 		=> $value[3],							
 							"st_active" 	=> "t",
 							"st_birthdate" 	=> date('Y-m-d',strtotime($value[4])),
+							"st_address" 		=> $value[5],
 	    				];
 
 	    			$data[$key] = $row;

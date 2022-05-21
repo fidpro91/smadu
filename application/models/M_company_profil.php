@@ -5,7 +5,7 @@ class M_company_profil extends CI_Model {
 	public function get_data($sLimit,$sWhere,$sOrder,$aColumns)
 	{
 		$data = $this->db->query("
-				select ".implode(',', $aColumns).",id as id_key  from company_profil where 0=0 $sWhere $sOrder $sLimit
+				select ".implode(',', $aColumns).",as id_key  from company_profil where 0=0 $sWhere $sOrder $sLimit
 			")->result_array();
 		return $data;
 	}
@@ -13,7 +13,7 @@ class M_company_profil extends CI_Model {
 	public function get_total($sWhere,$aColumns)
 	{
 		$data = $this->db->query("
-				select ".implode(',', $aColumns).",id as id_key  from company_profil where 0=0 $sWhere
+				select ".implode(',', $aColumns).",as id_key  from company_profil where 0=0 $sWhere
 			")->num_rows();
 		return $data;
 	}
@@ -21,7 +21,7 @@ class M_company_profil extends CI_Model {
 	public function get_column()
 	{
 		$col = [
-				"id",
+				//"id",
 				"kode_instansi",
 				"nama_instansi",
 				"alamat_instansi",
@@ -42,7 +42,7 @@ class M_company_profil extends CI_Model {
 	public function rules()
 	{
 		$data = [
-					"id" => "trim|integer|required",
+					//"id" => "trim|integer",
 					"kode_instansi" => "trim|required",
 					"nama_instansi" => "trim|required",
 					"alamat_instansi" => "trim",

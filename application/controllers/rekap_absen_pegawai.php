@@ -17,9 +17,11 @@ class rekap_absen_pegawai extends MY_Generator
 		$this->theme('rekap_pegawai/index');
 	}
 	public function show_laporan()
-	{ 		
+	{ 	
+		$button=$_POST['dtlPas'];	
 		$post=$this->input->post();
 		$data['post']=$post;  
+		$data['button']=$button;
 		$where = " DATE_FORMAT(absen_date, '%m-%Y') = '".$post["tanggal"]."'"; 
 		if (!empty($post["filter_absen"])) {
 			$where .= " AND absen_type = ".$post["filter_absen"]."";
@@ -43,8 +45,21 @@ class rekap_absen_pegawai extends MY_Generator
 	ORDER BY
 		emp_name
 			
-	")->result();
-		$this->load->view("rekap_pegawai/rekap_absen_pegawai",$data); 
+	")->result();		
+
+		if($button=="Excel"){
+			$this->load->view("rekap_pegawai/rekap_absen_pegawai",$data);
+		}else{
+			$html=$this->load->view("rekap_pegawai/rekap_absen_pegawai",$data,true);
+		$mpdf = new \Mpdf\Mpdf([
+			'mode' => 'utf-8',
+			'format' => 'A4-L',
+			'orientation' => 'L'
+		]);		
+		$mpdf->WriteHTML($html);	
+		$mpdf->Output();
+
+		}	
 	}
 
 

@@ -10,7 +10,7 @@
 <br>
  </div> 
 <?=form_open("rekap_absensi/show_laporan",["method"=>"post","id"=>"formlaporan","target"=>"blank"])?>      
-        <div class="box-body" id="jaspel">        
+        <div class="box-body" id="rekap">        
           <div class="col-md-6" >
          <?=create_inputDate("tanggal=BULAN",[
 						"format"		=>"mm-yyyy",
@@ -36,6 +36,7 @@
 			]) ?>          
         <br><br>
        <button class="btn btn-primary" type="button" onclick="$('#formlaporan').submit()">Tampilkan</button>
+       <input class="btn btn-success" type="submit" value="Excel" name="dtlPas">      
        </div>
      </div>
 
@@ -51,12 +52,17 @@
       $(document).ready(function() {
      // $('.select2').select2();     
     });
+   
     $("#formlaporan").on("submit",()=>{
-      if ($("#filter_unit").val() === '') {
+      if ($("#tanggal").val() === '' ) {
+        alert("Mohon di isi Bulan");
+        return false;       
+      }else if($("#filter_unit").val() === ''){
         alert("Mohon di isi kelas");
         return false;
       }
-    });
-	
+    }); 
+
+
     <?=$this->config->item('footerJS')?>
 </script>

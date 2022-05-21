@@ -18,7 +18,7 @@
 </div>
 <div class="col-md-6">
 			<?=create_input("st_nokk=NO KK")?>
-			<?=create_input("st_phone=Telepon")?>
+			<?=create_input("st_phone=Telepon",)?>
 			<?=create_input("st_mother=Ibu")?>			
 			<?= create_select(["attr" => ["name" => "religion_id=Agama", "id" => "religion_id", "class" => "form-control"],
 			"model" =>[
@@ -63,7 +63,7 @@
 <?= form_fieldset('ALAMAT SISWA'); ?>
 		<div class="col-md-3">		
 		<?= create_select2([
-					"attr" => ["name" => "st_prov=provinsi", "id" => "st_prov", 'required' => true, "class" => "form-control", "onchange" => "get_reg('st_city',this.value)"],
+					"attr" => ["name" => "st_prov=provinsi", "id" => "st_prov","required"=> true, "class" => "form-control", "onchange" => "get_reg('st_city',this.value)"],
 					"model" => [
 							"m_ms_region" => ["get_ms_region", ["reg_level" => $this->setting->reg_level]],
 							"column" => ["reg_code", "reg_name"]
@@ -92,8 +92,6 @@
 
 			
 <?= form_fieldset_close(); ?>
-
-</div>
 <?=form_close()?>
       <div class="panel-footer">
       		<button class="btn btn-primary" type="button" onclick="$('#fm_ms_siswa').submit()">Save</button>
@@ -105,16 +103,20 @@
 		$("#form_ms_siswa").hide();
 		$("#form_ms_siswa").html('');
 	});
-
-
-
 	function get_reg(dest, id) {
 		$("#" + dest + " > option").remove();
 		const setData = $.get("employee/get_region/" + id, (resp) => {
-			$("#" + dest + "").append(resp);// alert(resp);
+			$("#" + dest + "").append(resp); 
 		});
 		return setData;
 	}
+
+	$("#fm_ms_siswa").on("submit",()=>{
+      if ($("#st_prov,#st_city,#st_district,#st_resident,#st_address").val() === '' ) {
+        alert("Mohon di isi Alamat Lengkap");
+        return false;       
+      }
+    }); 
 
   <?=$this->config->item('footerJS')?>
 </script>

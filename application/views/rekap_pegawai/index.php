@@ -36,6 +36,7 @@
 			]) ?>           -->
         <br><br>
        <button class="btn btn-primary" type="button" onclick="$('#formlaporan').submit()">Tampilkan</button>
+       <input class="btn btn-success" type="submit" value="Excel" name="dtlPas"> 
        </div>
      </div>
 
@@ -49,11 +50,11 @@
 
 <script type="text/javascript">
       $(document).ready(function() {
-     // $('.select2').select2();     
+         
     });
     $("#formlaporan").on("submit",()=>{
-      if ($("#filter_unit").val() === '') {
-        alert("Mohon di isi kelas");
+      if ($("#tanggal").val() === '') {
+        alert("Mohon di isi bulan");
         return false;
       }
     });
