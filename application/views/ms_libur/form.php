@@ -33,7 +33,8 @@
 			"attr" => ["name" => "libur_type=diperuntukkan", "id" => "libur_type", "class" => "form-control", 'required' => true],
 			"option" => [
 					["id" => '1', "text" => "Siswa"],
-					["id" => '2', "text" => "Pegawai"]
+					["id" => '2', "text" => "Pegawai"],
+					["id" => '3', "text" => "Siswa & Pegawai"]
 			]
 	]) ?>
 	<?= create_input("libur_tahun") ?>
