@@ -213,7 +213,8 @@ class Ms_siswa extends MY_Generator {
 		
 	 
 	    $spreadsheet = $reader->load($_FILES['siswa_import']['tmp_name']);
-	     
+
+		$input['user_id'] = $this->session->user_id;
 	    $sheetData = $spreadsheet->getActiveSheet()->toArray();
 	    $sukses=$gagal=0;
 	    $data=[];
@@ -223,19 +224,23 @@ class Ms_siswa extends MY_Generator {
 	    foreach ($sheetData as $key => $value) {
 	    	if ($key>0) {
 	    		$row = [
-	    					"st_nis" 		=> $value[1],
-							"st_name" 	=> $value[2],
-							"st_sex" 		=> $value[3],							
-							"st_active" 	=> "t",
+	    					"st_nis" 		=> $value[0],
+							"st_name" 	=> $value[1],
+							"st_address" 	=> $value[2],
+							"st_born"	=> $value[3],							
 							"st_birthdate" 	=> date('Y-m-d',strtotime($value[4])),
-							"st_address" 		=> $value[5],
+							"last_kelas" 		=> $value[7],
+							"st_father" => $value[5],
+							"st_phone" => $value[6],
+							"user_id" => $input['user_id'],  
 	    				];
 
 	    			$data[$key] = $row;
 	    			$sukses++;	
 	    	}
+			
 	    }
-	    
+	   
 	    if ($sukses>0) {
 	    	$this->db->insert_batch('ms_siswa',$data); 
 	    }

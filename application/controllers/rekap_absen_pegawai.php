@@ -46,19 +46,14 @@ class rekap_absen_pegawai extends MY_Generator
 		emp_name
 			
 	")->result();		
-
+    
 		if($button=="Excel"){
 			$this->load->view("rekap_pegawai/rekap_absen_pegawai",$data);
 		}else{
 			$html=$this->load->view("rekap_pegawai/rekap_absen_pegawai",$data,true);
-		$mpdf = new \Mpdf\Mpdf([
-			'mode' => 'utf-8',
-			'format' => 'A4-L',
-			'orientation' => 'L'
-		]);		
-		$mpdf->WriteHTML($html);	
-		$mpdf->Output();
-
+			$mpdf = new \Mpdf\Mpdf();		
+			$mpdf->WriteHTML($html);
+			$mpdf->Output();
 		}	
 	}
 
