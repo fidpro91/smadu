@@ -219,6 +219,7 @@ class Ms_siswa extends MY_Generator {
 	    $sukses=$gagal=0;
 	    $data=[];
 	    $dataGagal="";
+		$this->load->model("m_ms_unit");
 	    $this->load->model("m_ms_siswa");
 		$resp = array();
 	    foreach ($sheetData as $key => $value) {
@@ -229,7 +230,7 @@ class Ms_siswa extends MY_Generator {
 							"st_address" 	=> $value[2],
 							"st_born"	=> $value[3],							
 							"st_birthdate" 	=> date('Y-m-d',strtotime($value[4])),
-							"last_kelas" 		=> $value[7],
+							"last_kelas" 		=> (isset($this->m_ms_unit->find_one(["unit_code"=>$value[7]])->unit_id)?$this->m_ms_unit->find_one(["unit_code"=>$value[7]])->unit_id:null),
 							"st_father" => $value[5],
 							"st_phone" => $value[6],
 							"user_id" => $input['user_id'],  
