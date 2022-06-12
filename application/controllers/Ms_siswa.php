@@ -61,7 +61,7 @@ class Ms_siswa extends MY_Generator {
 					"gender"		  => ($input['st_sex']=='L'?1:2)
 				];
 				$this->finger->insert('pegawai',$insertFinger);
-				$input['finger_id'] = $this->finger->insert_id();
+				$input['finger_id'] = $pin;
 				$this->db->insert('ms_siswa',$input);
 			}
 			$err = $this->db->error();
@@ -215,36 +215,71 @@ class Ms_siswa extends MY_Generator {
 	    $spreadsheet = $reader->load($_FILES['siswa_import']['tmp_name']);
 
 		$input['user_id'] = $this->session->user_id;
-	    $sheetData = $spreadsheet->getActiveSheet()->toArray();
+		$sheetData = $spreadsheet->getActiveSheet()->toArray();
 	    $sukses=$gagal=0;
 	    $data=[];
 	    $dataGagal="";
 		$this->load->model("m_ms_unit");
 	    $this->load->model("m_ms_siswa");
 		$resp = array();
-	    foreach ($sheetData as $key => $value) {
+		$pin=$this->finger->select_max('pegawai_pin')->get('pegawai')->row('pegawai_pin');
+	    foreach ($sheetData as $key => $value) {			
+			$pin = $pin+1;
 	    	if ($key>0) {
-	    		$row = [
-	    					"st_nis" 		=> $value[0],
+				$insertfinger = [
+							"pegawai_nama" 	  => $value[1],
+							"pegawai_alias"   => $value[1],
+							"tempat_lahir"    => $value[3],
+							"tgl_lahir"		  => date('Y-m-d',strtotime($value[4])),
+							"tgl_mulai_kerja" => date('Y-m-d'),
+							"tgl_masuk_pertama"	=> date('Y-m-d'),
+							"pegawai_pin"	  => $pin, 
+							"gender"		  => ($value[8]=='L'?1:2),
+						];
+
+						$this->finger->insert('pegawai',$insertfinger);
+						$finger_id=$this->db->insert_id();
+						
+				
+						$row = [
+							"st_nis" 		=> $value[0],
 							"st_name" 	=> $value[1],
 							"st_address" 	=> $value[2],
 							"st_born"	=> $value[3],							
 							"st_birthdate" 	=> date('Y-m-d',strtotime($value[4])),
-							"last_kelas" 		=> (isset($this->m_ms_unit->find_one(["unit_code"=>$value[7]])->unit_id)?$this->m_ms_unit->find_one(["unit_code"=>$value[7]])->unit_id:null),
+							"last_kelas" 	=> (isset($this->m_ms_unit->find_one(["unit_name"=>$value[7]])->unit_id)?$this->m_ms_unit->find_one(["unit_name"=>$value[7]])->unit_id:null),
 							"st_father" => $value[5],
 							"st_phone" => $value[6],
-							"user_id" => $input['user_id'],  
-	    				];
-
-	    			$data[$key] = $row;
-	    			$sukses++;	
+							"user_id" => $input['user_id'],
+							"st_sex" => $value[8],
+							"finger_id" => $pin, 
+							
+						];
+						$this->db->insert('ms_siswa',$row); 
+	    			
 	    	}
 			
+			//$this->finger->insert('pegawai',$data);
 	    }
 	   
-	    if ($sukses>0) {
-	    	$this->db->insert_batch('ms_siswa',$data); 
-	    }
+	    // if ($sukses>0) {
+		// 	$pin=$this->finger->select_max('pegawai_pin')
+		// 	->get('pegawai')->row('pegawai_pin');
+		// 	foreach ($data as $ka){					
+		// 		$pin = $pin+1; 			
+		// 		$insertFinger = [
+		// 			"pegawai_nama" 	  => $ka['st_name'],
+		// 			"pegawai_alias"   => $ka['st_name'],
+		// 			"tempat_lahir"    => $ka['st_born'],
+		// 			"tgl_lahir"		  => $ka['st_birthdate'],
+		// 			"tgl_mulai_kerja" => date('Y-m-d'),
+		// 			"tgl_masuk_pertama"	=> date('Y-m-d'),
+		// 			"pegawai_pin"	  => $pin, 
+		// 			"gender"		  => ($row['st_sex']=='L'?1:2)
+		// 		];//print_r($pin);die;
+		// 		$this->finger->insert('pegawai',$insertFinger);				
+		// 	}				
+	    // }
 		if (empty($resp)) {
 			$resp['code'] = '200';
 			$resp['message'] = 'Data berhasil di upload';
