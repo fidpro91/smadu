@@ -51,6 +51,10 @@ class M_ms_user extends CI_Model {
 					"user_salt_encrypt" => "trim",
 					"user_status" => "trim|required",
 					"person_name" => "trim",
+<<<<<<< HEAD
+=======
+					"emp_id" => "trim",
+>>>>>>> 4f229f012e9d0a8a07e312b74becd22a91ed6ff9
 					"user_group" => "trim|integer|required",
 
 				];

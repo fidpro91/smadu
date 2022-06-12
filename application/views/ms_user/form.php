@@ -1,6 +1,10 @@
     <div class="col-md-12">
     	<?= form_open("ms_user/save", ["method" => "post", "class" => "form-horizontal", "id" => "fm_ms_user"], $model) ?>
+<<<<<<< HEAD
     	<!-- <?= form_hidden("employee_id") ?> -->
+=======
+        <?= form_hidden("emp_id") ?>
+>>>>>>> 4f229f012e9d0a8a07e312b74becd22a91ed6ff9
     	<?= create_input("user_name") ?>
     	<?= create_input("user_password") ?>
     	<?= form_hidden("user_id") ?>
@@ -35,7 +39,12 @@
     		$(this).autocomplete({
     			source: "<?php echo site_url('ms_user/get_employee/person_name'); ?>",
     			select: function(event, ui) {
+<<<<<<< HEAD
     				$('#person_name').val(ui.item.employee_name);
+=======
+    				$('#person_name').val(ui.item.employee_name),
+					$('#emp_id').val(ui.item.emp_id);
+>>>>>>> 4f229f012e9d0a8a07e312b74becd22a91ed6ff9
     			}
     		});
 

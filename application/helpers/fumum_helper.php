@@ -15,6 +15,7 @@ function get_pendidikan(){
 
 function get_hari(){
 	return [
+<<<<<<< HEAD
 			["id"=>"0", "text"=> "Minggu"],
 			["id"=>"1", "text" => "Senin"],
 			["id"=>"2", "text" => "Selasa"],
@@ -22,6 +23,15 @@ function get_hari(){
 			["id"=>"4", "text"=> "Kamis"],
 			["id"=>"5", "text"=> "Jum'at"],
 			["id"=>"6", "text"=> "Sabtu"],
+=======
+			["id"=>"1", "text"=> "Minggu"],
+			["id"=>"2", "text" => "Senin"],
+			["id"=>"3", "text" => "Selasa"],
+			["id"=>"4", "text"=> "Rabu"],
+			["id"=>"5", "text"=> "Kamis"],
+			["id"=>"6", "text"=> "Jum'at"],
+			["id"=>"7", "text"=> "Sabtu"],
+>>>>>>> 4f229f012e9d0a8a07e312b74becd22a91ed6ff9
 		];
 }
 
@@ -31,6 +41,10 @@ function get_absensi(){
 			["id"=>"1", "text" => "Masuk"],
 			["id"=>"2", "text" => "Ijin/Sakit"],
 			["id"=>"3", "text" => "Cuti"],
+<<<<<<< HEAD
+=======
+			["id"=>"4", "text" => "Libur"],
+>>>>>>> 4f229f012e9d0a8a07e312b74becd22a91ed6ff9
 		];
 }
 
@@ -91,7 +105,11 @@ function get_absen($id=null){
 			["id"=>"1", "code" => "m", "text" => "MASUK"],
 			["id"=>"2", "code" => "i", "text" => "IJIN/SAKIT"],
 			["id"=>"3", "code" => "a", "text"=> "ALPA"],
+<<<<<<< HEAD
 			["id"=>"4", "text" => "p", "text"=> "PIKET"],
+=======
+			["id"=>"4", "text" => "l", "text"=> "LIBUR"],
+>>>>>>> 4f229f012e9d0a8a07e312b74becd22a91ed6ff9
 		];
 	if ($id) {
 		$key = array_search($id, array_column($data, 'id'));
@@ -106,7 +124,11 @@ function get_absen_pegawai($id=null){
 			["id"=>"1", "code" => "m", "text" => "CUTI"],
 			["id"=>"2", "code" => "m", "text" => "MASUK"],
 			["id"=>"3", "code" => "i", "text" => "IJIN/SAKIT"],
+<<<<<<< HEAD
 			["id"=>"4", "code" => "a", "text"=> "LEMBUR"],
+=======
+			["id"=>"4", "code" => "l", "text"=> "LIBUR"],
+>>>>>>> 4f229f012e9d0a8a07e312b74becd22a91ed6ff9
 			["id"=>"5", "code" => "a", "text"=> "ALPA"],
 			["id"=>"6", "text" => "p", "text"=> "PIKET"],
 		];
