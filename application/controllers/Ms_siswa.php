@@ -223,7 +223,7 @@ class Ms_siswa extends MY_Generator {
 	    $this->load->model("m_ms_siswa");
 		$resp = array();
 		$pin=$this->finger->select_max('pegawai_pin')->get('pegawai')->row('pegawai_pin');
-	    foreach ($sheetData as $key => $value) {			
+	    foreach ($sheetData as $key => $value) {		
 			$pin = $pin+1;
 	    	if ($key>0) {
 				$insertfinger = [
@@ -251,10 +251,12 @@ class Ms_siswa extends MY_Generator {
 							"st_father" => $value[5],
 							"st_phone" => $value[6],
 							"user_id" => $input['user_id'],
-							"st_sex" => $value[8],
+							"st_sex" => $value[8],	
+							"st_th_masuk" => $value[9],						
 							"finger_id" => $pin, 
 							
-						];
+							
+						]; 
 						$this->db->insert('ms_siswa',$row); 
 	    			
 	    	}
@@ -297,5 +299,32 @@ class Ms_siswa extends MY_Generator {
 	{
 		$data['model'] = $this->m_ms_siswa->rules();
 		$this->load->view("ms_siswa/form",$data);
+	}
+
+	public function export_data()
+	{
+
+		$button=$_POST['dtlPas']; 	
+		$post=$this->input->post();
+		$data['post']=$post;  
+		 $data['button']=$post['dtlPas']; 
+		// $where = " DATE_FORMAT(absen_date, '%m-%Y') = '".$post["tanggal"]."'"; 
+		// if (!empty($post["filter_absen"])) {
+		// 	$where .= " AND absen_type = ".$post["filter_absen"]."";
+		// }	
+		// if (!empty($post["filter_unit"])) {
+		// 	$where .= " AND last_kelas = ".$post["filter_unit"]."";
+		// }
+		$data["siswa"] = $this->db->query("
+		 SELECT st_nis,st_name,st_born,st_address,st_birthdate,st_father,st_phone,unit_name,st_th_masuk,st_sex,finger_id from ms_siswa s
+		left join ms_reff r on s.religion_id = r.reff_id
+		left join ms_unit u on s.last_kelas = u.unit_id 
+		")->result();
+		//$data['model'] = $this->m_ms_siswa->rules();
+		if ($button=='Excel') {
+			$this->load->view("ms_siswa/export_siswa",$data); 
+		}
+		 
+	
 	}
 }
