@@ -5,7 +5,7 @@ class M_ms_siswa extends CI_Model {
 	public function get_data($sLimit,$sWhere,$sOrder,$aColumns)
 	{
 		$data = $this->db->query("
-				select ".implode(',', $aColumns).",st_id as id_key  from ms_siswa m
+				select ".implode(',', $aColumns).",st_id as id_key from ms_siswa m
 				left join ms_reff r on m.religion_id = r.reff_id
 				where 0=0 $sWhere $sOrder $sLimit
 			")->result_array();
