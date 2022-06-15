@@ -5,7 +5,7 @@
     <?=form_open("ms_siswa/export_data",["method"=>"post","id"=>"btn_export","target"=>"blank"])?> 
    
     <div class="panel-options" align="right">   
-      <input class="btn btn-info" type="submit" value="Export Excel" name="dtlPas"> 
+      <input class="btn btn-info" type="submit" value="Excel" name="dtlPas"> 
 
       <button type="button" id="btn-import" class="btn btn-success">
         <i class="entypo-plus"></i> Import</button>
@@ -50,7 +50,7 @@
 <!-- /.panel-footer-->
 </div>
 <?= modal_open("modal_content", "Import Data Siswa")?>
-<form action="http://localhost/smadu/ms_siswa/import_excel" method="post" id="fm_ms_siswa" enctype="multipart/form-data" accept-charset="utf-8">
+<form action="http://localhost:81/smadu/ms_siswa/import_excel" method="post" id="fm_ms_siswa" enctype="multipart/form-data" accept-charset="utf-8">
   <div class="row">
     <div class="col-md-3">
 <div class="form-group">

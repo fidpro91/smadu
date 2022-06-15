@@ -251,7 +251,8 @@ class Ms_siswa extends MY_Generator {
 							"st_father" => $value[5],
 							"st_phone" => $value[6],
 							"user_id" => $input['user_id'],
-							"st_sex" => $value[8],	
+							"st_sex" => $value[8],
+							"st_active" => "t",	
 							"st_th_masuk" => $value[9],						
 							"finger_id" => $pin, 
 							
