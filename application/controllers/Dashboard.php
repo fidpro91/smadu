@@ -54,11 +54,11 @@ class Dashboard extends MY_Generator {
 			join ms_siswa ms on ms.st_id = ab.siswa_id
 			join ms_unit mu on ms.last_kelas = mu.unit_id
 			join ms_category_unit mc on mu.unit_type = mc.catunit_id
-			where mu.unit_name like '%".trim($kelas)."%' and mc.nama like '%".trim($room)."%'
+			
 			GROUP BY EXTRACT(month FROM absen_date),absen_type
 			)x
 			GROUP BY x.bulan
-		")->result_array();
+		")->result_array();/*where mu.unit_name like '%".trim($kelas)."%' and mc.nama like '%".trim($room)."%'*/
 		$response["ykeys"] = ["m","i","a"];
 		$response["xkey"] = "bulan";
 		foreach (get_absen() as $key => $value) {
@@ -101,11 +101,11 @@ class Dashboard extends MY_Generator {
 			JSON_OBJECT('f1',x.absen_type,'f2',x.jml))detail FROM (
 			SELECT EXTRACT(month FROM absen_date)bulan,absen_type,count(*)jml FROM absensi_pegawai ap
 			join employee e on e.emp_id = ap.emp_id
-			where e.unit_id = '".$post['filter_unit']."'
+			
 			GROUP BY EXTRACT(month FROM absen_date),absen_type
 			)x
 			GROUP BY x.bulan
-		")->result_array();
+		")->result_array();// where e.unit_id = '".$post['filter_unit']."'
 		$response["ykeys"] = ["m","i","a"];
 		$response["xkey"] = "bulan";
 		foreach (get_absen_pegawai() as $key => $value) {

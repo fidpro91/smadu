@@ -17,13 +17,8 @@ class M_employee extends CI_Model {
 				left JOIN ms_reff r1 ON e.agama = r1.reff_id
 				left JOIN ms_reff r2 ON e.pendidikan = r2.reff_id 
 				left JOIN ms_reff r3 ON e.position_id = r3.reff_id 
-<<<<<<< HEAD
-				left Join ms_unit u on e.unit_id = u.unit_id
-				left Join employee_categories ec on e.empcat_id = ec.empcat_id
-=======
 				left join ms_unit u on e.unit_id = u.unit_id
 				left join employee_categories ec on e.empcat_id = ec.empcat_id
->>>>>>> 4f229f012e9d0a8a07e312b74becd22a91ed6ff9
 				    )x where 0=0 $sWhere $sOrder $sLimit
 			")->result_array();
 		return $data;
@@ -43,17 +38,10 @@ class M_employee extends CI_Model {
 		employee e
 		left JOIN ms_reff r1 ON e.agama = r1.reff_id
 		left JOIN ms_reff r2 ON e.pendidikan = r2.reff_id 
-<<<<<<< HEAD
-				left JOIN ms_reff r3 ON e.position_id = r3.reff_id 
-				left join ms_unit u on e.unit_id = u.unit_id
-				left join employee_categories ec on e.empcat_id = ec.empcat_id
-				)x where 0=0 $sWhere
-=======
 		left JOIN ms_reff r3 ON e.position_id = r3.reff_id 
 		left join ms_unit u on e.unit_id = u.unit_id
 		left join employee_categories ec on e.empcat_id = ec.empcat_id
 		   )x where 0=0 $sWhere
->>>>>>> 4f229f012e9d0a8a07e312b74becd22a91ed6ff9
 			")->num_rows();
 		return $data;
 	}
