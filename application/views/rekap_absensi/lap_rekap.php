@@ -41,40 +41,73 @@ td{
     <tr>
         <td rowspan="2" align="center">No</td>
         <td rowspan="2" align="center">NISN</td>
-        <td rowspan="2" align="center">NAMA SISWA</td>
-        <td rowspan="2" align="center">KELAS</td>         
-        <td colspan="<?=$tanggal + 1?>" align="center">TANGGAL</td>
+        <td rowspan="2" align="center">NAMA SISWA</td>        
+        <td rowspan="2" align="center">KELAS</td>   
+                
+        <td colspan="<?=$tanggal;?>" align="center">TANGGAL</td>
+        <td colspan="<?=count(get_absen())?>">Total</td>
     </tr>
     <tr>
         <?php
         for ($i=1; $i < $tanggal+1; $i++) {
         echo "<td>$i</td>";
         }
+        foreach (get_absen() as $key => $abs) {
+           if ($abs['id']>0) {
+            echo "<td>".$abs["text"]."</td>";
+           }
+        }
         ?>
+        
     </tr>
+ 
     <tbody>
         <?php
-            foreach ($dataNilai as $ind => $value) {
+        // print_r($dataNilai);
+            foreach ($dataNilai as $ind => $value)             
+            {              
                 echo "<tr>
                 <td>".($ind+1)."</td>
                 <td>$value->st_nis</td>
                 <td>$value->st_name</td>
                 <td>$value->unit_name</td>";
-                $detailNilai = json_decode($value->detail);
-                
-                for ($x=0; $x < $tanggal+1; $x++) {
+                          
+                $detailNilai = json_decode($value->detail);   
+                 $total = [];          
+                for ($x=1; $x < $tanggal+1; $x++) {
                     foreach ($detailNilai as $key => $value) {
                         $tanggalAbsen = date("d",strtotime($value->tanggal));
                         if ($x==$tanggalAbsen) {
                             $absen=get_absen($value->jns_absen);
+                            if(empty($total[$value->jns_absen])){
+                                $total[$value->jns_absen]=1;
+                            }else{
+                                $total[$value->jns_absen] = $total[$value->jns_absen]+1;
+                            }
                             break;
                         }else{
                             $absen="";
                         }
                     }
-                    echo "<td>$absen</td>";
+                    echo "<td>$absen</td>";                   
                 }
-            }
-        ?>
+                foreach (get_absen() as $key => $rs) {
+                    if($rs['id'] > 0) {
+                        if (!empty($total[$rs["id"]])){
+                            $nilai = $total[$rs["id"]];
+                        }else{
+                            $nilai = 0;
+                        }
+                        echo "<td>$nilai</td>";
+                    }
+                }  
+             echo "</tr>";      
+            } 
+            
+        ?>     
+
+
+        <!--  -->
+      
     </tbody>
 </table>

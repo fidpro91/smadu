@@ -2,13 +2,18 @@
 <div class="panel panel-info">
   <div class="panel-heading">
     <h3 class="panel-title">Form Ms Siswa</h3>
-    <div class="panel-options">
+    <?=form_open("ms_siswa/export_data",["method"=>"post","id"=>"btn_export","target"=>"blank"])?> 
+   
+    <div class="panel-options" align="right">   
+      <input class="btn btn-info" type="submit" value="Export Excel" name="dtlPas"> 
+
       <button type="button" id="btn-import" class="btn btn-success">
         <i class="entypo-plus"></i> Import</button>
       </button>
       <button type="button" id="btn-add" class="btn btn-black">
         <i class="entypo-plus"></i> Add</button>
     </div>
+    <?=form_close()?> 
   </div>
   <div class="panel-body" id="form_ms_siswa" style="display: none;">
   </div>
@@ -32,6 +37,7 @@
                   ],
           ]) ?>
           </div>
+          
           <div class="col-md-12">
           <?= create_table("tb_ms_siswa", "M_ms_siswa", ["class" => "table table-bordered datatable", "style" => "width:100% !important;"]) ?>
           </div>
@@ -179,5 +185,7 @@
     // $("#modal_content").find(".modal-body").load("ms_siswa/import_excel");
     
   })
+
+   
   <?= $this->config->item('footerJS') ?>
 </script>
