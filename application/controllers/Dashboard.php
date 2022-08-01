@@ -101,7 +101,11 @@ class Dashboard extends MY_Generator {
 			JSON_OBJECT('f1',x.absen_type,'f2',x.jml))detail FROM (
 			SELECT EXTRACT(month FROM absen_date)bulan,absen_type,count(*)jml FROM absensi_pegawai ap
 			join employee e on e.emp_id = ap.emp_id
+<<<<<<< HEAD
 			
+=======
+			/* where e.unit_id = '".$post['filter_unit']."' */
+>>>>>>> 766bf816e14b397bbd7d0cd1c2a88e71c6e01778
 			GROUP BY EXTRACT(month FROM absen_date),absen_type
 			)x
 			GROUP BY x.bulan

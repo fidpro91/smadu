@@ -156,5 +156,5 @@
 </div>
 <script type="text/javascript">
  $("#tabel_absen").DataTable();
-
+ <?= $this->config->item('footerJS') ?>
 </script>

@@ -152,11 +152,12 @@
   }
 
   $("#checkAll").click(() => {
-    if ($("#checkAll").is(':checked')) {
+    /* if ($("#checkAll").is(':checked')) {
       $("#tb_schedule_mp input[type='checkbox']").attr("checked", true);
     } else {
       $("#tb_schedule_mp input[type='checkbox']").attr("checked", false);
-    }
+    } */
+    $("#tb_schedule_mp input[type='checkbox']").trigger("click");
   });
 
   $("#btn-deleteChecked").click(function (event) {

@@ -54,9 +54,11 @@
             'inputFormat': 'HH:MM:ss'
         });
     });
-    $("body").on("focus", ".autocom_mp_id", function() {
+    $("body").on("focus", ".autocom_mp_id", function(e) {
         if ($("#class_id").val() <= 0) {
             alert("Mohon di isikan prodi terlebih dahulu");
+            e.preventDefault();
+            e.stopImmediatePropagation();
             return false;
         }
         $(this).autocomplete({
