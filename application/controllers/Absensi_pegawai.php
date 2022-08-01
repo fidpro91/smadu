@@ -106,7 +106,7 @@ class Absensi_pegawai extends MY_Generator {
 		}
 
 		if (!empty($attr["unit"])) {
-			$filter["unit_id"] = $attr["unit"]; 
+			$filter["u.unit_id"] = $attr["unit"]; 
 		}
 		$data 	= $this->datatable->get_data($fields,$filter,'m_absensi_pegawai',$attr);
 		$records["aaData"] = array();

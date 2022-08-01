@@ -134,15 +134,15 @@
 
   function deleteRow(id) {
     if (confirm("Anda yakin akan menghapus data ini?")) {
-      $.get('ms_siswa/delete_row/' + id, (data) => {
+      $.get('ms_siswa/delete_row/' + id , (data) => { 
         if (data.code == '200') {
-          toastr.success(data.message, "Message : ");
-        } else {
-          toastr.error(data.message, "Message : ");
-        }
-        toastr.options.onHidden = setTimeout(() => {
-          location.reload()
-        }, 2000);
+          alert(data.message, "Message : ");
+        } else if(data.code == '199') {
+          alert(data.message, "Message : ");
+        }else{
+          alert(data.message, "Message : ");
+        }        
+          location.reload()       
       }, 'json');
     }
   }

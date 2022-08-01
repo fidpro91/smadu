@@ -15,13 +15,13 @@ function get_pendidikan(){
 
 function get_hari(){
 	return [
-			["id"=>"1", "text"=> "Minggu"],
-			["id"=>"2", "text" => "Senin"],
-			["id"=>"3", "text" => "Selasa"],
-			["id"=>"4", "text"=> "Rabu"],
-			["id"=>"5", "text"=> "Kamis"],
-			["id"=>"6", "text"=> "Jum'at"],
-			["id"=>"7", "text"=> "Sabtu"],
+			["id"=>"1", "text"=> "Senin"],
+			["id"=>"2", "text" => "Selasa"],
+			["id"=>"3", "text" => "Rabu"],
+			["id"=>"4", "text"=> "Kamis"],
+			["id"=>"5", "text"=> "Jum'at"],
+			["id"=>"6", "text"=> "Sabtu"],
+			["id"=>"7", "text"=> "Minggu"],
 		];
 }
 
