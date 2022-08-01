@@ -13,7 +13,11 @@
     // options.column();
     var jsonCol = options.column();
     $.each(jsonCol,(ind,obj)=>{
-      header += "<th>"+obj.label+"</th>";
+      if (obj.width) {
+				header += '<th style="width:' + obj.width + '">' + obj.label + "</th>";
+			} else {
+				header += "<th>" + obj.label + "</th>";
+			}
     });
     header += "<th>#</th></tr>";
     this.closest('div').find(".tb_"+nama+" > thead").append(header);
