@@ -50,7 +50,7 @@
 <!-- /.panel-footer-->
 </div>
 <?= modal_open("modal_content", "Import Data Siswa")?>
-<form action="http://localhost/smadu/ms_siswa/import_excel" method="post" id="fm_ms_siswa" enctype="multipart/form-data" accept-charset="utf-8">
+<form action="http://localhost:81/smadu/ms_siswa/import_excel" method="post" id="fm_ms_siswa" enctype="multipart/form-data" accept-charset="utf-8">
   <div class="row">
     <div class="col-md-3">
 <div class="form-group">

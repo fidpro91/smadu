@@ -68,6 +68,7 @@ class M_ms_siswa extends CI_Model {
 				//"user_act",
 				//"st_email",
 				"st_th_masuk"=> ["label"=>"Tahun Masuk"],
+				"finger_id"
 				//"st_id",
 				//"last_kelas",
 				//"photo"

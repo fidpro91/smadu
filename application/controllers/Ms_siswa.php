@@ -166,7 +166,11 @@ class Ms_siswa extends MY_Generator {
 	}
 
 	public function delete_row($id)
+<<<<<<< HEAD
 	{   
+=======
+	{
+>>>>>>> 41e3b66744b60d756e8a9a1d9e9dd0fccd0be531
 		$this->db->trans_begin();
 		$pin=$this->db->where('st_id',$id)->get('ms_siswa')->row('finger_id'); 	
 		$finger = $this->finger->where('pegawai_pin',$pin)->get('pegawai')->row('pegawai_pin');	
@@ -273,7 +277,8 @@ class Ms_siswa extends MY_Generator {
 							"st_father" => $value[5],
 							"st_phone" => $value[6],
 							"user_id" => $input['user_id'],
-							"st_sex" => $value[8],	
+							"st_sex" => $value[8],
+							"st_active" => "t",	
 							"st_th_masuk" => $value[9],						
 							"finger_id" => $pin, 
 							

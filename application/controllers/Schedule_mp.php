@@ -36,6 +36,7 @@ class Schedule_mp extends MY_Generator
 			$input[$x]['class_id'] 	= $data['class_id'];
 			$input[$x]['set_by'] 	= $this->session->user_id;
 			$input[$x]['semester_id'] 	= $data['semester_id'];
+			$input[$x]['is_active'] 	= 't';
 			$input[$x]['tahun_pelajaran'] 	= $data['tahun_pelajaran'];
 			$this->db->insert("schedule_mp", $input[$x]);
 			$err = $this->db->error();
@@ -170,21 +171,24 @@ class Schedule_mp extends MY_Generator
 			if (array_key_exists($value, $colauto)) {
 				$row[] = [
 					"id" => $value,
-					"label" => $colauto[$value],
-					"type" => 'autocomplete',
+					"label" 	=> $colauto[$value],
+					"type" 		=> 'autocomplete',
+					"width" 	=> '25%',
 				];
 			} elseif ($value == 'day') {
 				$row[] = [
 					"id" => $value,
-					"label" => ucwords(str_replace('_', ' ', $value)),
-					"type" => 'select',
-					"data" => get_hari()
+					"label" 	=> ucwords(str_replace('_', ' ', $value)),
+					"type" 		=> 'select',
+					"width" 	=> '15%',
+					"data" 		=> get_hari()
 				];
 			} elseif ($value == 'guru_id') {
 				$row[] = [
-					"id" => $value,
-					"label" => ucwords(str_replace('_', ' ', $value)),
-					"type" => 'select',
+					"id" 			=> $value,
+					"label" 		=> ucwords(str_replace('_', ' ', $value)),
+					"type" 			=> 'select',
+					"width" 		=> '20%',
 					"data" => $this->m_schedule_mp->get_dosen("emp_id as id,emp_name as text", ["emp_active" => "t"])
 				];
 			} else {
@@ -265,6 +269,7 @@ class Schedule_mp extends MY_Generator
 				$input[$key]["semester_id"] = $this->input->post("semester_tujuan");
 				$input[$key]["tahun_pelajaran"] = $this->input->post("tahun_pelajaran_tujuan");
 				$input[$key]["is_active"] = 't';
+				unset($input[$key]['schedule_id']);
 			}
 			$this->db->insert_batch("schedule_mp",$input);
 			$resp = [
@@ -305,4 +310,9 @@ class Schedule_mp extends MY_Generator
 		//$mpdf->WriteHTML($html);
 		//$mpdf->Output();
 	}
+<<<<<<< HEAD
+=======
+
+	
+>>>>>>> 41e3b66744b60d756e8a9a1d9e9dd0fccd0be531
 }

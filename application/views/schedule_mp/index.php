@@ -137,6 +137,21 @@
     $("#modal_content").find(".modal-body").load("schedule_mp/form_copy");
   })
 
+  $("#btn-pdf").click(function () {	
+    if ($("#filter_kelas").val() === '') {
+        alert("Mohon di isi filter kelas");
+        return false;
+    }else{
+    const dt = $("#btn-pdf").val();    
+    const cl = $("#filter_kelas").val();    
+    const sm = $("#filter_semester").val();
+    const th = $("#filter_tahun").val();
+		const url = '<?=base_url()?>schedule_mp/cetakpdf'+ dt + "/" + cl + "/" + sm + "/" + th   
+		window.open(url);
+      }	  
+   
+	})
+
   function deleteRow(id) {
     if (confirm("Anda yakin akan menghapus data ini?")) {
       $.get('schedule_mp/delete_row/' + id, (data) => {
@@ -153,11 +168,12 @@
   }
 
   $("#checkAll").click(() => {
-    if ($("#checkAll").is(':checked')) {
+    /* if ($("#checkAll").is(':checked')) {
       $("#tb_schedule_mp input[type='checkbox']").attr("checked", true);
     } else {
       $("#tb_schedule_mp input[type='checkbox']").attr("checked", false);
-    }
+    } */
+    $("#tb_schedule_mp input[type='checkbox']").trigger("click");
   });
 
   $("#btn-deleteChecked").click(function (event) {

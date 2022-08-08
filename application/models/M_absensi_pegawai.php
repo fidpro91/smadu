@@ -7,7 +7,11 @@ class M_absensi_pegawai extends CI_Model {
 		$data = $this->db->query("
 				select ".implode(',', $aColumns).",absen_id as id_key from absensi_pegawai ap
 				join employee e on ap.emp_id = e.emp_id
+<<<<<<< HEAD
 				join ms_unit u on ap.kode_ruangan = u.code_barcode	
+=======
+				join ms_unit u on ap.kode_ruangan = u.code_barcode
+>>>>>>> 41e3b66744b60d756e8a9a1d9e9dd0fccd0be531
 				where 0=0 $sWhere $sOrder $sLimit
 			")->result_array();
 		return $data;
@@ -18,7 +22,11 @@ class M_absensi_pegawai extends CI_Model {
 		$data = $this->db->query("
 				select ".implode(',', $aColumns).",absen_id as id_key from absensi_pegawai ap
 				join employee e on ap.emp_id = e.emp_id 
+<<<<<<< HEAD
 				join ms_unit u on ap.kode_ruangan = u.code_barcode	
+=======
+				join ms_unit u on ap.kode_ruangan = u.code_barcode
+>>>>>>> 41e3b66744b60d756e8a9a1d9e9dd0fccd0be531
 				where 0=0 $sWhere
 			")->num_rows();
 		return $data;
