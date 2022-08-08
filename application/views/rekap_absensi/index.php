@@ -51,8 +51,7 @@
 <script type="text/javascript">
       $(document).ready(function() {
      // $('.select2').select2();     
-    });
-   
+    });   
     $("#formlaporan").on("submit",()=>{
       if ($("#tanggal").val() === '' ) {
         alert("Mohon di isi Bulan");
@@ -62,7 +61,5 @@
         return false;
       }
     }); 
-
-
     <?=$this->config->item('footerJS')?>
 </script>

@@ -128,4 +128,6 @@ class Ms_mata_pelajaran extends MY_Generator {
 		$data['model'] = $this->m_ms_mata_pelajaran->rules();
 		$this->load->view("ms_mata_pelajaran/form",$data);
 	}
+
+	
 }

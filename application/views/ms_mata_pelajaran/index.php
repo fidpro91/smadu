@@ -2,9 +2,10 @@
 <div class="panel panel-info">
   <div class="panel-heading">
     <h3 class="panel-title">Form Ms Mata Pelajaran</h3>
-    <div class="panel-options">
-      <button type="button" id="btn-add" class="btn btn-black">
+    <div class="panel-options">      
+        <button type="button" id="btn-add" class="btn btn-black">
         <i class="entypo-plus"></i> Add</button>
+       
     </div>
   </div>
   <div class="panel-body" id="form_ms_mata_pelajaran" style="display: none;">
@@ -72,6 +73,8 @@
       });
     }, 'json');
   }
+
+  
 
   function deleteRow(id) {
     if (confirm("Anda yakin akan menghapus data ini?")) {

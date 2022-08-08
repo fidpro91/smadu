@@ -139,8 +139,8 @@ class Ms_siswa extends MY_Generator {
             		$obj[] = $row[$value];
             	}
             }
-            $obj[] = create_btnAction(["update","delete"],$row['id_key']);
-            $records["aaData"][] = $obj;
+            $obj[] = create_btnAction(["update","delete"],$row['id_key'],$row['finger_id']); 
+            $records["aaData"][] = $obj; 
             $no++;
         }
         $data = array_merge($data,$records);
@@ -166,13 +166,27 @@ class Ms_siswa extends MY_Generator {
 	}
 
 	public function delete_row($id)
-	{
+	{   
+		$this->db->trans_begin();
+		$pin=$this->db->where('st_id',$id)->get('ms_siswa')->row('finger_id'); 	
+		$finger = $this->finger->where('pegawai_pin',$pin)->get('pegawai')->row('pegawai_pin');	
+		if($pin==$finger){
 		$this->db->where('st_id',$id)->delete("ms_siswa");
+		$this->finger->where('pegawai_pin',$pin)->delete("pegawai");
+		}else{			
+			$res="202";
+		}
 		$resp = array();
-		if ($this->db->affected_rows()) {
+		if (empty($res)) {
+			$this->db->trans_commit();
 			$resp['code'] = '200';
 			$resp['message'] = 'Data berhasil dihapus';
+		}else if($res){
+			$this->db->trans_rollback();
+			$resp['code'] = '199';
+			$resp['message']="pin tidak sama";
 		}else{
+			$this->db->trans_rollback();
 			$err = $this->db->error();
 			$resp['code'] = '201';
 			$resp['message'] = $err['message'];
@@ -184,10 +198,18 @@ class Ms_siswa extends MY_Generator {
 	{
 		$resp = array();
 		foreach ($this->input->post('data') as $key => $value) {
+		$pin=$this->db->where('st_id',$value)->get('ms_siswa')->row('finger_id'); 	
+		$finger = $this->finger->where('pegawai_pin',$pin)->get('pegawai')->row('pegawai_pin');	
+
+		if($pin==$finger){
 			$this->db->where('st_id',$value)->delete("ms_siswa");
-			$err = $this->db->error();
-			if ($err['message']) {
-				$resp['message'] .= $err['message']."\n";
+			$this->finger->where('pegawai_pin',$pin)->delete("pegawai");
+			}else{			
+				$res="202";
+			}
+			//$err = $this->db->error();
+			if (!empty($res)) {
+				$resp['message'] .= $res['message']."\n";
 			}
 		}
 		if (empty($resp['message'])) {
@@ -304,7 +326,7 @@ class Ms_siswa extends MY_Generator {
 	public function export_data()
 	{
 
-		$button=$_POST['dtlPas']; 	
+		$button=$_POST['dtlPas']; 	//print_r($button);die;
 		$post=$this->input->post();
 		$data['post']=$post;  
 		 $data['button']=$post['dtlPas']; 
@@ -322,7 +344,7 @@ class Ms_siswa extends MY_Generator {
 		")->result();
 		//$data['model'] = $this->m_ms_siswa->rules();
 		if ($button=='Excel') {
-			$this->load->view("ms_siswa/export_siswa",$data); 
+			$this->load->view("ms_siswa/export_siswa",$data);  
 		}
 		 
 	

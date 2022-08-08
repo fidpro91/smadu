@@ -12,7 +12,7 @@ class Login extends CI_Controller {
 	{
 		$data = $this->input->post();
 		$data['user_salt_encrypt'] = md5($data['user_password']);
-		$dataLogin = $this->db->where($data)->get("ms_user")->row_array();
+		$dataLogin = $this->db->where($data)->get("ms_user")->row_array(); 
 		$resp["is_error"] = "false";
 		if (isset($dataLogin)) {
 			$this->load->driver('cache');
