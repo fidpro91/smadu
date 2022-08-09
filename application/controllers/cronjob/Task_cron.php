@@ -57,5 +57,22 @@ class Task_cron extends CI_Controller {
         }        
     }
 
+    public function auto_checkout_absen()
+    {
+        $data = $this->db->where([
+                        "absen_date = '".date('Y-m-d')."" => null,
+                        "checkout"  => null
+                        ])->get("absensi_pegawai");
+        $jadwal = $this->db->get_where("jam_kerja_harian",["hari='".date('N')."'"=>null])->row();
+        if ($data->num_rows()>0) {
+            foreach ($data->result() as $key => $value) {
+                $this->db->where(["absen_id"=>$value->absen_id])->update("absensi_pegawai",[
+                    "checkout"      => date('Y-m-d')." ".$jadwal->jam_pulang,
+                    "absen_note"    => "Checkout by sistem"
+                ]);
+            }
+        }        
+    }
+
 }
 ?>
