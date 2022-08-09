@@ -42,14 +42,14 @@ td{
         <td rowspan="2" align="center">NO KTP</td>
         <td rowspan="2" align="center">NAMA PEGAWAI</td>               
         <td colspan="<?=$tanggal?>" align="center">TANGGAL</td>
-        <td colspan="<?=count(get_absen())?>" align="center">Total</td>
+        <td colspan="<?=count(get_absen_pegawai())?>" align="center">Total</td>
     </tr>
     <tr>
         <?php
         for ($i=1; $i < $tanggal+1; $i++) {
         echo "<td>$i</td>";
         }
-        foreach (get_absen() as $key => $abs) {
+        foreach (get_absen_pegawai() as $key => $abs) {
             if ($abs['id']>0) {
              echo "<td>".$abs["text"]."</td>";
             }
@@ -69,7 +69,7 @@ td{
                    foreach ($detailNilai as $key => $value) {
                        $tanggalAbsen = date("d",strtotime($value->tanggal));
                        if ($x==$tanggalAbsen) {
-                           $absen=get_absen($value->jns_absen);
+                           $absen=get_absen_pegawai($value->jns_absen);
                            if(empty($total[$value->jns_absen])){
                                $total[$value->jns_absen]=1;
                            }else{
@@ -82,7 +82,7 @@ td{
                    }
                    echo "<td>$absen</td>";                   
                }
-               foreach (get_absen() as $key => $rs) {
+               foreach (get_absen_pegawai() as $key => $rs) {
                    if($rs['id'] > 0) {
                        if (!empty($total[$rs["id"]])){
                            $nilai = $total[$rs["id"]];

@@ -5,7 +5,7 @@
     <?=form_open("ms_siswa/export_data",["method"=>"post","id"=>"btn_export","target"=>"blank"])?> 
    
     <div class="panel-options" align="right">   
-      <input class="btn btn-info" type="submit" value="Export Excel" name="dtlPas"> 
+      <input class="btn btn-info" type="submit" value="Excel" name="dtlPas"> 
 
       <button type="button" id="btn-import" class="btn btn-success">
         <i class="entypo-plus"></i> Import</button>
@@ -50,7 +50,7 @@
 <!-- /.panel-footer-->
 </div>
 <?= modal_open("modal_content", "Import Data Siswa")?>
-<form action="http://localhost/smadu/ms_siswa/import_excel" method="post" id="fm_ms_siswa" enctype="multipart/form-data" accept-charset="utf-8">
+<form action="http://localhost:81/smadu/ms_siswa/import_excel" method="post" id="fm_ms_siswa" enctype="multipart/form-data" accept-charset="utf-8">
   <div class="row">
     <div class="col-md-3">
 <div class="form-group">
@@ -134,15 +134,15 @@
 
   function deleteRow(id) {
     if (confirm("Anda yakin akan menghapus data ini?")) {
-      $.get('ms_siswa/delete_row/' + id, (data) => {
+      $.get('ms_siswa/delete_row/' + id , (data) => { 
         if (data.code == '200') {
-          toastr.success(data.message, "Message : ");
-        } else {
-          toastr.error(data.message, "Message : ");
-        }
-        toastr.options.onHidden = setTimeout(() => {
-          location.reload()
-        }, 2000);
+          alert(data.message, "Message : ");
+        } else if(data.code == '199') {
+          alert(data.message, "Message : ");
+        }else{
+          alert(data.message, "Message : ");
+        }        
+          location.reload()       
       }, 'json');
     }
   }

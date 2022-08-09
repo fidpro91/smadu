@@ -20,7 +20,7 @@
 				?>         
           <?= create_select([
             "attr" => ["name" => "filter_absen=JENIS ABSEN", "id" => "filter_absen", "class" => "form-control"],
-            "option" => get_absen()
+            "option" => get_absen_pegawai()
           ])
         ?>  
 		<!-- <?= create_select([

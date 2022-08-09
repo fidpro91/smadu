@@ -38,6 +38,7 @@
   <div class="panel-footer">
     <button class="btn btn-danger" id="btn-deleteChecked"><i class="fa fa-trash"></i> Delete</button>
     <button class="btn btn-success" id="btn-copy"><i class="fa fa-copy"></i> Copy Jadwal</button>
+    <button class="btn btn-info" id="btn-pdf"><i class="fa fa-print"></i> Print Jadwal</button>
   </div>
   <!-- /.panel-footer-->
 </div>
@@ -119,6 +120,21 @@
     $("#modal_content").modal('show');
     $("#modal_content").find(".modal-body").load("schedule_mp/form_copy");
   })
+
+  $("#btn-pdf").click(function () {	
+    if ($("#filter_kelas").val() === '') {
+        alert("Mohon di isi filter kelas");
+        return false;
+    }else{
+    const dt = $("#btn-pdf").val();    
+    const cl = $("#filter_kelas").val();    
+    const sm = $("#filter_semester").val();
+    const th = $("#filter_tahun").val();
+		const url = '<?=base_url()?>schedule_mp/cetakpdf'+ dt + "/" + cl + "/" + sm + "/" + th   
+		window.open(url);
+      }	  
+   
+	})
 
   function deleteRow(id) {
     if (confirm("Anda yakin akan menghapus data ini?")) {

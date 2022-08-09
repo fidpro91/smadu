@@ -167,12 +167,26 @@ class Ms_siswa extends MY_Generator {
 
 	public function delete_row($id)
 	{
+		$this->db->trans_begin();
+		$pin=$this->db->where('st_id',$id)->get('ms_siswa')->row('finger_id'); 	
+		$finger = $this->finger->where('pegawai_pin',$pin)->get('pegawai')->row('pegawai_pin');	
+		if($pin==$finger){
 		$this->db->where('st_id',$id)->delete("ms_siswa");
+		$this->finger->where('pegawai_pin',$pin)->delete("pegawai");
+		}else{			
+			$res="202";
+		}
 		$resp = array();
-		if ($this->db->affected_rows()) {
+		if (empty($res)) {
+			$this->db->trans_commit();
 			$resp['code'] = '200';
 			$resp['message'] = 'Data berhasil dihapus';
+		}else if($res){
+			$this->db->trans_rollback();
+			$resp['code'] = '199';
+			$resp['message']="pin tidak sama";
 		}else{
+			$this->db->trans_rollback();
 			$err = $this->db->error();
 			$resp['code'] = '201';
 			$resp['message'] = $err['message'];
@@ -251,7 +265,8 @@ class Ms_siswa extends MY_Generator {
 							"st_father" => $value[5],
 							"st_phone" => $value[6],
 							"user_id" => $input['user_id'],
-							"st_sex" => $value[8],	
+							"st_sex" => $value[8],
+							"st_active" => "t",	
 							"st_th_masuk" => $value[9],						
 							"finger_id" => $pin, 
 							

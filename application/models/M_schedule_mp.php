@@ -52,7 +52,7 @@ class M_schedule_mp extends CI_Model {
 						if ($a=='t') {
 							$label="<span class=\"label label-success\">Aktif</span>";
 						}else{
-							$label="<span class=\"label label-danger\">Aktif</span>";
+							$label="<span class=\"label label-danger\">Non Aktif</span>";
 						}
 						return $label;
 					}

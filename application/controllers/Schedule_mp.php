@@ -285,5 +285,31 @@ class Schedule_mp extends MY_Generator
 		echo json_encode($resp);
 	}
 
+	public function cetakpdf($cl=null,$sm,$th=' ')
+	{
+		$this->load->model('m_company_profil');
+		$where ="";
+		if(!empty($cl)){
+			$where .= " and sm.class_id = ".$cl."";
+		}
+		if($sm){
+			$where .= " and sm.semester_id = '$sm' ";
+		}
+		if(!empty($th)){
+			$where .= " and lower(tahun_pelajaran) like '%$th%'";
+		}
+		$data['smadu'] = $this->m_company_profil->find_one([]);
+		$sql = "select unit_name, mata_pelajaran , start_time,finish_time,emp_name from schedule_mp sm
+		join ms_mata_pelajaran mp on sm.mp_id = mp.id_mp
+		join ms_unit mu on mu.unit_id = sm.class_id
+		join employee e on e.emp_id = sm.guru_id
+		where 0=0 $where ";
+		$data['dataMapel'] = $this->db->query($sql)->result();
+		//$mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4-L']);
+		$html = $this->load->view('schedule_mp/cetakpdf', $data);
+		//$mpdf->WriteHTML($html);
+		//$mpdf->Output();
+	}
+
 	
 }
