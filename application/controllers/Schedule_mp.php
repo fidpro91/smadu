@@ -310,9 +310,5 @@ class Schedule_mp extends MY_Generator
 		//$mpdf->WriteHTML($html);
 		//$mpdf->Output();
 	}
-<<<<<<< HEAD
-=======
 
-	
->>>>>>> 41e3b66744b60d756e8a9a1d9e9dd0fccd0be531
 }

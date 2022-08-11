@@ -142,7 +142,7 @@
         }else{
           alert(data.message, "Message : ");
         }        
-          location.reload()       
+          location.reload();       
       }, 'json');
     }
   }
@@ -169,13 +169,13 @@
         data: searchIDs
       }, (resp) => {
         if (resp.code == '200') {
-          toastr.success(resp.message, "Message : ");
+          alert(resp.message, "Message : ");
         } else {
-          toastr.error(resp.message, "Message : ");
+          alert(resp.message, "Message : ");
         }
-        // toastr.options.onHidden = setTimeout(() => {
-        //   location.reload()
-        // }, 2000);
+        
+        location.reload();
+        
       }, 'json');
     }
   });

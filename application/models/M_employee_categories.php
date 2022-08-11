@@ -41,7 +41,7 @@ class M_employee_categories extends CI_Model {
 	public function rules()
 	{
 		$data = [
-					"empcat_code" => "trim",
+					"empcat_code" => "trim|required",
 					"empcat_name" => "trim|required",
 					"empcat_active" => "trim|required",
 

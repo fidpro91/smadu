@@ -1,7 +1,7 @@
     <div class="col-md-12">
       			<?=form_open("ms_mata_pelajaran/save",["method"=>"post","class"=>"form-horizontal","id"=>"fm_ms_mata_pelajaran"],$model)?>
-			<?=create_input("mata_pelajaran")?>
 			<?=create_input("kode_mp")?>
+			<?=create_input("mata_pelajaran")?>			
 			<?= create_select(["attr" => ["name" => "klasifikasi_mp= Kategori Mata Pelajaran", "id" => "klasifikasi_mp", "class" => "form-control"],
 			"model" => ["m_ms_klasifikasi_mp" => "get_ms_klasifikasi_mp", "column" => ["klas_mk_id", "klas_mk_nama"]]
 			]) ?>

@@ -57,5 +57,48 @@ class rekap_absen_pegawai extends MY_Generator
 		}	
 	}
 
+	public function show_rekap_inout()
+	{
+		$this->theme('rekap_pegawai/form_rekap_in_out');
+	}
+
+	public function show_report_in_out()
+	{ 	
+		$button=$_POST['dtlPas'];	
+		$post=$this->input->post();
+		$data['post']=$post;  
+		$data['button']=$button;
+		$where = " DATE_FORMAT(absen_date, '%m-%Y') = '".$post["tanggal"]."'"; 
+		if (!empty($post["filter_absen"])) {
+			$where .= " AND absen_type = ".$post["filter_absen"]."";
+		}	
+		if (!empty($post["filter_unit"])) {
+			$where .= " AND last_kelas = ".$post["filter_unit"]."";
+		}
+		$data["datainout"] = $this->db->query(" SELECT
+		emp_name,
+		emp_noktp,
+		json_arrayagg( json_object( 'tanggal', absen_date, 'jam_masuk', DATE_FORMAT(check_in,'%H:%I:%S'),'estimasi',late_duration_in,'jam_keluar', DATE_FORMAT(check_out,'%H:%I:%S') ) ) detail 
+		FROM
+		absensi_pegawai ap
+		JOIN employee e ON ap.emp_id = e.emp_id 
+		WHERE $where 
+		GROUP BY
+		emp_name,
+		emp_noktp 
+		ORDER BY
+		emp_name			
+	")->result();		
+    
+		if($button=="Excel"){
+			$this->load->view("rekap_pegawai/rekap_in_out",$data);
+		}else{
+			$html=$this->load->view("rekap_pegawai/rekap_in_out",$data,true);
+			$mpdf = new \Mpdf\Mpdf();		
+			$mpdf->WriteHTML($html);
+			$mpdf->Output();
+		}	
+	}
+
 
 }

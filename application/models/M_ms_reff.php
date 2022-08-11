@@ -46,7 +46,7 @@ class M_ms_reff extends CI_Model {
 	public function rules()
 	{
 		$data = [
-										"reff_code" => "trim",
+					"reff_code" => "trim|required",
 					"reff_name" => "trim|required",
 					"reff_active" => "trim|required",
 					"refcat_id" => "trim|integer|required",

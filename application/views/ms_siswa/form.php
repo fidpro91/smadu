@@ -3,9 +3,7 @@
 				  <div class="row">
 
  <?=form_hidden("st_id")?>
- <?=form_hidden("finger_id")?>
-
- <?= form_fieldset('BIODATA'); ?>	
+  <?= form_fieldset('BIODATA'); ?>	
  <div class="col-md-6">		
 			<?=create_input("st_nis=NIS (Nomor Induk Siswa)")?>			
 			<?=create_input("st_name=Nama Siswa")?>
@@ -51,13 +49,18 @@
 			],
 			]) ?>	
 		</div>
+		
 		<div class="col-md-12" >
 			
 			<label>Foto Siswa</label>
 					<input type="file" name="photo" id="photo">	
 			<label>Max 1 mb</label>
-				
+			
 		</div>
+		<div class="col-md-2" >
+		<?=create_input("finger_id=FINGGER***")?>
+		</div>	
+		
 <?= form_fieldset_close(); ?>
 
 <?= form_fieldset('ALAMAT SISWA'); ?>

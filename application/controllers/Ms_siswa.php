@@ -166,14 +166,15 @@ class Ms_siswa extends MY_Generator {
 	}
 
 	public function delete_row($id)
-<<<<<<< HEAD
-	{   
-=======
+
+	
+
 	{
->>>>>>> 41e3b66744b60d756e8a9a1d9e9dd0fccd0be531
+
 		$this->db->trans_begin();
 		$pin=$this->db->where('st_id',$id)->get('ms_siswa')->row('finger_id'); 	
 		$finger = $this->finger->where('pegawai_pin',$pin)->get('pegawai')->row('pegawai_pin');	
+		$res=null;
 		if($pin==$finger){
 		$this->db->where('st_id',$id)->delete("ms_siswa");
 		$this->finger->where('pegawai_pin',$pin)->delete("pegawai");
@@ -188,7 +189,7 @@ class Ms_siswa extends MY_Generator {
 		}else if($res){
 			$this->db->trans_rollback();
 			$resp['code'] = '199';
-			$resp['message']="pin tidak sama";
+			$resp['message']="PIN TIDAK SAMA !!!";
 		}else{
 			$this->db->trans_rollback();
 			$err = $this->db->error();
@@ -200,6 +201,7 @@ class Ms_siswa extends MY_Generator {
 
 	public function delete_multi()
 	{
+		$this->db->trans_begin();
 		$resp = array();
 		foreach ($this->input->post('data') as $key => $value) {
 		$pin=$this->db->where('st_id',$value)->get('ms_siswa')->row('finger_id'); 	
@@ -217,10 +219,13 @@ class Ms_siswa extends MY_Generator {
 			}
 		}
 		if (empty($resp['message'])) {
+			$this->db->trans_commit();
 			$resp['code'] = '200';
 			$resp['message'] = 'Data berhasil dihapus';
 		}else{
+			$this->db->trans_rollback();
 			$resp['code'] = '201';
+			$resp['message']="PIN TIDAK SAMA !!!";
 		}
 		echo json_encode($resp);
 	}

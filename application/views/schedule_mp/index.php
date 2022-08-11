@@ -102,20 +102,6 @@
     $("#form_schedule_mp").load("schedule_mp/show_form");
   });
 
-  $("#btn-pdf").click(function () {	
-    if ($("#filter_kelas").val() === '') {
-        alert("Mohon di isi filter kelas");
-        return false;
-    }else{
-    const dt = $("#btn-pdf").val();    
-    const cl = $("#filter_kelas").val();    
-    const sm = $("#filter_semester").val();
-    const th = $("#filter_tahun").val();
-		const url = '<?=base_url()?>schedule_mp/cetakpdf'+ dt + "/" + cl + "/" + sm + "/" + th   
-		window.open(url);
-      }	  
-   
-	})
 
   function set_val(id) {
     $("#modal_content").modal('show');
@@ -138,17 +124,17 @@
   })
 
   $("#btn-pdf").click(function () {	
-    if ($("#filter_kelas").val() === '') {
-        alert("Mohon di isi filter kelas");
+    if ($("#filter_tahun").val() === '') {
+        alert("Mohon di isi filter tahun");
         return false;
     }else{
     const dt = $("#btn-pdf").val();    
-    const cl = $("#filter_kelas").val();    
+    const cl = $("#filter_kelas").val() || 0;    
     const sm = $("#filter_semester").val();
     const th = $("#filter_tahun").val();
 		const url = '<?=base_url()?>schedule_mp/cetakpdf'+ dt + "/" + cl + "/" + sm + "/" + th   
 		window.open(url);
-      }	  
+    }
    
 	})
 

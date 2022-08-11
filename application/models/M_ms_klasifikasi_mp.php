@@ -30,9 +30,9 @@ class M_ms_klasifikasi_mp extends CI_Model {
 	public function rules()
 	{
 		$data = [
-					"klas_mk_id" => "trim|integer|required",
-					"klas_mk_kode" => "trim",
-					"klas_mk_nama" => "trim",
+					//"klas_mk_id" => "trim|integer|required",
+					"klas_mk_kode" => "trim|required",
+					"klas_mk_nama" => "trim|required",
 
 				];
 		return $data;
