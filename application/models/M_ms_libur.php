@@ -6,7 +6,7 @@ class M_ms_libur extends CI_Model {
 	{
 		$data = $this->db->query("
 				select ".implode(',', $aColumns).",id_libur as id_key from ms_libur ml
-				join ms_reff mr on ml.reff_id = mr.reff_id 
+				 join ms_reff mr on ml.reff_id = mr.reff_id 
 				where 0=0 $sWhere $sOrder $sLimit
 			")->result_array();
 		return $data;
@@ -16,7 +16,7 @@ class M_ms_libur extends CI_Model {
 	{
 		$data = $this->db->query("
 				select ".implode(',', $aColumns).",id_libur as id_key from ms_libur ml
-				join ms_reff mr on ml.reff_id = mr.reff_id  
+				 join ms_reff mr on ml.reff_id = mr.reff_id  
 				where 0=0 $sWhere
 			")->num_rows();
 		return $data;

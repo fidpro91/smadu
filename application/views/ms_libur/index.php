@@ -16,7 +16,8 @@
             "attr" => ["name" => "filter_libur_type=diperuntukkan", "id" => "filter_libur_type", "class" => "form-control", 'required' => true],
             "option" => [
                 ["id" => '1', "text" => "Siswa"],
-                ["id" => '2', "text" => "Pegawai"]
+                ["id" => '2', "text" => "Pegawai"],
+                ["id" => '3', "text" => "Pegawai & Siswa"]
             ]
         ]) ?>
         </div>
