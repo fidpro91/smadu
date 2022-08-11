@@ -57,61 +57,22 @@ class Task_cron extends CI_Controller {
         }        
     }
 
-    public function get_scanlog()
-	{
-		$this->finger = $this->load->database("finger",true);
-		$dataScan = $this->finger->order_by("scan_date")->get("att_log")->result();
-		$this->db->trans_begin();
-		$dataInsert=[];
-		foreach ($dataScan as $key => $value) {
-			$pin = $value->pin;
-			$dataSiswa = $this->db->get_where("ms_siswa",["finger_id"=>$pin]);
-			if ($dataSiswa->num_rows()>0) {
-				$dataSiswa = $dataSiswa->row();
-				$tglabsen = date("Y-m-d",strtotime($value->scan_date));
-				$absenSiswa = array_filter($dataInsert, function ($var) use($pin,$tglabsen){
-					return ($var['absen_code'] == $pin && $var['absen_date'] == $tglabsen);
-				});
-				$cekAbsen = $this->db->get_where("absensi_siswa",[
-								"absen_code"	=> $pin,
-								"absen_date"	=> $tglabsen
-							])->num_rows();
-				if (count($absenSiswa)==0 && $cekAbsen==0) {
-					$jadwal = $this->db->get_where("jam_kerja_harian",[
-						"hari"				=> date("w",strtotime($value->scan_date)),
-						"jadwal_untuk"		=> $this->setting->kode_jadwal_siswa
-					])->row("jam_masuk");
-					$jadwal = date("Y-m-d",strtotime($value->scan_date))." ".$jadwal;
-					$selisih = selisih_waktu($value->scan_date,$jadwal);
-					$dataInsert[$key] = [
-						"absen_code" => $pin,
-						"absen_date" => date("Y-m-d",strtotime($value->scan_date)),
-						"check_in"	 => $value->scan_date,
-						"absen_type" => 1,
-						"user_created" => $this->session->user_id,
-						"siswa_id"	   => $dataSiswa->st_id,
-						"late_duration_in" => $selisih["total"],
-						"is_verified"  => "f"
-					];
-				}
-			}
-		}
-		if (count($dataInsert) > 0) {
-			$this->db->insert_batch("absensi_siswa",$dataInsert);
-		}
-		$resp = array();
-		if ($this->db->trans_status() !== false) {
-			$this->db->trans_commit();
-			$resp['code'] = '200';
-			$resp['message'] = 'Data berhasil direload';
-		}else{
-			$this->db->trans_rollback();
-			$err = $this->db->error();
-			$resp['code'] = '201';
-			$resp['message'] = $err['message'];
-		}
-		echo json_encode($resp);
-	}
+    public function auto_checkout_absen()
+    {
+        $data = $this->db->where([
+                        "absen_date = '".date('Y-m-d')."" => null,
+                        "checkout"  => null
+                        ])->get("absensi_pegawai");
+        $jadwal = $this->db->get_where("jam_kerja_harian",["hari='".date('N')."'"=>null])->row();
+        if ($data->num_rows()>0) {
+            foreach ($data->result() as $key => $value) {
+                $this->db->where(["absen_id"=>$value->absen_id])->update("absensi_pegawai",[
+                    "checkout"      => date('Y-m-d')." ".$jadwal->jam_pulang,
+                    "absen_note"    => "Checkout by sistem"
+                ]);
+            }
+        }        
+    }
 
 }
 ?>
