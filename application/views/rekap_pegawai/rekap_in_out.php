@@ -67,7 +67,7 @@ td{
                        $tanggalAbsen = date("d",strtotime($value->tanggal));    
                        $waktu=$value->estimasi;                                        
                        if ($x==$tanggalAbsen ) {
-                            $absen= "Jam masuk : ".$value->jam_masuk ."<br>jam keluar : ". $value->jam_keluar."<br>keterangan : ". $value->estimasi;
+                            $absen= "CHECKIN : ".$value->jam_masuk ."<br>CHECKOUT : ". $value->jam_keluar."<br>keterangan : ". $value->estimasi;
                             if ($value->estimasi>0){
                                 $color = "style='background-color:yellow'";
                             }else if ($value->estimasi=0){

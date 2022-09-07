@@ -78,7 +78,7 @@ class rekap_absen_pegawai extends MY_Generator
 		$data["datainout"] = $this->db->query(" SELECT
 		emp_name,
 		emp_noktp,
-		json_arrayagg( json_object( 'tanggal', absen_date, 'jam_masuk', DATE_FORMAT(check_in,'%H:%I:%S'),'estimasi',late_duration_in,'jam_keluar', DATE_FORMAT(check_out,'%H:%I:%S') ) ) detail 
+		json_arrayagg( json_object( 'tanggal', absen_date, 'jam_masuk', DATE_FORMAT(check_in,'%H:%i:%S'),'estimasi',late_duration_in,'jam_keluar', DATE_FORMAT(check_out,'%H:%I:%S') ) ) detail 
 		FROM
 		absensi_pegawai ap
 		JOIN employee e ON ap.emp_id = e.emp_id 

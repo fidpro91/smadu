@@ -56,9 +56,7 @@ class Ms_unit extends MY_Generator {
 		$resp=json_encode($resp);
 		$this->session->set_flashdata("message",$resp);
 		redirect('ms_unit');
-
 	}
-
 	public function get_data()
 	{
 		$this->load->library('datatable');

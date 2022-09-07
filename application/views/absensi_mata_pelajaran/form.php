@@ -30,9 +30,9 @@
 	});
 	$("body").on("focus", "#mata_pelajaran", function() {
         $(this).autocomplete({
-            source: "<?php echo site_url('Absensi_mata_pelajaran/get_mata_pelajaran'); ?>/" + $("#class_id").val(),
+            source: "<?php echo site_url('schedule_mp/get_mata_pelajaran'); ?>/" + $("#class_id").val(),
             select: function(event, ui) {
-                $('#mp_id').val(ui.item.id_mp);
+                $('#mp_id').val(ui.item.id_mp); //alert(id_mp);
             }
         });
     });
