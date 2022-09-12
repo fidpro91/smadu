@@ -13,6 +13,11 @@ class Absensi_pegawai extends MY_Generator {
 
 	public function index()
 	{
+// 		$start = strtotime("07:15:00 + 15 minutes"); 
+// 		$end = strtotime(date('H:i:s')); 
+// 		$x = $start - $end; 
+// 		$rr= gmdate("H:i:s", 1662967800);
+// print_r($rr);die; 
 		$this->theme('absensi_pegawai/index','',get_class($this));
 	}
 

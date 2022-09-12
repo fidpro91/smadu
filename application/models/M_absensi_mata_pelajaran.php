@@ -8,6 +8,7 @@ class M_absensi_mata_pelajaran extends CI_Model {
 				select ".implode(',', $aColumns).",id as id_key from absensi_mata_pelajaran ap
 				join schedule_mp sm on ap.schedule_id = sm.schedule_id
 				join ms_mata_pelajaran mp on sm.mp_id = mp.id_mp
+				join employee e on sm.guru_id = e.emp_id
 				where 0=0 $sWhere $sOrder $sLimit
 			")->result_array();
 		return $data;
@@ -19,6 +20,7 @@ class M_absensi_mata_pelajaran extends CI_Model {
 				select ".implode(',', $aColumns).",id as id_key from absensi_mata_pelajaran ap
 				join schedule_mp sm on ap.schedule_id = sm.schedule_id
 				join ms_mata_pelajaran mp on sm.mp_id = mp.id_mp
+				join employee e on sm.guru_id = e.emp_id
 				$sWhere
 			")->num_rows();
 		return $data;
@@ -36,6 +38,9 @@ class M_absensi_mata_pelajaran extends CI_Model {
 					}
 				],
 				"mata_pelajaran",
+				"emp_name"=>[
+					"label" => "Guru"
+				],
 				"check_in_at"=>[
 					"label"=>"Masuk"
 				],

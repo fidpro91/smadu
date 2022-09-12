@@ -39,6 +39,7 @@
   </div>
   <!-- /.panel-footer-->
 </div>
+
 <!-- /.panel -->
 <script type="text/javascript">
   var table;
