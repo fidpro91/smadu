@@ -68,7 +68,8 @@ class rekap_absen_pegawai extends MY_Generator
 		$post=$this->input->post();
 		$data['post']=$post;  
 		$data['button']=$button;
-		$where = " DATE_FORMAT(absen_date, '%m-%Y') = '".$post["tanggal"]."'"; 
+		$where = " DATE_FORMAT(absen_date, '%m-%Y') = '".$post["tanggal"]."'";
+		$where1 = " DATE_FORMAT(tanggal, '%m-%Y') = '".$post["tanggal"]."'"; 
 		if (!empty($post["filter_absen"])) {
 			$where .= " AND absen_type = ".$post["filter_absen"]."";
 		}	
@@ -88,7 +89,8 @@ class rekap_absen_pegawai extends MY_Generator
 		emp_noktp 
 		ORDER BY
 		emp_name			
-	")->result();		
+		")->result();		
+		$data["libur"] = $this->db->query(" SELECT tanggal as hari from ms_libur WHERE $where1")->result();
     
 		if($button=="Excel"){
 			$this->load->view("rekap_pegawai/rekap_in_out",$data);

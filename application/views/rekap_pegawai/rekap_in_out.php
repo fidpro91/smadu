@@ -46,8 +46,10 @@ td{
     </tr>
     <tr>
         <?php
+       
         for ($i=1; $i < $tanggal+1; $i++) {
-        echo "<td>$i</td>";
+            echo "<td>$i</td>";
+             
         }
         
         ?>
@@ -64,13 +66,22 @@ td{
                for ($x=1; $x < $tanggal+1; $x++) {
                     $color="";                   
                    foreach ($datainout as $key => $value) {
+                     foreach ($libur as $yy){
+                        $hh = date("d",strtotime($yy->hari)); 
+                        if($x==$hh){  
+                            $ll ="LIBUR";
+                        } else{
+                            $ll="";
+                        }
+                     }
                        $tanggalAbsen = date("d",strtotime($value->tanggal));    
                        $waktu=$value->estimasi;                                        
                        if ($x==$tanggalAbsen ) {
-                            $absen= "CHECKIN : ".$value->jam_masuk ."<br>CHECKOUT : ". $value->jam_keluar."<br>keterangan : ". $value->estimasi;
+                           $absen= "CHECKIN : ".$value->jam_masuk ."<br>CHECKOUT : ". $value->jam_keluar."<br>keterangan : ". $value->estimasi;           
+                           
                             if ($value->estimasi>0){
                                 $color = "style='background-color:yellow'";
-                            }else if ($value->estimasi=0){
+                            }else if ($value->estimasi=='0'){
                                 $color = "style='background-color:green'";
                             }else{
                                 $color = "style='background-color:orange'";
@@ -79,13 +90,16 @@ td{
                         }else{
                             $absen="";           
                         
-                        }                 
+                        }  
+                                   
                    }     
-                   if(empty($absen)) {
-                    echo "<td $color style='background-color:red'>$absen</td>";
-                    } else{
-                        echo "<td $color>$absen</td>";
-                    }                            
+                                    
+                   if(empty($absen)) {                    
+                    echo "<td $color style='background-color:red'>$absen"."$ll</td>";                   
+                    }else{
+                        echo "<td $color>$absen"."$ll</td>"; }                      
+                     
+                                       
                     
                               
                     
