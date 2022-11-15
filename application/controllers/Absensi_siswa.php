@@ -252,7 +252,7 @@ class Absensi_siswa extends MY_Generator {
 						"user_created" => $this->session->user_id,
 						"siswa_id"	   => $dataSiswa->st_id,
 						"late_duration_in" => $selisih["total"],
-						"is_verified"  => "f"
+						"is_verified"  => "t"
 					];
 				}
 			}

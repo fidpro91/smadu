@@ -166,9 +166,6 @@ class Ms_siswa extends MY_Generator {
 	}
 
 	public function delete_row($id)
-
-	
-
 	{
 
 		$this->db->trans_begin();

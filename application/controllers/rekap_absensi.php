@@ -29,6 +29,9 @@ class rekap_absensi extends MY_Generator
 		if (!empty($post["filter_unit"])) {
 			$where .= " AND last_kelas = ".$post["filter_unit"]."";
 		}
+		if (!empty($post["filter_verifikasi"])) {
+			$where .= " AND is_verified = '".$post["filter_verifikasi"]."'";
+		}
 		$data["dataNilai"] = $this->db->query(" SELECT
 		st_nis,
 		st_name,

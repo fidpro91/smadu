@@ -14,7 +14,10 @@
   <div class="panel-body" id="data_absensi_siswa">
     <div class="row">
         <div class="col-md-3">
-          <?= create_inputDate("filter_tanggal=Tanggal", ["format" => "yyyy-mm-dd", "autoclose" => true]) ?>
+          <?= create_inputDate("filter_tanggal=Tanggal", [
+           "format" => "yyyy-mm-dd",
+           "autoclose" => "true"
+          ]) ?>
         </div>
         <div class="col-md-3">
             <?= create_select2(["attr" => ["name" => "filter_unit=kelas", "id" => "filter_unit", "class" => "form-control"],
@@ -64,7 +67,7 @@
     table = $('#tb_absensi_siswa').DataTable({
       "processing": true,
       "serverSide": true,
-      "order": [],
+      "order": [[2,'asc']],
       "scrollX": true,
       "ajax": {
         "url": "<?php echo site_url('absensi_siswa/get_data')?>",
@@ -204,4 +207,5 @@
       }, 'json');
     }
   });
+  <?=$this->config->item('footerJS')?>
 </script>
