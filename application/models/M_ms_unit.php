@@ -68,6 +68,12 @@ class M_ms_unit extends CI_Model {
 		return $this->db->get_where("ms_unit",$where)->result();
 	}
 
+	public function get_unit_laporan()
+	{
+		return $this->db->where("unit_type in (1,2)")						
+						->get("ms_unit")->result();
+	}
+
 	public function get_unit_kelas($where=null)
 	{
 		return $this->db->join("ms_category_unit mc","mc.catunit_id=mu.unit_type")

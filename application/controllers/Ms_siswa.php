@@ -160,7 +160,7 @@ class Ms_siswa extends MY_Generator {
 		$term = $this->input->get('term');
 		$limit = 25;
 		$where = " lower(st_name) like lower('%$term%')";
-		$select = "*,concat(st_nim,'-',st_name) as label";
+		$select = "*,concat(st_nis,'-',st_name) as label";
 		// $where .= " AND class_id = '$class_id'";
 		echo json_encode($this->m_ms_siswa->get_ms_siswa2($where,$select,$limit));
 	}

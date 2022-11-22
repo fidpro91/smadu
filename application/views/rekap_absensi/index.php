@@ -30,7 +30,7 @@
 				<?= create_select2(["attr" => ["name" => "filter_unit=KELAS", "id" => "filter_unit", "class" => "form-control",
         "required"=>true],
 			"model" =>[
-				"m_ms_unit" => ["get_ms_unit", ["unit_type" => $this->setting->kategori_kelas]],
+				"m_ms_unit" => ["get_unit_laporan"],
 				"column"  => ["unit_id", "unit_name"]
 			],
 			]) ?>          

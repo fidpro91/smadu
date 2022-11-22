@@ -1,5 +1,10 @@
 <style>
-	.select2-drop {z-index: 99999;}
+    .ui-autocomplete {
+        z-index: 2147483647;
+    }
+    .ui-menu-item div.ui-state-active {
+        background-color: #46fadc !important;
+    }
 </style>
 <div class="col-md-12">
 	<?= form_open("schedule_mp/save", ["method" => "post", "class" => "form-horizontal", "id" => "fm_schedule_mp"], $model) ?>

@@ -17,7 +17,8 @@
           <?= create_inputDate("filter_tanggal=Tanggal", [
            "format" => "yyyy-mm-dd",
            "autoclose" => "true"
-          ]) ?>
+          ],[
+            "value"=> date('Y-m-d')]) ?>
         </div>
         <div class="col-md-3">
             <?= create_select2(["attr" => ["name" => "filter_unit=kelas", "id" => "filter_unit", "class" => "form-control"],
