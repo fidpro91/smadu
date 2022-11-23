@@ -1,13 +1,16 @@
 <!-- Default panel -->
+
 <div class="panel panel-gradient">
   <div class="panel-heading">
     <h3 class="panel-title">Form Absensi Siswa</h3>
     <div class="panel-options">
     <button type="button" id="btn-reload" class="btn btn-primary">
         <i class="fa fa-refresh" aria-hidden="true"></i> Perbarui</button>
+       
       <button type="button" id="btn-add" class="btn btn-black">
         <i class="entypo-plus"></i> Add</button>
     </div>
+    
   </div>
   <div class="panel-body" id="form_absensi_siswa" style="display: none;">
   </div>
@@ -108,20 +111,21 @@
     $("#form_absensi_siswa").load("absensi_siswa/show_form");
   });
 
-  $("#btn-reload").click(function () {
+  $("#btn-reload").click(function () {    
     if (confirm("Perbarui data scan log?")) {
-        $.get('absensi_siswa/get_scanlog/', (data) => {
+        $.get('absensi_siswa/get_scanlog/', (data) => {          
           if (data.code == '200') {
-              toastr.success(data.message, "Message : ");
+              alert(data.message, "Message : ");
             } else {
-              toastr.error(data.message, "Message : ");
+              alert(data.message, "Message : ");
             }
             toastr.options.onHidden=setTimeout(() => {
               location.reload()
-            }, 2000);
+            }, 1000);
         }, 'json');
     }
   });
+
 
   function set_val(id) {
     $("#form_absensi_siswa").show();
