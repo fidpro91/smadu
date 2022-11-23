@@ -1,4 +1,5 @@
 <?php
+ini_set('memory_limit', '-1');
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Absensi_siswa extends MY_Generator {
