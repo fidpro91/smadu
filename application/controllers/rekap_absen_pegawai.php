@@ -76,7 +76,7 @@ class rekap_absen_pegawai extends MY_Generator
 		if (!empty($post["filter_unit"])) {
 			$where .= " AND last_kelas = ".$post["filter_unit"]."";
 		}
-		$data["datainout"] = $this->db->query(" SELECT
+		$data["datainout"] = $this->db->query("SELECT
 		emp_name,
 		emp_noktp,
 		json_arrayagg( json_object( 'tanggal', absen_date, 'jam_masuk', DATE_FORMAT(check_in,'%H:%i:%S'),'estimasi',late_duration_in,'jam_keluar', DATE_FORMAT(check_out,'%H:%I:%S') ) ) detail 
@@ -90,15 +90,14 @@ class rekap_absen_pegawai extends MY_Generator
 		ORDER BY
 		emp_name			
 		")->result();		
-		$data["libur"] = $this->db->query(" SELECT tanggal as hari from ms_libur WHERE $where1")->result();
-    
+		$data["libur"] = $this->db->query(" SELECT tanggal as hari from ms_libur WHERE $where1")->result();    
 		if($button=="Excel"){
 			$this->load->view("rekap_pegawai/rekap_in_out",$data);
 		}else{
-			$html=$this->load->view("rekap_pegawai/rekap_in_out",$data,true);
-			$mpdf = new \Mpdf\Mpdf();		
-			$mpdf->WriteHTML($html);
-			$mpdf->Output();
+			$html=$this->load->view("rekap_pegawai/rekap_in_out",$data);
+			// $mpdf = new \Mpdf\Mpdf();		
+			// $mpdf->WriteHTML($html);
+			// $mpdf->Output();
 		}	
 	}
 
