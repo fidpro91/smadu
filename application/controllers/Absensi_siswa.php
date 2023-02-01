@@ -221,12 +221,22 @@ class Absensi_siswa extends MY_Generator {
 
 	public function get_scanlog()
 	{
-		$this->finger = $this->load->database("finger",true);
-		$dataScan = $this->finger->order_by("scan_date")->get("att_log")->result();
-		$this->db->trans_begin();
+
+		
+	$this->finger = $this->load->database("finger",true);
+		//$dataScan = $this->finger->order_by("scan_date")->get("att_log")->result();
+		$dataScan = $this->finger->query("SELECT	at.*,scan_out 
+									FROM pegawai p
+									JOIN shift_result sr ON p.pegawai_id = sr.pegawai_id
+									join att_log at on p.pegawai_pin = at.pin
+									where 0=0
+									ORDER BY scan_out desc")->result();
+									
+									//print_r($chekout);die;
+		//$this->db->trans_begin();
 		$dataInsert=[];
-		foreach ($dataScan as $key => $value) {
-			$pin = $value->pin;
+		foreach ($dataScan as $key => $value) {					
+			$pin = $value->pin;				
 			$dataSiswa = $this->db->get_where("ms_siswa",["finger_id"=>$pin]);
 			if ($dataSiswa->num_rows()>0) {
 				$dataSiswa = $dataSiswa->row();
@@ -239,38 +249,51 @@ class Absensi_siswa extends MY_Generator {
 								"absen_date"	=> $tglabsen
 							])->num_rows();
 				if (count($absenSiswa)==0 && $cekAbsen==0) {
-					$jadwal = $this->db->get_where("jam_kerja_harian",[
-						"hari"				=> date("w",strtotime($value->scan_date)),
-						"jadwal_untuk"		=> $this->setting->kode_jadwal_siswa
-					])->row("jam_masuk");
-					$jadwal = date("Y-m-d",strtotime($value->scan_date))." ".$jadwal;
+					// $jadwal = $this->db->get_where("jam_kerja_harian",[
+					// 	"hari"				=> date("w",strtotime($value->scan_date)),
+					// 	"jadwal_untuk"		=> $this->setting->kode_jadwal_siswa
+					// ])->row("jam_masuk");
+					
+					$cek_jadwal= $this->db->query("select jam_masuk,jam_pulang from jam_kerja_harian where
+					 hari = ".date("w",strtotime($value->scan_date))."
+					and jadwal_untuk = ".$this->setting->kode_jadwal_siswa." ")->row();											
+					$jadwal = date("Y-m-d",strtotime($value->scan_date))." ".$cek_jadwal->jam_masuk;
+					$scan_keluar = date("Y-m-d",strtotime($value->scan_out))." ".$cek_jadwal->jam_pulang;
 					$selisih = selisih_waktu($value->scan_date,$jadwal);
+					$selisih_out = selisih_waktu($value->scan_out,$scan_keluar);
 					$dataInsert[$key] = [
 						"absen_code" => $pin,
 						"absen_date" => date("Y-m-d",strtotime($value->scan_date)),
-						"check_in"	 => $value->scan_date,
-						"absen_type" => 1,
+						"check_in"	  => $value->scan_date,
+						"check_out"	  => $value->scan_out,
+						"absen_type"  => 1,
 						"user_created" => $this->session->user_id,
 						"siswa_id"	   => $dataSiswa->st_id,
 						"late_duration_in" => $selisih["total"],
-						"is_verified"  => "t"
+						"is_verified"  => "t",
+						"late_duration_ot" => $selisih_out["total"]
 					];
 				}
-			}
+				
 		}
+	}
+ 
+	
 		if (count($dataInsert) > 0) {
 			$this->db->insert_batch("absensi_siswa",$dataInsert);
-		}
+		}		
 		$resp = array();
 		if ($this->db->trans_status() !== false) {
-			$this->db->trans_commit();
-			$resp['code'] = '200';
-			$resp['message'] = 'Data berhasil direload';
+			 $this->db->trans_commit();
+			 $resp['code'] = '200';
+			 $resp['message'] = 'Data berhasil direload';
+			// var_dump($dataInsert);
 		}else{
 			$this->db->trans_rollback();
 			$err = $this->db->error();
-			$resp['code'] = '201';
-			$resp['message'] = $err['message'];
+			 $resp['code'] = '201';
+			 $resp['message'] = $err['message'];
+			//var_dump($dataInsert);
 		}
 		echo json_encode($resp);
 	}
