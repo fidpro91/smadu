@@ -223,13 +223,13 @@ class Absensi_siswa extends MY_Generator {
 	{
 
 		
-	$this->finger = $this->load->database("finger",true);
+		$this->finger = $this->load->database("finger",true);
 		//$dataScan = $this->finger->order_by("scan_date")->get("att_log")->result();
 		$dataScan = $this->finger->query("SELECT	at.*,scan_out 
 									FROM pegawai p
 									JOIN shift_result sr ON p.pegawai_id = sr.pegawai_id
 									join att_log at on p.pegawai_pin = at.pin
-									where 0=0
+									where 0=0 and date(scan_date) between '2023-01-26' and '2023-02-02'
 									ORDER BY scan_out desc")->result();
 									
 									//print_r($chekout);die;
