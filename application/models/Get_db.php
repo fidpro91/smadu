@@ -68,7 +68,7 @@ class Get_db extends CI_Model {
       $cek_akses= $this->db->where(["group_id"=>$id])
                             ->where("menu_url like '%$url%'",null)
                             ->join("ms_menu m","m.menu_id=ga.menu_id")
-                            ->get("ms_group_user_access ga")->num_rows();
+                            ->get("group_access ga")->num_rows();
 
       return $cek_akses;
     }

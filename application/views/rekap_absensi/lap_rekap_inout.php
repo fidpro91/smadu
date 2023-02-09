@@ -61,17 +61,8 @@ td{
                         $tanggalAbsen = date("d",strtotime($value->tanggal));    
                                                                
                        if ($x==$tanggalAbsen ) {
-                           $absen= "CHECKIN : ".$value->jam_masuk ."<br>CHECKOUT : ". $value->jam_keluar."<br>estimasi in : ". $value->estimasi_in.
-                           "<br>estimasi out : ". $value->estimasi_out;  
-                           
-                            if ($value->estimasi_in && $value->estimasi_out >0){
-                                $color = "style='background-color:yellow'";
-                            }else if ($value->estimasi_in && $value->estimasi_out=='0'){
-                                $color = "style='background-color:green'";
-                            }else{
-                                $color = "style='background-color:orange'";
-                            }                                                                                            
-                            break;                         
+                           $absen= "CHECKIN : ".$value->jam_masuk ."<br>CHECKOUT : ". $value->jam_keluar."";  
+                                         
                         }else{
                             $absen="";           
                         

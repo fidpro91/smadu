@@ -219,22 +219,36 @@ class Absensi_siswa extends MY_Generator {
 		echo json_encode($resp);
 	}
 
-	public function get_scanlog()
+	public function get_scanlog($tanggal)
 	{
 
 		
 		$this->finger = $this->load->database("finger",true);
 		//$dataScan = $this->finger->order_by("scan_date")->get("att_log")->result();
-		$dataScan = $this->finger->query("select * from att_log where date(scan_date) between '2023-01-26' and '2023-02-02' order by scan_date desc ")->result();
+		$dataScan = $this->finger->query(
+			"SELECT GROUP_CONCAT(waktu) as waktu,tgl as scan_date,pin from (
+				SELECT concat(tgl,' ',jam) as waktu,tgl,pin from (
+						SELECT
+							date_format( scan_date, '%H:%i:%S' ) AS jam,
+							date_format( scan_date, '%Y-%m-%d' ) AS tgl,
+							pin 
+						FROM
+							att_log 
+						WHERE
+							date( scan_date ) = '$tanggal' ) x ) y 
+							GROUP BY scan_date,pin 
+				 ")->result();
 									
-									//print_r($chekout);die;
 		//$this->db->trans_begin();
 		$dataInsert=[];
-		foreach ($dataScan as $key => $value) {					
-			$pin = $value->pin;				
-			$dataSiswa = $this->db->get_where("ms_siswa",["finger_id"=>$pin]);
+		foreach ($dataScan as $key => $value) {	
+			$list = explode(',',$value->waktu);	 //			
+			$pin = $value->pin;		
+				
+			$dataSiswa = $this->db->get_where("ms_siswa",["finger_id"=>$pin]);			
 			if ($dataSiswa->num_rows()>0) {
 				$dataSiswa = $dataSiswa->row();
+				
 				$tglabsen = date("Y-m-d",strtotime($value->scan_date));
 				$absenSiswa = array_filter($dataInsert, function ($var) use($pin,$tglabsen){
 					return ($var['absen_code'] == $pin && $var['absen_date'] == $tglabsen);
@@ -249,9 +263,9 @@ class Absensi_siswa extends MY_Generator {
 						"jadwal_untuk"		=> $this->setting->kode_jadwal_siswa
 					])->row("jam_masuk");
 					
-					// $cek_jadwal= $this->db->query("select jam_masuk,jam_pulang from jam_kerja_harian where
-					//  hari = ".date("w",strtotime($value->scan_date))."
-					// and jadwal_untuk = ".$this->setting->kode_jadwal_siswa." ")->row();											
+					$cek_jadwal= $this->db->query("select jam_masuk,jam_pulang from jam_kerja_harian where
+					 hari = ".date("w",strtotime($value->scan_date))."
+					and jadwal_untuk = ".$this->setting->kode_jadwal_siswa." ")->row();											
 					$jadwal = date("Y-m-d",strtotime($value->scan_date))." ".$cek_jadwal->jam_masuk;
 					//$scan_keluar = date("Y-m-d",strtotime($value->scan_out))." ".$cek_jadwal->jam_pulang;
 					$selisih = selisih_waktu($value->scan_date,$jadwal);
@@ -259,8 +273,8 @@ class Absensi_siswa extends MY_Generator {
 					$dataInsert[$key] = [
 						"absen_code" => $pin,
 						"absen_date" => date("Y-m-d",strtotime($value->scan_date)),
-						"check_in"	  => $value->scan_date,
-						//"check_out"	  => $value->scan_out,
+						"check_in"	  => $list[1],
+						"check_out"	  => $list[0],
 						"absen_type"  => 1,
 						"user_created" => $this->session->user_id,
 						"siswa_id"	   => $dataSiswa->st_id,

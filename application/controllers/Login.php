@@ -26,6 +26,7 @@ class Login extends CI_Controller {
 			]);
 			$resp["message"] = "Sukses";
 			$resp["redirect"] = site_url("dashboard");
+			
 		}else{
 			$resp["message"] = "Username/Password tidak sesuai";
 			$resp["is_error"] = "true";
