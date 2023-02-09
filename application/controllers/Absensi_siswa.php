@@ -235,17 +235,18 @@ class Absensi_siswa extends MY_Generator {
 						FROM
 							att_log 
 						WHERE
-							date( scan_date ) = '$tanggal' ) x ) y 
+							date( scan_date ) = '$tanggal') x ) y 
 							GROUP BY scan_date,pin 
 				 ")->result();
 									
 		//$this->db->trans_begin();
-		$dataInsert=[];
-		$list=[];
+		$dataInsert=[];		
 		foreach ($dataScan as $key => $value) {	
-			$list = explode(',',$value->waktu);	 //			
-			$pin = $value->pin;		
-				
+			
+			$v = ( explode(',', $value->waktu));   									
+			$pin = $value->pin;	
+			
+			
 			$dataSiswa = $this->db->get_where("ms_siswa",["finger_id"=>$pin]);			
 			if ($dataSiswa->num_rows()>0) {
 				$dataSiswa = $dataSiswa->row();
@@ -271,18 +272,49 @@ class Absensi_siswa extends MY_Generator {
 					//$scan_keluar = date("Y-m-d",strtotime($value->scan_out))." ".$cek_jadwal->jam_pulang;
 					$selisih = selisih_waktu($value->scan_date,$jadwal);
 					//$selisih_out = selisih_waktu($value->scan_out,$scan_keluar);
-					$dataInsert[$key] = [
-						"absen_code" => $pin,
-						"absen_date" => date("Y-m-d",strtotime($value->scan_date)),
-						"check_in"	  => $list[0],
-						"check_out"	  => $list[1],
-						"absen_type"  => 1,
-						"user_created" => $this->session->user_id,
-						"siswa_id"	   => $dataSiswa->st_id,
-						"late_duration_in" => $selisih["total"],
-						"is_verified"  => "t",
-						//"late_duration_ot" => $selisih_out["total"]
-					];
+					// $dataInsert[$key] = [
+					// 	"absen_code" => $pin,
+					// 	"absen_date" => date("Y-m-d",strtotime($value->scan_date)),
+					// 	// "check_in"	  => $v[0],
+					// 	// "check_out"	  => $masuk,						
+					// 	"absen_type"  => 1,
+					// 	"user_created" => $this->session->user_id,
+					// 	"siswa_id"	   => $dataSiswa->st_id,
+					// 	"late_duration_in" => $selisih["total"],
+					// 	"is_verified"  => "t",
+					// 	//"late_duration_ot" => $selisih_out["total"]
+					// ];
+
+
+					if(empty($v[1])){
+						$dataInsert[$key] = [
+							"absen_code" => $pin,
+							"absen_date" => date("Y-m-d",strtotime($value->scan_date)),
+							"check_in"	  => $v[0],
+							"check_out"	  => null,						
+							"absen_type"  => 1,
+							"user_created" => $this->session->user_id,
+							"siswa_id"	   => $dataSiswa->st_id,
+							"late_duration_in" => $selisih["total"],
+							"is_verified"  => "t",
+							//"late_duration_ot" => $selisih_out["total"]
+						];
+					}else if(!empty($v[1])){
+						$dataInsert[$key] = [
+							"absen_code" => $pin,
+							"absen_date" => date("Y-m-d",strtotime($value->scan_date)),
+							"check_in"	  => $v[0],
+							"check_out"	  => $v[1],						
+							"absen_type"  => 1,
+							"user_created" => $this->session->user_id,
+							"siswa_id"	   => $dataSiswa->st_id,
+							"late_duration_in" => $selisih["total"],
+							"is_verified"  => "t",
+							//"late_duration_ot" => $selisih_out["total"]
+						];
+					}			
+					
+					
 				}
 				
 		}
