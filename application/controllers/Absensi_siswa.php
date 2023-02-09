@@ -219,13 +219,13 @@ class Absensi_siswa extends MY_Generator {
 		echo json_encode($resp);
 	}
 
-	public function get_scanlog()
+	public function get_scanlog($tanggal)
 	{
 
 		
 		$this->finger = $this->load->database("finger",true);
 		//$dataScan = $this->finger->order_by("scan_date")->get("att_log")->result();
-		$dataScan = $this->finger->query("select * from att_log where date(scan_date) between '2023-01-26' and '2023-02-02' order by scan_date desc ")->result();
+		$dataScan = $this->finger->query("select * from att_log where date(scan_date) = '$tanggal' order by scan_date desc ")->result();
 									
 									//print_r($chekout);die;
 		//$this->db->trans_begin();
