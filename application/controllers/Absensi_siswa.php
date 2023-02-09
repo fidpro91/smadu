@@ -241,6 +241,7 @@ class Absensi_siswa extends MY_Generator {
 									
 		//$this->db->trans_begin();
 		$dataInsert=[];
+		$list=[];
 		foreach ($dataScan as $key => $value) {	
 			$list = explode(',',$value->waktu);	 //			
 			$pin = $value->pin;		
@@ -273,8 +274,8 @@ class Absensi_siswa extends MY_Generator {
 					$dataInsert[$key] = [
 						"absen_code" => $pin,
 						"absen_date" => date("Y-m-d",strtotime($value->scan_date)),
-						"check_in"	  => $list[1],
-						"check_out"	  => $list[0],
+						"check_in"	  => $list[0],
+						"check_out"	  => $list[1],
 						"absen_type"  => 1,
 						"user_created" => $this->session->user_id,
 						"siswa_id"	   => $dataSiswa->st_id,
