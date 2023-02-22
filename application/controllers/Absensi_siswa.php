@@ -225,28 +225,40 @@ class Absensi_siswa extends MY_Generator {
 		
 		$this->finger = $this->load->database("finger",true);
 		//$dataScan = $this->finger->order_by("scan_date")->get("att_log")->result();
-		$dataScan = $this->finger->query(
-			"SELECT GROUP_CONCAT(waktu) as waktu,tgl as scan_date,pin from (
-				SELECT concat(tgl,' ',jam) as waktu,tgl,pin from (
-						SELECT
-							date_format( scan_date, '%H:%i:%S' ) AS jam,
-							date_format( scan_date, '%Y-%m-%d' ) AS tgl,
-							pin 
-						FROM
-							att_log 
-						WHERE
-							date( scan_date ) = '$tanggal') x ) y 
-							GROUP BY scan_date,pin 
-				 ")->result();
+		// $dataScan = $this->finger->query(
+		// 	"SELECT GROUP_CONCAT(waktu) as waktu,tgl as scan_date,pin from (
+		// 		SELECT concat(tgl,' ',jam) as waktu,tgl,pin from (
+		// 				SELECT
+		// 					date_format( scan_date, '%H:%i:%S' ) AS jam,
+		// 					date_format( scan_date, '%Y-%m-%d' ) AS tgl,
+		// 					pin 
+		// 				FROM
+		// 					att_log 
+		// 				WHERE
+		// 					date( scan_date ) = '$tanggal') x ) y 
+		// 					GROUP BY scan_date,pin 
+		// 		 ")->result();
+
+			$dataScan = $this->finger->query(
+				"select concat(tgl,' ',scan_masuk) as scan_date, concat(tgl,' ',scan_keluar) as scan_out,pin from(
+				SELECT tgl,scan_masuk,
+				CASE WHEN y.scan_keluar = y.scan_masuk THEN null ELSE	y.scan_keluar
+				END scan_keluar,pin 
+				from(SELECT	max(jam) as scan_keluar,min(jam) as scan_masuk,tgl,pin 
+				FROM
+				(SELECT
+				date_format( scan_date, '%H:%i:%S' ) AS jam,
+				date_format( scan_date, '%Y-%m-%d' ) AS tgl,			
+				pin 
+			FROM att_log 
+			where date( scan_date ) = '$tanggal'
+			) x	GROUP BY tgl,pin ) y ) z 
+		 ")->result();
 									
 		//$this->db->trans_begin();
 		$dataInsert=[];		
-		foreach ($dataScan as $key => $value) {	
-			
-			$v = ( explode(',', $value->waktu));   									
-			$pin = $value->pin;	
-			
-			
+		foreach ($dataScan as $key => $value) {			   									
+			$pin = $value->pin;				
 			$dataSiswa = $this->db->get_where("ms_siswa",["finger_id"=>$pin]);			
 			if ($dataSiswa->num_rows()>0) {
 				$dataSiswa = $dataSiswa->row();
@@ -269,61 +281,63 @@ class Absensi_siswa extends MY_Generator {
 					 hari = ".date("w",strtotime($value->scan_date))."
 					and jadwal_untuk = ".$this->setting->kode_jadwal_siswa." ")->row();											
 					$jadwal = date("Y-m-d",strtotime($value->scan_date))." ".$cek_jadwal->jam_masuk;
-					//$scan_keluar = date("Y-m-d",strtotime($value->scan_out))." ".$cek_jadwal->jam_pulang;
+					$scan_keluar = date("Y-m-d",strtotime($value->scan_out))." ".$cek_jadwal->jam_pulang;
 					$selisih = selisih_waktu($value->scan_date,$jadwal);
-					//$selisih_out = selisih_waktu($value->scan_out,$scan_keluar);
-					// $dataInsert[$key] = [
-					// 	"absen_code" => $pin,
-					// 	"absen_date" => date("Y-m-d",strtotime($value->scan_date)),
-					// 	// "check_in"	  => $v[0],
-					// 	// "check_out"	  => $masuk,						
-					// 	"absen_type"  => 1,
-					// 	"user_created" => $this->session->user_id,
-					// 	"siswa_id"	   => $dataSiswa->st_id,
-					// 	"late_duration_in" => $selisih["total"],
-					// 	"is_verified"  => "t",
-					// 	//"late_duration_ot" => $selisih_out["total"]
-					// ];
+					$selisih_out = selisih_waktu($value->scan_out,$scan_keluar);
+					$dataInsert[$key] = [
+						"absen_code" => $pin,
+						"absen_date" => date("Y-m-d",strtotime($value->scan_date)),
+						"check_in"	  => $value->scan_date,
+						"check_out"   =>  $value->scan_out,						
+						"absen_type"  => 1,
+						"user_created" => $this->session->user_id,
+						"siswa_id"	   => $dataSiswa->st_id,
+						"late_duration_in" => $selisih["total"],
+						"is_verified"  => "t",
+						"late_duration_ot" => $selisih_out["total"]
+					];
 
 
-					if(empty($v[1])){
-						$dataInsert[$key] = [
-							"absen_code" => $pin,
-							"absen_date" => date("Y-m-d",strtotime($value->scan_date)),
-							"check_in"	  => $v[0],
-							"check_out"	  => null,						
-							"absen_type"  => 1,
-							"user_created" => $this->session->user_id,
-							"siswa_id"	   => $dataSiswa->st_id,
-							"late_duration_in" => $selisih["total"],
-							"is_verified"  => "t",
-							//"late_duration_ot" => $selisih_out["total"]
-						];
-					}else if(!empty($v[1])){
-						$dataInsert[$key] = [
-							"absen_code" => $pin,
-							"absen_date" => date("Y-m-d",strtotime($value->scan_date)),
-							"check_in"	  => $v[0],
-							"check_out"	  => $v[1],						
-							"absen_type"  => 1,
-							"user_created" => $this->session->user_id,
-							"siswa_id"	   => $dataSiswa->st_id,
-							"late_duration_in" => $selisih["total"],
-							"is_verified"  => "t",
-							//"late_duration_ot" => $selisih_out["total"]
-						];
-					}			
+					// if(empty($v[1])){
+					// 	$dataInsert[$key] = [
+					// 		"absen_code" => $pin,
+					// 		"absen_date" => date("Y-m-d",strtotime($value->scan_date)),
+					// 		"check_in"	  => $v[0],
+					// 		"check_out"	  => null,						
+					// 		"absen_type"  => 1,
+					// 		"user_created" => $this->session->user_id,
+					// 		"siswa_id"	   => $dataSiswa->st_id,
+					// 		"late_duration_in" => $selisih["total"],
+					// 		"is_verified"  => "t",
+					// 		//"late_duration_ot" => $selisih_out["total"]
+					// 	];
+					// }else if(!empty($v[1])){
+					// 	$dataInsert[$key] = [
+					// 		"absen_code" => $pin,
+					// 		"absen_date" => date("Y-m-d",strtotime($value->scan_date)),
+					// 		"check_in"	  => $v[0],
+					// 		"check_out"	  => $v[1],						
+					// 		"absen_type"  => 1,
+					// 		"user_created" => $this->session->user_id,
+					// 		"siswa_id"	   => $dataSiswa->st_id,
+					// 		"late_duration_in" => $selisih["total"],
+					// 		"is_verified"  => "t",
+					// 		//"late_duration_ot" => $selisih_out["total"]
+					// 	];
+					// }			
 					
 					
 				}
 				
 		}
 	}
- 
+	//print_r(count($dataInsert));die;
 	
 		if (count($dataInsert) > 0) {
 			$this->db->insert_batch("absensi_siswa",$dataInsert);
 		}		
+		//$da = ($this->db->trans_status());
+		//print_r($da);die;
 		$resp = array();
 		if ($this->db->trans_status() !== false) {
 			 $this->db->trans_commit();

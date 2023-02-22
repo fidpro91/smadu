@@ -113,7 +113,8 @@
 
   $("#btn-reload").click(function () {    
     if (confirm("Perbarui data scan log?")) {
-        $.get('absensi_siswa/get_scanlog/'+$("#filter_tanggal").val(), (data) => {          
+        $.get('absensi_siswa/get_scanlog/'+$("#filter_tanggal").val(), (data) => { 
+          //alert(data.code);         
           if (data.code == '200') {
               alert(data.message, "Message : ");
             } else {
