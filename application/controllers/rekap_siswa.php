@@ -33,7 +33,7 @@ class rekap_siswa extends MY_Generator
 	st_name,
 	st_nis,
 	json_arrayagg(
-		json_object( 'tanggal', absen_date, 'jam_masuk', DATE_FORMAT( check_in, '%H:%i:%S' ), 'estimasi_in', late_duration_in, 'jam_keluar', DATE_FORMAT( check_out, '%H:%I:%S' ),'estimasi_out', late_duration_ot ) 
+		json_object( 'tanggal', absen_date, 'jam_masuk', DATE_FORMAT( check_in, '%H:%i:%S' ), 'estimasi_in', late_duration_in, 'jam_keluar', DATE_FORMAT( check_out, '%H:%i:%S' ),'estimasi_out', late_duration_ot ) 
 	) detail 
 FROM
 	absensi_siswa ab
