@@ -61,9 +61,10 @@ class rekap_siswa extends MY_Generator
 
 		")->result();		
 		$data["libur"] = $this->db->query(" SELECT tanggal as hari from ms_libur WHERE $where1")->row();  
+		$data["kelas"] = $this->db->get_where("ms_unit",array('unit_id'=>$post["filter_unit"]))->row();
 //print_r($button);die;
 		if($button=="Excel"){
-			$this->load->view("rekap_absensi/lap_rekap_inout",$data);
+			$this->load->view("rekap_absensi/lap_rekap_inout",$data;			
 		}else{
 			$html=$this->load->view("rekap_absensi/lap_rekap_inout",$data,true);
 			$mpdf = new \Mpdf\Mpdf();		
