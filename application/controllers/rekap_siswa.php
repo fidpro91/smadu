@@ -19,43 +19,58 @@ class rekap_siswa extends MY_Generator
 
 	public function show_report_in_out()
 	{ 	
-		//$button=$_POST['dtlPas'];	
+		$button=$_POST['dtlPas'];	
 		$post=$this->input->post();
-      // print_R($post);die;
+      
 		$data['post']=$post;  
-		//$data['button']=$button;
+		$data['button']=$button;
 		$where = " DATE_FORMAT(absen_date, '%m-%Y') = '".$post["tanggal"]."'";
-		$where .= "and last_kelas = '".$post["filter_unit"]."'";
+		$sWhere = "last_kelas = '".$post["filter_unit"]."'";
 		$where1 = " DATE_FORMAT(tanggal, '%m-%Y') = '".$post["tanggal"]."'"; 
 		
 		$data["datainout"] = $this->db->query("
+		SELECT st_nis,st_name,x.detail from ms_siswa s
+		left join (
 		SELECT
-	st_name,
-	st_nis,
-	json_arrayagg(
-		json_object( 'tanggal', absen_date, 'jam_masuk', DATE_FORMAT( check_in, '%H:%i:%S' ), 'estimasi_in', late_duration_in, 'jam_keluar', DATE_FORMAT( check_out, '%H:%i:%S' ),'estimasi_out', late_duration_ot ) 
-	) detail 
-FROM
-	absensi_siswa ab
-	JOIN ms_siswa s ON ab.siswa_id = s.st_id
-WHERE $where	
-GROUP BY
-	st_name,
-	st_nis 
-ORDER BY
-	st_name
-		")->result();		
-		$data["libur"] = $this->db->query(" SELECT tanggal as hari from ms_libur WHERE $where1")->result();  
+		siswa_id,
+			json_arrayagg(
+				json_object(
+					'tanggal',
+					absen_date,
+					'jam_masuk',
+					DATE_FORMAT( check_in, '%H:%i:%S' ),
+					'estimasi_in',
+					late_duration_in,
+					'jam_keluar',
+					DATE_FORMAT( check_out, '%H:%i:%S' ),
+					'estimasi_out',
+					late_duration_ot,
+					'type',
+					absen_type	 
+				) 
+			) detail 
+		FROM
+			absensi_siswa ab	
+		WHERE
+		$where
+		GROUP BY
+			siswa_id ) x on s.st_id = x.siswa_id
+			WHERE $sWhere
+	
+	
 
-		// if($button=="Excel"){
-		// 	$this->load->view("rekap_absensi/lap_rekap_inout",$data);
-		// }else{
-		// 	$html=$this->load->view("rekap_absensi/lap_rekap_inout",$data);
-		// 	// $mpdf = new \Mpdf\Mpdf();		
-		// 	// $mpdf->WriteHTML($html);
-		// 	// $mpdf->Output();
-		// }	
-        $html=$this->load->view("rekap_absensi/lap_rekap_inout",$data);
+		")->result();		
+		$data["libur"] = $this->db->query(" SELECT tanggal as hari from ms_libur WHERE $where1")->row();  
+//print_r($button);die;
+		if($button=="Excel"){
+			$this->load->view("rekap_absensi/lap_rekap_inout",$data);
+		}else{
+			$html=$this->load->view("rekap_absensi/lap_rekap_inout",$data,true);
+			$mpdf = new \Mpdf\Mpdf();		
+			$mpdf->WriteHTML($html);
+			$mpdf->Output();
+		}	
+        //$html=$this->load->view("rekap_absensi/lap_rekap_inout",$data);
 	}
 
 

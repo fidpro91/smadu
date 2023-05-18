@@ -75,7 +75,8 @@ td{
                         }
                      }
                        $tanggalAbsen = date("d",strtotime($value->tanggal));    
-                       $waktu=$value->estimasi;                                        
+                       $waktu=$value->estimasi; 
+                                                             
                        if ($x==$tanggalAbsen ) {
                            $absen= "CHECKIN : ".$value->jam_masuk ."<br>CHECKOUT : ". $value->jam_keluar."<br>keterangan : ". $value->estimasi;           
                            

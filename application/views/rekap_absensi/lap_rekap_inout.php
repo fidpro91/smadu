@@ -1,5 +1,12 @@
 
+<?php 
+if ($button=="Excel") {
+    $now = date('d-m-Y');
+    header("Content-type: application/vnd-ms-excel");
+    header("Content-Disposition: attachment; filename=REKAB ABSEN SISWA-".$now.".xls");
+}
 
+?>
 <style type="text/css">    
 .tabel{
 	font-size:13px;
@@ -31,8 +38,8 @@ td{
 <table border="1" align="center" width="100%" style="font-size: 12px; border-collapse: collapse;" >
     <tr>
         <td rowspan="2" align="center">No</td>
-        <td rowspan="2" align="center">NO KTP</td>
-        <td rowspan="2" align="center">NAMA PEGAWAI</td>               
+        <td rowspan="2" align="center">Nama Pegawai</td>
+        <td rowspan="2" align="center">NIS</td>               
         <td colspan="<?=$tanggal?>" align="center">TANGGAL</td>
         
     </tr>
@@ -58,11 +65,26 @@ td{
                for ($x=1; $x < $tanggal+1; $x++) {
                     $color="";                   
                    foreach ($datainout as $key => $value) {
-                        $tanggalAbsen = date("d",strtotime($value->tanggal));    
-                                                               
+                        $tanggalAbsen = date("d",strtotime($value->tanggal)); 
+                       // print_r($tanggalAbsen);   
+                                                           
                        if ($x==$tanggalAbsen ) {
-                           $absen= "CHECKIN : ".$value->jam_masuk ."<br>CHECKOUT : ". $value->jam_keluar."";  
-                                         
+                        $type = "";
+                        if($value->type==1){
+                            $type = "Masuk";
+                        }else if($value->type==2){
+                            $type = "Izin/Sakit";
+                        }else if($value->type==3){
+                            $type = "Alpa";
+                        }
+
+                        if($value->type == 1){
+                            $absen= "CHECKIN : ".$value->jam_masuk ."<br>CHECKOUT : ". $value->jam_keluar."";
+                        }else{
+                            $absen= "<b>". $type."</b>";
+                        }
+                            
+                           break;          
                         }else{
                             $absen="";           
                         
