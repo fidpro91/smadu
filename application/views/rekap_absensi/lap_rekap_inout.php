@@ -1,4 +1,11 @@
+<?php 
+if ($button=="Excel") {
+    $now =$kelas->unit_name;
+    header("Content-type: application/vnd-ms-excel");
+    header("Content-Disposition: attachment; filename=REKAP SISWA-".$now.".xls");
+}
 
+?>
 
 <style type="text/css">    
 .tabel{
@@ -22,7 +29,7 @@ td{
     <table width="100%" cellspacing="0" cellpadding="0" border="0" class="tabel" align="center" style="font-size: 12px">
     	<tr>
     		<td colspan="2" align="center" style="font-size: 14px;"><strong>
-    			Laporan Rekapitulasi Absensi Pegawai
+    			Laporan Rekapitulasi Absensi Siswa
                 <br>Periode <?=$bulan,'-',$tahun?>
                 </strong> 
 			</td>
@@ -31,8 +38,9 @@ td{
 <table border="1" align="center" width="100%" style="font-size: 12px; border-collapse: collapse;" >
     <tr>
         <td rowspan="2" align="center">No</td>
-        <td rowspan="2" align="center">NO KTP</td>
-        <td rowspan="2" align="center">NAMA PEGAWAI</td>               
+        <td rowspan="2" align="center">NAMA SISWA</td>
+        <td rowspan="2" align="center">NIS</td>
+        <td rowspan="2" align="center">KELAS</td>                
         <td colspan="<?=$tanggal?>" align="center">TANGGAL</td>
         
     </tr>
@@ -52,7 +60,8 @@ td{
                 echo "<tr>
                 <td>".($ind+1)."</td>
                 <td>$value->st_name</td>
-                <td>$value->st_nis</td>";
+                <td>$value->st_nis</td>
+                <td>$value->unit_name</td>";
                 $datainout = json_decode($value->detail);   
                 $total = [];          
                for ($x=1; $x < $tanggal+1; $x++) {
@@ -62,7 +71,7 @@ td{
                                                                
                        if ($x==$tanggalAbsen ) {
                            $absen= "CHECKIN : ".$value->jam_masuk ."<br>CHECKOUT : ". $value->jam_keluar."";  
-                                         
+                            break;          
                         }else{
                             $absen="";           
                         
