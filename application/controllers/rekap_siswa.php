@@ -29,7 +29,7 @@ class rekap_siswa extends MY_Generator
 		$where1 = " DATE_FORMAT(tanggal, '%m-%Y') = '".$post["tanggal"]."'"; 
 		
 		$data["datainout"] = $this->db->query("
-		SELECT st_nis,st_name,x.detail from ms_siswa s
+		SELECT st_nis,st_name,unit_name,x.detail from ms_siswa s
 		left join (
 		SELECT
 		siswa_id,
@@ -55,6 +55,7 @@ class rekap_siswa extends MY_Generator
 		$where
 		GROUP BY
 			siswa_id ) x on s.st_id = x.siswa_id
+			left join ms_unit u on s.last_kelas = u.unit_id
 			WHERE $sWhere
 	
 	

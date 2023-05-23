@@ -250,9 +250,9 @@ class Absensi_siswa extends MY_Generator {
 				date_format( scan_date, '%H:%i:%S' ) AS jam,
 				date_format( scan_date, '%Y-%m-%d' ) AS tgl,			
 				pin 
-			FROM att_log 
-			where date( scan_date ) = '$tanggal'
-			) x	GROUP BY tgl,pin ) y ) z 
+				FROM att_log 
+				where date( scan_date ) = '$tanggal'
+				) x	GROUP BY tgl,pin ) y ) z 
 		 ")->result();
 									
 		//$this->db->trans_begin();

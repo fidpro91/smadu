@@ -4,10 +4,15 @@ class Get_db extends CI_Model {
 
     public function get_menu($id=0)
     {
-      $datam = $this->db->where(['menu_parent_id'=>$id,'ga.group_id'=>3,'m.menu_status'=>'t'])
-                        ->join("group_access ga","ga.menu_id = m.menu_id")
-                        ->order_by('menu_code')
-                        ->get('ms_menu m')->result();
+      $datam = $this->db->query("SELECT DISTINCT m.* from ms_user u
+      join ms_group g on u.user_group = g.group_id
+      join group_access gc on g.group_id = gc.group_id
+      join ms_menu m on gc.menu_id = m.menu_id
+      WHERE user_id = '".$this->session->user_id."'
+      and menu_parent_id = $id
+      AND m.menu_status = 't'
+      ORDER BY
+        menu_code")->result();
       $menux='';
       foreach ($datam as $key => $value) {
           if ($this->db->where('menu_parent_id',$value->menu_id)->get('ms_menu')->num_rows() > 0) {

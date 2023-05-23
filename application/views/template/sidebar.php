@@ -238,3 +238,23 @@
           }); 
       });
 </script>
+
+<!-- <script type="text/javascript">
+  $(function(){
+          var current_page_URL = location.href;
+          $(".sidebar").find( "a" ).each(function() {
+              if ($(this).attr("href") !== "#") {
+                  var target_URL = $(this).prop("href");
+                      if (target_URL == current_page_URL) {
+                          $('nav a').parents('li, ul').removeClass('active');
+                          $(this).parent('li').addClass('active');
+                          var x = $(this).parents('li').find('a').attr("href");
+                          if (x === '#') {
+                            $(this).parents('li').not(':first').addClass('active menu-open');
+                          }
+                          return false;
+                      }
+              }
+          }); 
+      });
+</script> -->
